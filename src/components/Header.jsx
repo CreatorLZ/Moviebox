@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import axios from "axios";
+import Spinner2 from "./Spinner2";
 
 const Container = styled.div`
   width: 100vw;
@@ -142,7 +143,7 @@ const Header = () => {
         </Description>
         : (
           //  loading message while data is being fetched
-          <p>Loading...</p>
+          <Spinner2/>
         )}
       </Wrapper>
     </Container>

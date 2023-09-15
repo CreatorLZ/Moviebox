@@ -121,10 +121,13 @@ const Searchresults = styled.div`
   background-color: whitesmoke;
   border-radius: 10px;
   overflow:scroll;
+  
+ 
   ul{
     list-style: none;
     color: black;
     text-decoration: none!important;
+    
   }
   li{
     padding:10px;
@@ -132,7 +135,16 @@ const Searchresults = styled.div`
     margin-bottom:10px;
     cursor: pointer;
     text-decoration: none!important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400;
+    img{
+      width: 100px;
+      height: 100px;
+    }
   }
+  
   @media only screen and (max-width: 420px) {
     top: 70px;
    left: 90px;
@@ -204,7 +216,11 @@ const Navbar = () => {
         <ul>
           {searchResults.map((movie) => (
             <Link style={{textDecoration:"none", color:"black"}} to={`/movie/${movie.id}`}>
-            <li style={{textDecoration:"none", color:"black"}} key={movie.id}>{movie.title}</li>
+            <li style={{textDecoration:"none", color:"black"}} key={movie.id}>
+              <img
+              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} 
+              alt={movie.title}
+            />{movie.title}</li>
             </Link>
             ))}
         </ul>
