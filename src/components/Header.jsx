@@ -7,15 +7,15 @@ import Spinner2 from "./Spinner2";
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
- 
+
   display: flex;
   flex-direction: column;
   background-image: url(${(props) => props.backgroundImage});
-  background-repeat: no-repeat; 
-  background-size: cover; 
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 const Wrapper = styled.div`
-margin-top: 50px;
+  margin-top: 50px;
   width: 100%;
   height: 90%;
   background: transparent;
@@ -64,8 +64,6 @@ const Header = () => {
   const [featuredMovie, setFeaturedMovie] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(""); // State variable for background image
 
-
-
   useEffect(() => {
     axios
       .get(apiUrl, {
@@ -79,10 +77,10 @@ const Header = () => {
         // Get the first top-rated movie
         const topRatedMovies = response.data.results;
 
-         // Generate a random index to select a random movie
-         const randomIndex = Math.floor(Math.random() * topRatedMovies.length);
-         const randomMovie = topRatedMovies[randomIndex];
-        console.log(topRatedMovies)
+        // Generate a random index to select a random movie
+        const randomIndex = Math.floor(Math.random() * topRatedMovies.length);
+        const randomMovie = topRatedMovies[randomIndex];
+        console.log(topRatedMovies);
         const firstMovie = topRatedMovies[0];
 
         // Fetch additional details for the first movie
@@ -95,7 +93,7 @@ const Header = () => {
           })
           .then((movieResponse) => {
             setFeaturedMovie(movieResponse.data);
-            
+
             // Set the background image URL
             setBackgroundImage(
               `${imageBaseUrl}${movieResponse.data.backdrop_path}`
@@ -111,39 +109,39 @@ const Header = () => {
   }, []);
   console.log(featuredMovie);
 
-
   return (
     <Container style={{ backgroundImage: `url(${backgroundImage})` }}>
       <Navbar />
       <Wrapper>
-        { featuredMovie ? <Description>
-          <h1>{featuredMovie.original_title}</h1>
-          <Ratings>
-            <img
-              src="./images/imdb.png"
-              alt="imdb"
-              style={{ marginRight: "10px" }}
-            />
-            <p style={{ marginRight: "30px" }}>
-              {featuredMovie.vote_average} / 100
-            </p>
-            <img
-              src="./images/tomato.png"
-              alt="tomato"
-              style={{ marginRight: "10px" }}
-            />
-            <p>97%</p>
-          </Ratings>
-          <p>{featuredMovie.overview}</p>
+        {featuredMovie ? (
+          <Description>
+            <h1>{featuredMovie.original_title}</h1>
+            <Ratings>
+              <img
+                src="./images/imdb.png"
+                alt="imdb"
+                style={{ marginRight: "10px" }}
+              />
+              <p style={{ marginRight: "30px" }}>
+                {featuredMovie.vote_average} / 100
+              </p>
+              <img
+                src="./images/tomato.png"
+                alt="tomato"
+                style={{ marginRight: "10px" }}
+              />
+              <p>97%</p>
+            </Ratings>
+            <p>{featuredMovie.overview}</p>
 
-          <Button>
-            <img src="./images/play.png" alt="Button" />
-            <p>WATCH TRAILER</p>
-          </Button>
-        </Description>
-        : (
+            <Button>
+              <img src="./images/play.png" alt="Button" />
+              <p>WATCH TRAILER</p>
+            </Button>
+          </Description>
+        ) : (
           //  loading message while data is being fetched
-          <Spinner2/>
+          <Spinner2 />
         )}
       </Wrapper>
     </Container>

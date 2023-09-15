@@ -24,9 +24,9 @@ const Sidebar = styled.div`
   left: 0;
   border: 1px solid gray;
   @media only screen and (max-width: 420px) {
-  /* padding: 20px; */
-   width: 15%;
-   border-radius: 0px;
+    /* padding: 20px; */
+    width: 15%;
+    border-radius: 0px;
   }
 `;
 
@@ -41,12 +41,12 @@ const Logo = styled.div`
     object-fit: cover;
   }
   @media only screen and (max-width: 420px) {
-    img{
+    img {
       margin: 5px;
     }
-   h4{
-    display: none;
-   }
+    h4 {
+      display: none;
+    }
   }
 `;
 const Wrapper = styled.div`
@@ -57,7 +57,7 @@ const Wrapper = styled.div`
   padding: 20px;
   margin-left: 20%;
   @media only screen and (max-width: 420px) {
-   margin-left:15%;
+    margin-left: 15%;
   }
 `;
 
@@ -79,15 +79,13 @@ const Navcontent = styled.div`
     padding-right: 20px;
   }
   @media only screen and (max-width: 420px) {
-    p{
+    p {
       display: none;
     }
-  img{
-    
+    img {
+    }
+    justify-content: center;
   }
-  justify-content: center;
-   
-}
 `;
 const Promotion = styled.div`
   width: 170px;
@@ -100,10 +98,9 @@ const Promotion = styled.div`
   padding: 20px;
   gap: 10px;
   @media only screen and (max-width: 420px) {
-  width: 100%;
-  display: none;
-   
-}
+    width: 100%;
+    display: none;
+  }
 `;
 const Poster = styled.div`
   width: 100%;
@@ -113,8 +110,15 @@ const Poster = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10px;
-  iframe{
+  iframe {
     border-radius: 10px;
+  }
+  @media only screen and (max-width: 420px) {
+    height: 30vh;
+    width: 100%;
+    iframe {
+      height: 30vh;
+    }
   }
 `;
 
@@ -136,11 +140,11 @@ const Top = styled.div`
   font-size: 23px;
   margin-bottom: 10px;
   @media only screen and (max-width: 420px) {
-  width: 100%;
-   font-weight: 400;
-   font-size: 14px;
-   flex-wrap: wrap;
-}
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    flex-wrap: wrap;
+  }
 `;
 const Genrecard = styled.div`
   display: flex;
@@ -154,10 +158,10 @@ const Genrecard = styled.div`
   font-weight: 700;
   line-height: 23px;
   @media only screen and (max-width: 420px) {
-  font-size: 12px;
-  flex-wrap: wrap;
-   padding: 0px;
-}
+    font-size: 12px;
+    flex-wrap: wrap;
+    padding: 0px;
+  }
 `;
 const Description = styled.p`
   font-size: 20px;
@@ -169,9 +173,9 @@ const Description = styled.p`
   margin-bottom: 20px;
   flex-wrap: wrap;
   @media only screen and (max-width: 420px) {
-  width: 100%;
-  text-align: left;
-  width: 300px;
+    width: 100%;
+    text-align: left;
+    width: 300px;
   }
 `;
 const Description2 = styled.div`
@@ -189,8 +193,8 @@ const Description2 = styled.div`
     color: #be123c;
   }
   @media only screen and (max-width: 420px) {
-width: 300px;
-margin-bottom:20px;
+    width: 300px;
+    margin-bottom: 20px;
   }
 `;
 const Descbottom = styled.div`
@@ -202,13 +206,13 @@ const Descbottom = styled.div`
   margin-top: 20px;
   /* margin-bottom:10px; */
   @media only screen and (max-width: 420px) {
-  width: 300px;
-  flex-direction: column;
-  height: fit-content;
-  display: none;
-  p:first-child{
-    width: 100%;
-  }
+    width: 300px;
+    flex-direction: column;
+    height: fit-content;
+    display: none;
+    p:first-child {
+      width: 100%;
+    }
   }
 `;
 const Button1 = styled.div`
@@ -227,9 +231,8 @@ const Button1 = styled.div`
   cursor: pointer;
   gap: 5px;
   @media only screen and (max-width: 420px) {
-
-   width: 90%;
-  padding: 10px 20px;
+    width: 90%;
+    padding: 10px 20px;
   }
 `;
 const Button2 = styled.div`
@@ -247,10 +250,9 @@ const Button2 = styled.div`
   cursor: pointer;
   gap: 5px;
   @media only screen and (max-width: 420px) {
-
-width: 90%;
-padding: 10px 20px;
-}
+    width: 90%;
+    padding: 10px 20px;
+  }
 `;
 const Ads = styled.div`
   width: 100%;
@@ -261,9 +263,8 @@ const Ads = styled.div`
   }
   margin-top: 20px;
   @media only screen and (max-width: 420px) {
-
-width: 90%;
-}
+    width: 90%;
+  }
 `;
 const Adbottom = styled.div`
   width: 295px;
@@ -284,11 +285,11 @@ const Adbottom = styled.div`
   font-size: 14px;
 `;
 const Omega = styled.div`
- @media only screen and (max-width: 420px) {
-display: flex;
-flex-direction: column;
+  @media only screen and (max-width: 420px) {
+    display: flex;
+    flex-direction: column;
   }
-`
+`;
 const Movie = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -299,7 +300,7 @@ const Movie = () => {
   function convertRuntimeToHoursAndMinutes(runtime) {
     const hours = Math.floor(runtime / 60);
     const minutes = runtime % 60;
-  
+
     if (hours > 0) {
       if (minutes > 0) {
         return `${hours}h ${minutes}min`;
@@ -312,62 +313,60 @@ const Movie = () => {
   }
 
   // Define a function to fetch trailer data for a movie by its ID
-const getTrailerDataForMovie = async (movieId) => {
-  try {
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`
-    
+  const getTrailerDataForMovie = async (movieId) => {
+    try {
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
 
-    const response = await axios.get(apiUrl, {
-      params: {
-        api_key: apiKey,
-      },
-    });
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+        },
+      });
 
-    if (response.status === 200) {
-      const trailerKey = response.data.results[0].key;
-      return trailerKey;
-    } else {
-      //  return null if no trailer is available
-      return null;
+      if (response.status === 200) {
+        const trailerKey = response.data.results[0].key;
+        return trailerKey;
+      } else {
+        //  return null if no trailer is available
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching trailer data:", error);
+      return null; // Handle the error gracefully
     }
-  } catch (error) {
-    console.error("Error fetching trailer data:", error);
-    return null; // Handle the error gracefully
-  }
-};
-const fetchMovieCredits = async (movieId) => {
-  try {
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+  };
+  const fetchMovieCredits = async (movieId) => {
+    try {
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
-    const response = await axios.get(apiUrl, {
-      params: {
-        api_key: apiKey,
-      },
-    });
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+        },
+      });
 
-    if (response.status === 200) {
-      // Set the fetched movie credits to the state
-      console.log(response.data)
-      setMovieCredits(response.data);
-
-    } else {
-      // Handle error or return null if no credits are available
+      if (response.status === 200) {
+        // Set the fetched movie credits to the state
+        console.log(response.data);
+        setMovieCredits(response.data);
+      } else {
+        // Handle error or return null if no credits are available
+        setMovieCredits(null);
+      }
+    } catch (error) {
+      console.error("Error fetching movie credits:", error);
+      // Handle the error gracefully
       setMovieCredits(null);
     }
-  } catch (error) {
-    console.error("Error fetching movie credits:", error);
-    // Handle the error gracefully
-    setMovieCredits(null);
-  }
-};
+  };
 
   useEffect(() => {
     // Fetch movie details using the movie ID from the URL
     const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
     const apiUrl = `https://api.themoviedb.org/3/movie/${id}`;
-    
+
     axios
       .get(apiUrl, {
         params: {
@@ -375,17 +374,18 @@ const fetchMovieCredits = async (movieId) => {
           language: "en-US",
         },
       })
-      .then(async(response) => {
+      .then(async (response) => {
         // Set the fetched movie details to the state
         setMovieDetails(response.data);
         // Fetch trailer data for the movie using the getTrailerDataForMovie function
-      const trailerKey = await getTrailerDataForMovie(id);
-      setTrailerKey(trailerKey);
-      // Fetch movie credits using the fetchMovieCredits function
-      fetchMovieCredits(id);
-      const runtimeInMinutes = response.data.runtime;
-      const formattedRuntime = convertRuntimeToHoursAndMinutes(runtimeInMinutes);
-      setRunTime(formattedRuntime);
+        const trailerKey = await getTrailerDataForMovie(id);
+        setTrailerKey(trailerKey);
+        // Fetch movie credits using the fetchMovieCredits function
+        fetchMovieCredits(id);
+        const runtimeInMinutes = response.data.runtime;
+        const formattedRuntime =
+          convertRuntimeToHoursAndMinutes(runtimeInMinutes);
+        setRunTime(formattedRuntime);
       })
       .catch((error) => {
         console.error("Error fetching movie details:", error);
@@ -394,25 +394,27 @@ const fetchMovieCredits = async (movieId) => {
 
   if (!movieDetails) {
     // Render loading or error state while fetching data
-    return <Spinner/>;
+    return <Spinner />;
   }
- 
+
   return (
     <Container>
       <Sidebar>
         <Logo>
-        <Link to="/">
-<img src="/images/tv.png" alt="Movielogo" />
-        </Link>
+          <Link to="/">
+            <img src="/images/tv.png" alt="Movielogo" />
+          </Link>
           <h4>MovieBox</h4>
         </Logo>
         <Navcontent>
           {" "}
-          <img src="/images/Home.png" alt="home" /><p>Home</p> 
+          <img src="/images/Home.png" alt="home" />
+          <p>Home</p>
         </Navcontent>
         <Navcontent>
           {" "}
-          <img src="/images/Movie Projector.png" alt="movie" /><p>Movies</p>
+          <img src="/images/Movie Projector.png" alt="movie" />
+          <p>Movies</p>
         </Navcontent>
         <Navcontent>
           <img src="/images/TV Show.png" alt="show" />
@@ -428,59 +430,63 @@ const fetchMovieCredits = async (movieId) => {
               fontWeight: "600",
               fontSize: "15px",
               lineHeight: "22.5px",
-              paddingBottom:"10px"
+              paddingBottom: "10px",
             }}
           >
             Play movie quizes and earn free tickets
           </p>
           <p
-          style={{
-            fontWeight: "500",
-            fontSize: "12px",
-            lineHeight: "18px",
-            color:"#666666",
-            paddingBottom:"10px"
-          }}>50k people are playing now</p>
-          <Genrecard style={{background:"#be123c1a", fontSize:"12px", padding:"5px 20px"}}>Start playing</Genrecard>
+            style={{
+              fontWeight: "500",
+              fontSize: "12px",
+              lineHeight: "18px",
+              color: "#666666",
+              paddingBottom: "10px",
+            }}
+          >
+            50k people are playing now
+          </p>
+          <Genrecard
+            style={{
+              background: "#be123c1a",
+              fontSize: "12px",
+              padding: "5px 20px",
+            }}
+          >
+            Start playing
+          </Genrecard>
         </Promotion>
         <Navcontent>
           <img src="/images/Logout.png" alt="date" />
           <p>Log out</p>
         </Navcontent>
       </Sidebar>
-        {
-          movieDetails? <Wrapper>
+      {movieDetails ? (
+        <Wrapper>
           <Poster>
             <iframe
-  width="100%"
-  height="100%"
-  src={`https://www.youtube.com/embed/${trailerKey}`}
-  title="YouTube Video"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-/>
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${trailerKey}`}
+              title="YouTube Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </Poster>
           <Omega style={{ display: "flex", width: "100%" }}>
             <Moviedetails>
               <Top>
-                <p 
-                data-testid="movie-title"
-                style={{ marginRight: "20px" }}>
-                 
-                  
-                  {movieDetails.title } 
-                </p>
-                <p 
-                data-testid="movie-release-date"
-                style={{ marginRight: "20px" }}>
-           
-                  
-                   {movieDetails.release_date}
+                <p data-testid="movie-title" style={{ marginRight: "20px" }}>
+                  {movieDetails.title}
                 </p>
                 <p
-                data-testid="movie-runtime"
-                >{runtime}</p>
+                  data-testid="movie-release-date"
+                  style={{ marginRight: "20px" }}
+                >
+                  {movieDetails.release_date}
+                </p>
+                <p data-testid="movie-runtime">{runtime}</p>
                 <Genrecard>Action</Genrecard>
                 <Genrecard>Drama</Genrecard>
               </Top>
@@ -542,7 +548,11 @@ const fetchMovieCredits = async (movieId) => {
             </Moviedetails>
             <Moviedetailsright>
               <Top>
-                <img style={{width:"24px", height:"24px"}} src="/images/save.png" alt="heart" />
+                <img
+                  style={{ width: "24px", height: "24px" }}
+                  src="/images/save.png"
+                  alt="heart"
+                />
                 <img src="/images/share2.png" alt="share" />
                 <img src="/images/bookmark2.png" alt="save" />
                 <img src="/images/Star (1).png" alt="heart" />
@@ -567,9 +577,10 @@ const fetchMovieCredits = async (movieId) => {
               </Ads>
             </Moviedetailsright>
           </Omega>
-        </Wrapper>: <Spinner/>
-        }
-      
+        </Wrapper>
+      ) : (
+        <Spinner />
+      )}
     </Container>
   );
 };
