@@ -6,7 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./App.css";
-import GlobalStyles from "./globalStyles";
+import GlobalStyles from "./GlobalStyles";
 import Landing from "./pages/Landing";
 import Movie from "./pages/Movie";
 
