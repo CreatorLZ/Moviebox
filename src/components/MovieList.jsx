@@ -14,6 +14,8 @@ const GridContainer = styled.div`
   @media only screen and (max-width: 420px) {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin-top:30px;
     width: 100vw;
     justify-content: center;
    
@@ -25,6 +27,7 @@ const GridItem = styled.div`
   text-align: left;
   box-sizing: border-box;
   gap: 16px;
+  z-index: 5;
   position: relative;
   Favourite {
     position: absolute;
@@ -145,6 +148,7 @@ const MovieList = () => {
                 top: "20px",
                 left: "188px",
                 cursor: "pointer",
+                zIndex:"10"
               }}
               src={
                 likedMovies[index]
