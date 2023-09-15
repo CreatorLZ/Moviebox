@@ -76,12 +76,12 @@ const Navcontent = styled.div`
     cursor: pointer;
   }
   img {
-    padding-right: 10px;
-  }
-  p{
-    display: none;
+    padding-right: 20px;
   }
   @media only screen and (max-width: 420px) {
+    p{
+      display: none;
+    }
   img{
     
   }
