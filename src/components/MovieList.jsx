@@ -81,6 +81,8 @@ const MovieList = () => {
   const [goToMovie, setGoToMovie] = useState(false);
 
   const handleLikeClick = (index) => {
+    // Prevent the click event from propagating to the parent link
+  event.stopPropagation();
     setLikedMovies((prevLikedMovies) => {
       const updatedLikedMovies = [...prevLikedMovies];
       updatedLikedMovies[index] = !updatedLikedMovies[index];
@@ -164,7 +166,7 @@ const MovieList = () => {
                   : "./images/Favorite.svg"
               }
               alt ={movie.title}
-              onClick={() => handleLikeClick(index)}
+              onClick={() => handleLikeClick(index, event)}
             />
           </Link>
           <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
