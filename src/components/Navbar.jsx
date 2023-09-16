@@ -154,7 +154,7 @@ const Navbar = () => {
 
   const [searchInput, setSearchInput] = useState(""); // State variable for user input
   const [searchResults, setSearchResults] = useState([]); // State variable for search results
-
+  const [isLoading, setIsLoading] = useState(false); // State variable for loading state
   const searchMovies = () => {
     if (searchInput) {
       setIsLoading(true);
