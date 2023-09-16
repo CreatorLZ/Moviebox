@@ -167,7 +167,7 @@ const MovieList = () => {
               data-testid="movie-release-date"
               style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}
             >
-              {movie.release_date.substring(0, 4)}
+              {movie.release_date}
             </p>
           </div>
           <Card2>
