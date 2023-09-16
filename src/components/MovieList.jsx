@@ -141,7 +141,7 @@ const MovieList = () => {
         <Card
           data-testid="movie-card"
           key={movie.id}>
-          <Link to={`/movies/${movie.id}`}>
+          <Link to={`/movies/${movie.id}`}> 
             <img
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
               alt={movie.title}
@@ -163,9 +163,9 @@ const MovieList = () => {
       : "./images/Favorite.svg"
   }
   alt={movie.title}
-  onClick={(event) => handleLikeClick(index, event)}
-          </Link>
-          <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
+  onClick={(event) => handleLikeClick(index, event)} />
+         
+         <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
             <p style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}>
               USA,{" "}
             </p>
@@ -176,6 +176,7 @@ const MovieList = () => {
               {movie.release_date}
             </p>
           </div>
+          </Link>
           <Card2>
             <p
               data-testid="movie-title"

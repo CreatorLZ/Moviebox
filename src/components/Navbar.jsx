@@ -217,7 +217,7 @@ const Navbar = () => {
             {searchResults.map((movie) => (
               <Link
                 style={{ textDecoration: "none", color: "black" }}
-                to={`/movie/${movie.id}`}
+                to={`/movies/${movie.id}`}
               >
                 <li
                   style={{ textDecoration: "none", color: "black" }}
