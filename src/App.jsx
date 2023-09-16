@@ -15,7 +15,7 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
         <Route index element={<Landing />} />
-        <Route path="/movie/:id" element={<Movie />} />
+        <Route path="/movies/:id" element={<Movie />} />
       </Route>
     )
   );
