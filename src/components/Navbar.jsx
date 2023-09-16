@@ -208,7 +208,7 @@ const Navbar = () => {
         <p>Sign in</p>
         <img src="./images/Menu.png" alt="menu" />
       </Auth>
-      {isLoading && <Spinner2 />}
+      {isLoading && <img src="/images/1495 (1).gif" alt="loader" />}
       {searchInput && (
         <Searchresults>
           <ul>
