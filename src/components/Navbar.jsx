@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Spinner2 from "./Spinner2";
 
 const Container = styled.div`
   width: 100%;
@@ -156,6 +157,7 @@ const Navbar = () => {
 
   const searchMovies = () => {
     if (searchInput) {
+      setIsLoading(true);
       axios
         .get("https://api.themoviedb.org/3/search/movie", {
           params: {
@@ -168,6 +170,7 @@ const Navbar = () => {
         .then((response) => {
           // Set the search results
           setSearchResults(response.data.results);
+          setIsLoading(false);
           console.log(response.data.results);
         })
         .catch((error) => {
@@ -205,6 +208,7 @@ const Navbar = () => {
         <p>Sign in</p>
         <img src="./images/Menu.png" alt="menu" />
       </Auth>
+      {isLoading && <Spinner2 />}
       {searchInput && (
         <Searchresults>
           <ul>
