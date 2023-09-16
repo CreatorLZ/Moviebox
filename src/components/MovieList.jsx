@@ -27,7 +27,6 @@ const Card = styled.div`
   text-align: left;
   box-sizing: border-box;
   gap: 16px;
-  z-index: 5;
   position: relative;
   Favourite {
     position: absolute;
@@ -152,8 +151,8 @@ const MovieList = () => {
             />
             <img
               style={{
-                width: "30px",
-                height: "30px",
+                width: "50px",
+                height: "50px",
                 position: "absolute",
                 top: "20px",
                 left: "188px",
@@ -161,13 +160,12 @@ const MovieList = () => {
                 zIndex:"10"
               }}
               src={
-                likedMovies[index]
-                  ? "images/liked.png"
-                  : "./images/Favorite.svg"
-              }
-              alt ={movie.title}
-              onClick={() => handleLikeClick(index, event)}
-            />
+    likedMovies[index]
+      ? "images/liked.png"
+      : "./images/Favorite.svg"
+  }
+  alt={movie.title}
+  onClick={(event) => handleLikeClick(index, event)}
           </Link>
           <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
             <p style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}>
