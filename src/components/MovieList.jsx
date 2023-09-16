@@ -147,6 +147,7 @@ const MovieList = () => {
               alt={movie.title}
               data-testid="movie-poster"
             />
+             </Link>
             <img
               style={{
                 width: "50px",
@@ -176,7 +177,7 @@ const MovieList = () => {
               {movie.release_date}
             </p>
           </div>
-          </Link>
+         
           <Card2>
             <p
               data-testid="movie-title"
