@@ -90,7 +90,7 @@ const MovieList = () => {
   };
 
   useEffect(() => {
-    // Fetch top movies
+    // The Fetch top movies
     axios
       .get(apiUrl, {
         params: {
