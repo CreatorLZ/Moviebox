@@ -134,7 +134,7 @@ const MovieList = () => {
     <GridContainer>
       {movies.map((movie, index) => (
         <Card data-testid="movie-card" key={movie.id}>
-          <Link to={`/movie/${movie.id}`}>
+          <Link to={`/movies/${movie.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
               alt={movie.title}
