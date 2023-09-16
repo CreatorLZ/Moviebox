@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , Navigate} from "react-router-dom";
 import styled from "styled-components";
 
 const GridContainer = styled.div`
@@ -78,6 +78,7 @@ const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);
+  const [goToMovie, setGoToMovie] = useState(false);
 
   const handleLikeClick = (index) => {
     setLikedMovies((prevLikedMovies) => {
@@ -129,11 +130,18 @@ const MovieList = () => {
       return genre ? genre.name : "";
     });
   };
+  if (goToMovie){
+    return <Navigate to ={`/movies/${movie.id}`} />
+  }
 
   return (
     <GridContainer>
       {movies.map((movie, index) => (
-        <Card data-testid="movie-card" key={movie.id}>
+        <Card onClick = {() => {
+          setGoToMovie(true);
+        }} 
+          data-testid="movie-card"
+          key={movie.id}>
           <Link to={`/movies/${movie.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
