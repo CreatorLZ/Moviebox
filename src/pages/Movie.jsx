@@ -377,6 +377,14 @@ const Movie = () => {
       .then(async (response) => {
         // Set the fetched movie details to the state
         setMovieDetails(response.data);
+
+        // Convert release_date to UTC format
+        const releaseDate = new Date(response.data.release_date);
+        const releaseDateUTC = releaseDate.toUTCString();
+
+        // Set the formatted release date to the state
+        setReleaseDate(releaseDateUTC);
+        
         // Fetch trailer data for the movie using the getTrailerDataForMovie function
         const trailerKey = await getTrailerDataForMovie(id);
         setTrailerKey(trailerKey);
@@ -484,7 +492,7 @@ const Movie = () => {
                   data-testid="movie-release-date"
                   style={{ marginRight: "20px" }}
                 >
-                  {movieDetails.release_date}
+                  {releaseDate}
                 </p>
                 <p data-testid="movie-runtime">{runtime}</p>
                 <Genrecard>Action</Genrecard>
