@@ -155,7 +155,7 @@ const MovieList = () => {
                   ? "images/liked.png"
                   : "./images/Favorite.svg"
               }
-              alt ={movie.title + like}
+              alt ={movie.title}
               onClick={() => handleLikeClick(index)}
             />
           </Link>
