@@ -217,6 +217,7 @@ const Navbar = () => {
         
       {searchInput && (
         <Searchresults>
+          {isLoading ? <img src="/images/1495 (1).gif" alt="loader" /> :
           <ul>
             {searchResults.map((movie) => (
               <Link
@@ -235,7 +236,7 @@ const Navbar = () => {
                 </li>
               </Link>
             ))}
-          </ul>
+          </ul> }
         </Searchresults>
       )}
     </Container>
