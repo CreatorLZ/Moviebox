@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+const LOCAL_STORAGE_KEY = "movieData"; // Define a key for your data in localStorage
+
+
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -368,6 +371,16 @@ const Movie = () => {
     const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
     const apiUrl = `https://api.themoviedb.org/3/movie/${id}`;
 
+    // Check if the data is already in localStorage
+    const cachedMovieData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+
+    if (cachedMovieData) {
+      // If data is found in storage, set it to state
+      setMovieDetails(cachedMovieData);
+      setIsLoading(false); // Set loading to false since data is already available
+    } else {
+      // If data is not found in localstorage
+
     axios
       .get(apiUrl, {
         params: {
@@ -399,6 +412,7 @@ const Movie = () => {
       .catch((error) => {
         console.error("Error fetching movie details:", error);
       });
+    }
   }, [id]);
 
   if (!movieDetails) {
