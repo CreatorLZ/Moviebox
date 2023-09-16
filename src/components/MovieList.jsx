@@ -138,9 +138,7 @@ const MovieList = () => {
   return (
     <GridContainer>
       {movies.map((movie, index) => (
-        <Card onClick = {() => {
-          setGoToMovie(true);
-        }} 
+        <Card
           data-testid="movie-card"
           key={movie.id}>
           <Link to={`/movies/${movie.id}`}>
