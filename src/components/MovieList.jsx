@@ -21,7 +21,7 @@ const GridContainer = styled.div`
    
   }
 `;
-const GridItem = styled.div`
+const Card = styled.div`
   width: 250px;
   height: 490px;
   text-align: left;
@@ -62,7 +62,7 @@ const FavoriteSvg = styled.img`
   width: 100%;
   height: 100%;
 `;
-const Card = styled.div`
+const Card2 = styled.div`
   display: flex;
 `;
 
@@ -133,7 +133,7 @@ const MovieList = () => {
   return (
     <GridContainer>
       {movies.map((movie, index) => (
-        <GridItem key={movie.id}>
+        <Card data-testid="movie-card" key={movie.id}>
           <Link to={`/movie/${movie.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
@@ -169,14 +169,14 @@ const MovieList = () => {
               {movie.release_date.substring(0, 4)}
             </p>
           </div>
-          <Card data-testid="movie-card">
+          <Card2>
             <p
               data-testid="movie-title"
               style={{ paddingTop: "8px", fontSize: "18px", fontWeight: "700" }}
             >
               {movie.title}
             </p>
-          </Card>
+          </Card2>
           <div
             style={{
               display: "flex",
@@ -219,7 +219,7 @@ const MovieList = () => {
           >
             {getGenresForMovie(movie.genre_ids).join(", ")}
           </p>
-        </GridItem>
+        </Card>
       ))}
     </GridContainer>
   );
