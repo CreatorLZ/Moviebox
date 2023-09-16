@@ -296,6 +296,7 @@ const Movie = () => {
   const [trailerKey, setTrailerKey] = useState(null);
   const [movieCredits, setMovieCredits] = useState(null);
   const [runtime, setRunTime] = useState(null);
+  const [releaseDate, setReleaseDate] = useState("");
 
   function convertRuntimeToHoursAndMinutes(runtime) {
     const hours = Math.floor(runtime / 60);
