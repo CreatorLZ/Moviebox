@@ -212,7 +212,7 @@ const Navbar = () => {
         
       {searchInput && (
         <Searchresults>
-          {isLoading ? <img src="/images/1495 (1).gif" alt="loader" /> :
+          {isLoading ? <Spinner2/>:
           <ul>
             {searchResults.map((movie) => (
               <Link
