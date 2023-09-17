@@ -25,8 +25,14 @@ const Top = styled.div`
         font-size: 20px;
     }
     @media only screen and (max-width: 420px) {
-   padding: 10px;
+   padding: 10px 0px;
    align-items: center;
+   p{
+    font-size: 16px;
+   }
+   h2{
+    font-size: 20px;
+   }
    
   }
 `

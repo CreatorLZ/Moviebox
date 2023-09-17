@@ -74,6 +74,11 @@ const Search = styled.div`
   }
   @media only screen and (max-width: 420px) {
     width: 80%;
+    input{
+      font-size: 12px;
+      width: 90%;
+      font-weight: 300;
+    }
   }
 `;
 const Searchbox = styled.div`
@@ -118,6 +123,23 @@ const Searchresults = styled.div`
   background-color: whitesmoke;
   border-radius: 10px;
   overflow: scroll;
+  overflow-x: hidden;
+  transition: top 0.3s ease-in-out;
+   /* Customize scrollbar */
+   &::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+  }
+
+  /* Customize scrollbar track */
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Background color of the scrollbar track */
+  }
+
+  /* Customize scrollbar thumb */
+  &::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners of the scrollbar thumb */
+  }
 
   ul {
     list-style: none;
@@ -142,7 +164,7 @@ const Searchresults = styled.div`
 
   @media only screen and (max-width: 420px) {
     top: 70px;
-    left: 90px;
+    left: 82px;
     width: 250px;
   }
 `;
@@ -211,7 +233,7 @@ const Navbar = () => {
       
         
       {searchInput && (
-        <Searchresults>
+        <Searchresults style={{ top: searchInput ? "85px" : "-200px" }}>
           {isLoading ? <Spinner2/>:
           <ul>
             {searchResults.map((movie) => (

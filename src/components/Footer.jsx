@@ -3,12 +3,13 @@ import styled from 'styled-components'
 
 const Container = styled.div`
 width: 100%;
-height: 20vh;
+height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 20px;
+
 `
 const Icondiv = styled.div`
     display: flex;
@@ -42,7 +43,7 @@ const Footer = () => {
             <p>Privacy & Policy</p>
             <p>Press Room</p>
         </Navdiv>
-        <Credits>© 2021 MovieBox by Adriana Eka Prayudha  </Credits>
+        <Credits style={{width:"100%"}}>© 2023 MovieBox by  <strong> Isaac Chimaroke Anyim</strong>   </Credits>
     </Container>
   )
 }

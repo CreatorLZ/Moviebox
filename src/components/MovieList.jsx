@@ -156,7 +156,8 @@ const MovieList = () => {
                 top: "20px",
                 left: "188px",
                 cursor: "pointer",
-                zIndex:"10"
+                zIndex:"10",
+                outline:"none"
               }}
               src={
     likedMovies[index]

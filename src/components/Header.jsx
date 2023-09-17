@@ -20,13 +20,20 @@ const Wrapper = styled.div`
   height: 90%;
   background: transparent;
   float: left;
+  @media only screen and (max-width: 420px) {
+
+    min-height: 50%;
+    max-height: fit-content;
+   
+  }
 `;
 const Description = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 404px;
-  height: 285px;
+  min-width: 30vw;
+  max-width: 50vw;
+  height: fit-content;
   padding: 30px 40px;
   margin-left: 40px;
   color: #ffffff;
@@ -38,6 +45,12 @@ const Description = styled.div`
   p {
     font-size: 14px;
     font-weight: 500;
+  }
+  @media only screen and (max-width: 420px) {
+    min-width: 100vw;
+    margin-left: 0px;
+    height: fit-content;
+   
   }
 `;
 export const Ratings = styled.div`
