@@ -253,6 +253,8 @@ const Button1 = styled.div`
     width: 70%;
     padding: 10px 20px;
     margin-top: 20px;
+    font-size: 16px;
+  font-weight: 400;
   }
 `;
 const Button2 = styled.div`
