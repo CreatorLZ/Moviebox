@@ -3,13 +3,17 @@ import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
-const LOCAL_STORAGE_KEY = "movieData"; // Define a key for your data in localStorage
+import Navbar2 from "../components/Navbar2";
+const LOCAL_STORAGE_KEY = "movieData"; 
 
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
   overflow-x: hidden;
+  @media only screen and (max-width: 420px) {
+   flex-direction: column;
+  }
 `;
 
 const Sidebar = styled.div`
@@ -29,6 +33,7 @@ const Sidebar = styled.div`
     /* padding: 20px; */
     width: 15%;
     border-radius: 0px;
+    display: none;
   }
 `;
 
@@ -59,8 +64,9 @@ const Wrapper = styled.div`
   padding: 20px;
   margin-left: 20%;
   @media only screen and (max-width: 420px) {
-    margin-left: 14%;
+    margin-left: 0px;
     padding: 5px 20px;
+    width: 100%;
   }
 `;
 
@@ -128,7 +134,7 @@ const Poster = styled.div`
     height: 30vh;
     width: 100%;
     iframe {
-      height: 30vh;
+      height: 100%;
       width: 100%;
     }
   }
@@ -506,6 +512,7 @@ const Movie = () => {
       </Sidebar>
       {movieDetails ? (
         <Wrapper>
+          <Navbar2/>
           <Poster>
             <iframe
               width="100%"

@@ -5,22 +5,21 @@ import styled from "styled-components";
 import Spinner2 from "./Spinner2";
 
 const Container = styled.div`
-  width: 100%;
-  padding: 10px 50px;
-  color: #ffffff;
-  /* position: fixed;
-  top: 0; */
-  display: flex;
-  justify-content: space-between;
-  z-index: 5;
-  Link {
-    text-decoration: none;
-    p {
-      text-decoration: none;
-    }
-  }
+display: none;
   @media only screen and (max-width: 420px) {
     padding: 10px;
+    width: 100%;
+ 
+ color: #ffffff;
+ display: flex;
+ justify-content: space-between;
+ z-index: 5;
+ Link {
+   text-decoration: none;
+   p {
+     text-decoration: none;
+   }
+ }
   }
 `;
 
@@ -169,7 +168,7 @@ const Searchresults = styled.div`
   }
 `;
 
-const Navbar = () => {
+const Navbar2 = () => {
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
   const apiUrl = "https://api.themoviedb.org/3/movie/popular";
   const imageBaseUrl = "https://image.tmdb.org/t/p/w1280";
@@ -260,4 +259,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar2;
