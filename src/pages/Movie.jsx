@@ -5,7 +5,6 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 const LOCAL_STORAGE_KEY = "movieData"; // Define a key for your data in localStorage
 
-
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -85,23 +84,20 @@ const Navcontent = styled.div`
   @media only screen and (max-width: 420px) {
     p {
       display: none;
-      
     }
     justify-content: center;
     &:hover {
-    background: transparent;
-    border-right: none;
-    cursor: pointer;
-  }
-  img{
-    padding-right:0;
-    :hover{
-      transform: scale(1.1);
-
+      background: transparent;
+      border-right: none;
+      cursor: pointer;
+    }
+    img {
+      padding-right: 0;
+      :hover {
+        transform: scale(1.1);
+      }
     }
   }
-  }
-  
 `;
 const Promotion = styled.div`
   width: 170px;
@@ -211,7 +207,7 @@ const Description2 = styled.div`
   @media only screen and (max-width: 420px) {
     width: 300px;
     margin-bottom: 20px;
-    p{
+    p {
       font-size: 16px;
     }
   }
@@ -254,7 +250,7 @@ const Button1 = styled.div`
     padding: 10px 20px;
     margin-top: 20px;
     font-size: 16px;
-  font-weight: 400;
+    font-weight: 400;
   }
 `;
 const Button2 = styled.div`
@@ -274,6 +270,8 @@ const Button2 = styled.div`
   @media only screen and (max-width: 420px) {
     width: 70%;
     padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 400;
   }
 `;
 const Ads = styled.div`
@@ -403,37 +401,37 @@ const Movie = () => {
     } else {
       // If data is not found in localstorage
 
-    axios
-      .get(apiUrl, {
-        params: {
-          api_key: apiKey,
-          language: "en-US",
-        },
-      })
-      .then(async (response) => {
-        // Set the fetched movie details to the state
-        setMovieDetails(response.data);
+      axios
+        .get(apiUrl, {
+          params: {
+            api_key: apiKey,
+            language: "en-US",
+          },
+        })
+        .then(async (response) => {
+          // Set the fetched movie details to the state
+          setMovieDetails(response.data);
 
-        // Convert release_date to UTC format
-        const releaseDate = new Date(response.data.release_date);
-        const releaseDateUTC = releaseDate.toUTCString();
+          // Convert release_date to UTC format
+          const releaseDate = new Date(response.data.release_date);
+          const releaseDateUTC = releaseDate.toUTCString();
 
-        // Set the formatted release date to the state
-        setReleaseDate(releaseDateUTC);
-        
-        // Fetch trailer data for the movie using the getTrailerDataForMovie function
-        const trailerKey = await getTrailerDataForMovie(id);
-        setTrailerKey(trailerKey);
-        // Fetch movie credits using the fetchMovieCredits function
-        fetchMovieCredits(id);
-        const runtimeInMinutes = response.data.runtime;
-        const formattedRuntime =
-          convertRuntimeToHoursAndMinutes(runtimeInMinutes);
-        setRunTime(formattedRuntime);
-      })
-      .catch((error) => {
-        console.error("Error fetching movie details:", error);
-      });
+          // Set the formatted release date to the state
+          setReleaseDate(releaseDateUTC);
+
+          // Fetch trailer data for the movie using the getTrailerDataForMovie function
+          const trailerKey = await getTrailerDataForMovie(id);
+          setTrailerKey(trailerKey);
+          // Fetch movie credits using the fetchMovieCredits function
+          fetchMovieCredits(id);
+          const runtimeInMinutes = response.data.runtime;
+          const formattedRuntime =
+            convertRuntimeToHoursAndMinutes(runtimeInMinutes);
+          setRunTime(formattedRuntime);
+        })
+        .catch((error) => {
+          console.error("Error fetching movie details:", error);
+        });
     }
   }, [id]);
 
@@ -531,10 +529,9 @@ const Movie = () => {
                 >
                   {releaseDate}
                 </p>
-               
               </Top>
               <Top>
-              <p data-testid="movie-runtime">{runtime}</p>
+                <p data-testid="movie-runtime">{runtime}</p>
                 <Genrecard>Action</Genrecard>
                 <Genrecard>Drama</Genrecard>
               </Top>
