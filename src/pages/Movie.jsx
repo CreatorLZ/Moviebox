@@ -45,7 +45,7 @@ const Logo = styled.div`
   }
   @media only screen and (max-width: 420px) {
     img {
-      margin: 5px;
+      padding: 5px;
     }
     h4 {
       display: none;
@@ -60,7 +60,8 @@ const Wrapper = styled.div`
   padding: 20px;
   margin-left: 20%;
   @media only screen and (max-width: 420px) {
-    margin-left: 15%;
+    margin-left: 14%;
+    padding: 5px 20px;
   }
 `;
 
@@ -84,11 +85,23 @@ const Navcontent = styled.div`
   @media only screen and (max-width: 420px) {
     p {
       display: none;
-    }
-    img {
+      
     }
     justify-content: center;
+    &:hover {
+    background: transparent;
+    border-right: none;
+    cursor: pointer;
   }
+  img{
+    padding-right:0;
+    :hover{
+      transform: scale(1.1);
+
+    }
+  }
+  }
+  
 `;
 const Promotion = styled.div`
   width: 170px;
@@ -109,7 +122,6 @@ const Poster = styled.div`
   width: 100%;
   height: 55vh;
   margin-bottom: 20px;
-  /* background-image: url("./images/Rectangle 29.png"); */
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10px;
@@ -121,6 +133,7 @@ const Poster = styled.div`
     width: 100%;
     iframe {
       height: 30vh;
+      width: 100%;
     }
   }
 `;
@@ -198,6 +211,9 @@ const Description2 = styled.div`
   @media only screen and (max-width: 420px) {
     width: 300px;
     margin-bottom: 20px;
+    p{
+      font-size: 16px;
+    }
   }
 `;
 const Descbottom = styled.div`
@@ -234,8 +250,9 @@ const Button1 = styled.div`
   cursor: pointer;
   gap: 5px;
   @media only screen and (max-width: 420px) {
-    width: 90%;
+    width: 70%;
     padding: 10px 20px;
+    margin-top: 20px;
   }
 `;
 const Button2 = styled.div`
@@ -253,7 +270,7 @@ const Button2 = styled.div`
   cursor: pointer;
   gap: 5px;
   @media only screen and (max-width: 420px) {
-    width: 90%;
+    width: 70%;
     padding: 10px 20px;
   }
 `;
@@ -266,11 +283,11 @@ const Ads = styled.div`
   }
   margin-top: 20px;
   @media only screen and (max-width: 420px) {
-    width: 90%;
+    width: 70%;
   }
 `;
 const Adbottom = styled.div`
-  width: 295px;
+  width: 100%;
   height: 42px;
   border-radius: 10px;
   position: absolute;
@@ -286,6 +303,9 @@ const Adbottom = styled.div`
     height: 23px;
   }
   font-size: 14px;
+  @media only screen and (max-width: 420px) {
+    bottom: 73px;
+  }
 `;
 const Omega = styled.div`
   @media only screen and (max-width: 420px) {
@@ -509,7 +529,10 @@ const Movie = () => {
                 >
                   {releaseDate}
                 </p>
-                <p data-testid="movie-runtime">{runtime}</p>
+               
+              </Top>
+              <Top>
+              <p data-testid="movie-runtime">{runtime}</p>
                 <Genrecard>Action</Genrecard>
                 <Genrecard>Drama</Genrecard>
               </Top>
