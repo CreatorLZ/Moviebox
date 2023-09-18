@@ -11,7 +11,7 @@ const Container = styled.div`
 const Spinner = () => {
   return (
     <Container>
-        <img src="/images/1495 (1).gif" alt="loader" />
+        <img src="/images/1496.gif" alt="loader" />
     </Container>
   )
 }
