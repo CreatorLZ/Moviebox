@@ -70,7 +70,7 @@ const Button1 = styled.div`
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
   &&:hover{
-    border: 1px solid goldenrod ;
+    border: 2px solid #be123c ;
   }
   img{
     width: 30px;
@@ -90,7 +90,7 @@ const Button2 = styled.div`
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
   &&:hover{
-    border: 1px solid goldenrod ;
+    border: 2px solid #be123c ;
   }
   img{
     width: 30px;
