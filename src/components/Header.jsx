@@ -68,7 +68,6 @@ const Button1 = styled.div`
   padding:15px 10px;
   border: 1px solid white;
   border-radius: 5px;
-  transition: all 0.3s ease-in-out;
   &&:hover{
     border: 2px solid #be123c ;
   }
@@ -88,7 +87,7 @@ const Button2 = styled.div`
   padding:15px 10px;
   border: 1px solid white;
   border-radius: 5px;
-  transition: all 0.3s ease-in-out;
+
   &&:hover{
     border: 2px solid #be123c ;
   }
