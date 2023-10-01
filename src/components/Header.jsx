@@ -3,17 +3,21 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import axios from "axios";
 import Spinner2 from "./Spinner2";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
+  transition: all 0.5s ease-in-out;
 
   display: flex;
   flex-direction: column;
   background-image: url(${(props) => props.backgroundImage});
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 `;
+
 const Wrapper = styled.div`
   margin-top: 50px;
   width: 100%;
@@ -21,12 +25,11 @@ const Wrapper = styled.div`
   background: transparent;
   float: left;
   @media only screen and (max-width: 420px) {
-
     min-height: 50%;
     max-height: fit-content;
-   
   }
 `;
+
 const Description = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,8 +38,9 @@ const Description = styled.div`
   max-width: 50vw;
   height: fit-content;
   padding: 30px 40px;
-  margin-left: 40px;
+  margin-left: 60px;
   color: #ffffff;
+
   h1 {
     font-weight: 700;
     font-size: 48px;
@@ -50,14 +54,56 @@ const Description = styled.div`
     min-width: 100vw;
     margin-left: 0px;
     height: fit-content;
-   
   }
 `;
+
+const Button1 = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding:15px 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  &&:hover{
+    border: 1px solid goldenrod ;
+  }
+  img{
+    width: 30px;
+    height: 30px;
+  }
+`
+const Button2 = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding:15px 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  &&:hover{
+    border: 1px solid goldenrod ;
+  }
+  img{
+    width: 30px;
+    height: 30px;
+  }
+ 
+`
 export const Ratings = styled.div`
   display: flex;
   align-items: center;
   width: 90%;
 `;
+
 const Button = styled.div`
   padding: 12px 16px;
   background: #be123c;
@@ -66,15 +112,19 @@ const Button = styled.div`
   width: fit-content;
   gap: 8px;
   border-radius: 8px;
+  :hover {
+    color: #ebe1e1;
+    cursor: pointer;
+    transform: scale(0.9);
+  }
 `;
 
 const Header = () => {
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-  // const apiUrl = "https://api.themoviedb.org/3/movie/top_rated";
   const apiUrl = "https://api.themoviedb.org/3/movie/popular";
   const imageBaseUrl = "https://image.tmdb.org/t/p/w1280"; // Base URL for movie poster images
-
-  const [featuredMovie, setFeaturedMovie] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
   const [backgroundImage, setBackgroundImage] = useState(""); // State variable for background image
 
   useEffect(() => {
@@ -87,48 +137,56 @@ const Header = () => {
         },
       })
       .then((response) => {
-        // Get the first top-rated movie
         const topRatedMovies = response.data.results;
+        setMovies(topRatedMovies);
 
-        // Generate a random index to select a random movie
-        const randomIndex = Math.floor(Math.random() * topRatedMovies.length);
-        const randomMovie = topRatedMovies[randomIndex];
-        console.log(topRatedMovies);
-        const firstMovie = topRatedMovies[0];
-
-        // Fetch additional details for the first movie
-        axios
-          .get(`https://api.themoviedb.org/3/movie/${randomMovie.id}`, {
-            params: {
-              api_key: apiKey,
-              language: "en-US",
-            },
-          })
-          .then((movieResponse) => {
-            setFeaturedMovie(movieResponse.data);
-
-            // Set the background image URL
-            setBackgroundImage(
-              `${imageBaseUrl}${movieResponse.data.backdrop_path}`
-            );
-          })
-          .catch((error) => {
-            console.error("Error fetching movie details:", error);
-          });
+        // Initially, display the first movie
+        setCurrentMovieIndex(0);
       })
       .catch((error) => {
         console.error("Error fetching top-rated movies:", error);
       });
   }, []);
-  console.log(featuredMovie);
+
+  useEffect(() => {
+    if (currentMovieIndex >= 0 && currentMovieIndex < movies.length) {
+      const currentMovie = movies[currentMovieIndex];
+      axios
+        .get(`https://api.themoviedb.org/3/movie/${currentMovie.id}`, {
+          params: {
+            api_key: apiKey,
+            language: "en-US",
+          },
+        })
+        .then((movieResponse) => {
+          // Update the backgroundImage based on the currentMovie's backdrop_path
+          setBackgroundImage(`${imageBaseUrl}${movieResponse.data.backdrop_path}`);
+        })
+        .catch((error) => {
+          console.error("Error fetching movie details:", error);
+        });
+    }
+  }, [currentMovieIndex, movies, apiKey, imageBaseUrl]);
+
+  const previousMovie = () => {
+    if (currentMovieIndex > 0) {
+      setCurrentMovieIndex(currentMovieIndex - 1);
+    }
+  };
+
+  const nextMovie = () => {
+    if (currentMovieIndex < movies.length - 1) {
+      setCurrentMovieIndex(currentMovieIndex + 1);
+    }
+  };
 
   return (
     <Container style={{ backgroundImage: `url(${backgroundImage})` }}>
       <Navbar />
       <Wrapper>
-        {featuredMovie ? (
+        {movies.length > 0 ? (
           <Description>
-            <h1>{featuredMovie.original_title}</h1>
+            <h1>{movies[currentMovieIndex].original_title}</h1>
             <Ratings>
               <img
                 src="./images/imdb.png"
@@ -136,7 +194,7 @@ const Header = () => {
                 style={{ marginRight: "10px" }}
               />
               <p style={{ marginRight: "30px" }}>
-                {featuredMovie.vote_average} / 100
+                {movies[currentMovieIndex].vote_average} / 10.0
               </p>
               <img
                 src="./images/tomato.png"
@@ -145,15 +203,23 @@ const Header = () => {
               />
               <p>97%</p>
             </Ratings>
-            <p>{featuredMovie.overview}</p>
-
-            <Button>
-              <img src="./images/play.png" alt="Button" />
-              <p>WATCH TRAILER</p>
-            </Button>
+            <p>{movies[currentMovieIndex].overview}</p>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={`/movies/${movies[currentMovieIndex].id}`}
+            >
+              <Button>
+                <img src="./images/play.png" alt="Button" />
+                <p>WATCH TRAILER</p>
+              </Button>
+            </Link>
+            
+              <Button1 onClick={previousMovie}><img src="/images/back.png" alt="" /></Button1>
+              <Button2 onClick={nextMovie}><img src="/images/forward.png" alt="" /></Button2>
+           
           </Description>
         ) : (
-          //  loading message while data is being fetched
+          // loading message while data is being fetched
           <Spinner2 />
         )}
       </Wrapper>
