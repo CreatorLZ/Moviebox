@@ -69,7 +69,7 @@ const Button1 = styled.div`
   border: 1px solid white;
   border-radius: 5px;
   &&:hover{
-    border: 2px solid #be123c ;
+    background-color: rgba(192, 192, 192, 0.2);
   }
   img{
     width: 30px;
@@ -89,7 +89,7 @@ const Button2 = styled.div`
   border-radius: 5px;
 
   &&:hover{
-    border: 2px solid #be123c ;
+    background-color: rgba(192, 192, 192, 0.2);
   }
   img{
     width: 30px;
