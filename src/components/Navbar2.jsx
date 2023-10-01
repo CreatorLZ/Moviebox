@@ -7,7 +7,7 @@ import Spinner2 from "./Spinner2";
 const Container = styled.div`
 display: none;
   @media only screen and (max-width: 420px) {
-    padding: 10px;
+    padding: 5px;
     width: 100%;
  
  color: #ffffff;
@@ -57,7 +57,7 @@ const Search = styled.div`
     border: none;
     background: transparent;
     color: #ffffff;
-    width: 70%;
+    width: 100%;
     font-size: 16px;
     font-weight: 400;
     outline: none;

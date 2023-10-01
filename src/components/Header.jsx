@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
-  min-height: 100vh;
+ min-height: 100vh;
+ max-height: 100vh;
   transition: all 0.5s ease-in-out;
 
   display: flex;
@@ -16,6 +17,12 @@ const Container = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  @media only screen and (max-width: 420px) {
+  background-size: 100% 100%;
+  background-position: center;
+  min-height: 50vh;
+ 
+  }
 `;
 
 const Wrapper = styled.div`
@@ -54,6 +61,7 @@ const Description = styled.div`
     min-width: 100vw;
     margin-left: 0px;
     height: fit-content;
+    padding: 5px 20px;
   }
 `;
 
