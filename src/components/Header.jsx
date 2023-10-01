@@ -20,7 +20,7 @@ const Container = styled.div`
   @media only screen and (max-width: 420px) {
   background-size: 100% 100%;
   background-position: center;
-  min-height: 50vh;
+  min-height: 60vh;
  
   }
 `;
