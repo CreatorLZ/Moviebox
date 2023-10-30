@@ -116,12 +116,12 @@ const Searchresults = styled.div`
   flex-direction: column;
   position: absolute;
   top: 85px;
-  left: 480px;
-  width: 500px;
+  left: 468px;
+  width: 528px;
   min-height: 50px;
   max-height: 200px;
   background-color: whitesmoke;
-  border-radius: 10px;
+  border-radius: 3px;
   overflow: scroll;
   overflow-x: hidden;
   transition: top 0.3s ease-in-out;
@@ -149,7 +149,7 @@ const Searchresults = styled.div`
   li {
     padding: 10px;
     background: #f8e7eb;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     cursor: pointer;
     text-decoration: none !important;
     display: flex;

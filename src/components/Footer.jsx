@@ -44,7 +44,8 @@ const Footer = () => {
             <p>Press Room</p>
         </Navdiv>
         <Credits >© 2023 MovieBox </Credits>
-        <Credits>With </Credits>
+        <Credits>With  <img src="/images/icons8-heart.gif" alt="love" style={{width:"25px", height:"25px"}} /> <strong>isaac C Anyim</strong> </Credits>
+        
     </Container>
   )
 }
