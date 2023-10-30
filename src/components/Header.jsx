@@ -87,16 +87,16 @@ const Header = () => {
         },
       })
       .then((response) => {
-        // Get the first top-rated movie
+        // Get top-rated movies
         const topRatedMovies = response.data.results;
 
         // Generate a random index to select a random movie
         const randomIndex = Math.floor(Math.random() * topRatedMovies.length);
         const randomMovie = topRatedMovies[randomIndex];
         console.log(topRatedMovies);
-        const firstMovie = topRatedMovies[0];
+        const firstMovie = topRatedMovies[0]; //for when you want to display the 1st top rated movie
 
-        // Fetch additional details for the first movie
+        // Fetch additional details for the (first `if you render only 1`) movies
         axios
           .get(`https://api.themoviedb.org/3/movie/${randomMovie.id}`, {
             params: {

@@ -30,7 +30,6 @@ const Sidebar = styled.div`
   left: 0;
   border: 1px solid gray;
   @media only screen and (max-width: 420px) {
-    /* padding: 20px; */
     width: 15%;
     border-radius: 0px;
     display: none;
@@ -225,7 +224,6 @@ const Descbottom = styled.div`
   height: 50px;
   display: flex;
   margin-top: 20px;
-  /* margin-bottom:10px; */
   @media only screen and (max-width: 420px) {
     width: 300px;
     flex-direction: column;
@@ -326,7 +324,8 @@ const Movie = () => {
   const [movieCredits, setMovieCredits] = useState(null);
   const [runtime, setRunTime] = useState(null);
   const [releaseDate, setReleaseDate] = useState("");
-
+  
+  //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
     const hours = Math.floor(runtime / 60);
     const minutes = runtime % 60;
@@ -366,6 +365,7 @@ const Movie = () => {
       return null; // Handle the error gracefully
     }
   };
+  //fetch movie credits
   const fetchMovieCredits = async (movieId) => {
     try {
       const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";

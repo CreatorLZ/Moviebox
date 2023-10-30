@@ -43,7 +43,8 @@ const Footer = () => {
             <p>Privacy & Policy</p>
             <p>Press Room</p>
         </Navdiv>
-        <Credits >© 2023 MovieBox by  <strong> Isaac Chimaroke Anyim</strong>   </Credits>
+        <Credits >© 2023 MovieBox </Credits>
+        <Credits>With </Credits>
     </Container>
   )
 }
