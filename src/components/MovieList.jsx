@@ -12,29 +12,24 @@ const GridContainer = styled.div`
   grid-gap: 60px; /* Gap between grid items */
   justify-content: center; /* Center the grid horizontally */
   @media only screen and (max-width: 420px) {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: center;
     margin-top:30px;
     width: 100vw;
-    justify-content: center;
-   
+    justify-content: center; */
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
   }
 `;
 const Card = styled.div`
-  width: 250px;
-  height: 490px;
-  text-align: left;
+ text-align: left;
   box-sizing: border-box;
   gap: 16px;
   position: relative;
-  Favourite {
-    position: absolute;
-    top: 0;
-  }
   img {
     width: 100%;
-    height: 370px;
+    max-height: 100%;
     object-fit: cover;
   }
   @media only screen and (max-width: 420px) {
@@ -57,9 +52,11 @@ const SvgContainer = styled.div`
     }
   }
 `;
-const FavoriteSvg = styled.img`
-  width: 100%;
-  height: 100%;
+const Like = styled.img`
+   @media only screen and (max-width: 420px) {
+  
+left:100px
+}
 `;
 const Card2 = styled.div`
   display: flex;
@@ -148,16 +145,20 @@ const MovieList = () => {
               data-testid="movie-poster"
             />
              </Link>
-            <img
+            <Like
               style={{
                 width: "50px",
                 height: "50px",
                 position: "absolute",
-                top: "20px",
-                left: "188px",
+                top: "10px",
+                left: "100px",
                 cursor: "pointer",
                 zIndex:"10",
-                outline:"none"
+                outline:"none",
+                '@media only screen and (maxWidth: 420px)': {
+                  left: "100px",
+                  opacity: "0"
+                }
               }}
               src={
     likedMovies[index]
@@ -203,7 +204,7 @@ const MovieList = () => {
                 alt="imdb"
                 style={{ marginRight: "10px", width: "35px", height: "17px" }}
               />
-              <p style={{ marginRight: "30px" }}>{movie.vote_average} / 100</p>
+              <p style={{ marginRight: "30px" }}>{movie.vote_average} / 10.0</p>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
