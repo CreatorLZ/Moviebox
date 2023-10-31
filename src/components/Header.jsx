@@ -4,11 +4,13 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import Spinner2 from "./Spinner2";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 const Container = styled.div`
   width: 100vw;
- min-height: 100vh;
- max-height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
   transition: all 0.5s ease-in-out;
 
   display: flex;
@@ -18,10 +20,9 @@ const Container = styled.div`
   background-size: cover;
   position: relative;
   @media only screen and (max-width: 420px) {
-  background-size: 100% 100%;
-  background-position: center;
-  min-height: 60vh;
- 
+    background-size: 100% 100%;
+    background-position: center;
+    min-height: 60vh;
   }
 `;
 
@@ -33,7 +34,8 @@ const Wrapper = styled.div`
   float: left;
   @media only screen and (max-width: 420px) {
     min-height: 50%;
-    max-height: fit-content;
+    max-height: 50%;
+    overflow: scroll;
   }
 `;
 
@@ -73,17 +75,20 @@ const Button1 = styled.div`
   left: 20px;
   transform: translateY(-50%);
   cursor: pointer;
-  padding:15px 10px;
+  padding: 15px 10px;
   border: 1px solid white;
   border-radius: 5px;
-  &&:hover{
+  &&:hover {
     background-color: rgba(192, 192, 192, 0.2);
   }
-  img{
+  img {
     width: 30px;
     height: 30px;
   }
-`
+  @media only screen and (max-width: 420px) {
+    display: none;
+  }
+`;
 const Button2 = styled.div`
   display: flex;
   align-items: center;
@@ -92,19 +97,21 @@ const Button2 = styled.div`
   right: 30px;
   transform: translateY(-50%);
   cursor: pointer;
-  padding:15px 10px;
+  padding: 15px 10px;
   border: 1px solid white;
   border-radius: 5px;
 
-  &&:hover{
+  &&:hover {
     background-color: rgba(192, 192, 192, 0.2);
   }
-  img{
+  img {
     width: 30px;
     height: 30px;
   }
- 
-`
+  @media only screen and (max-width: 420px) {
+    display: none;
+  }
+`;
 export const Ratings = styled.div`
   display: flex;
   align-items: center;
@@ -168,7 +175,9 @@ const Header = () => {
         })
         .then((movieResponse) => {
           // Update the backgroundImage based on the currentMovie's backdrop_path
-          setBackgroundImage(`${imageBaseUrl}${movieResponse.data.backdrop_path}`);
+          setBackgroundImage(
+            `${imageBaseUrl}${movieResponse.data.backdrop_path}`
+          );
         })
         .catch((error) => {
           console.error("Error fetching movie details:", error);
@@ -187,6 +196,12 @@ const Header = () => {
       setCurrentMovieIndex(currentMovieIndex + 1);
     }
   };
+  useEffect(() => {
+    const intervalId = setInterval(nextMovie, 8000); // 5000 milliseconds = 5 seconds
+
+    // Clear the interval when the component unmounts to prevent memory leaks
+    return () => clearInterval(intervalId);
+  }, [currentMovieIndex]); // The empty dependency array ensures the effect runs only once on component mount
 
   return (
     <Container style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -221,10 +236,13 @@ const Header = () => {
                 <p>WATCH TRAILER</p>
               </Button>
             </Link>
-            
-              <Button1 onClick={previousMovie}><img src="/images/back.png" alt="" /></Button1>
-              <Button2 onClick={nextMovie}><img src="/images/forward.png" alt="" /></Button2>
-           
+
+            <Button1 onClick={previousMovie}>
+              <img src="/images/back.png" alt="" />
+            </Button1>
+            <Button2 onClick={nextMovie}>
+              <img src="/images/forward.png" alt="" />
+            </Button2>
           </Description>
         ) : (
           // loading message while data is being fetched
