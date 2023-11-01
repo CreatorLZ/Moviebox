@@ -2,25 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link , Navigate} from "react-router-dom";
 import styled from "styled-components";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/swiper.min.css';
+// import 'swiper/css';
 const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(
-    4,
-    250px
-  ); /* Three columns with 250px width each */
-  grid-gap: 60px; /* Gap between grid items */
-  justify-content: center; /* Center the grid horizontally */
-  @media only screen and (max-width: 420px) {
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top:30px;
-    width: 100vw;
-    justify-content: center; */
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-  }
+  display: flex;
 `;
 const Card = styled.div`
  text-align: left;
@@ -133,9 +119,15 @@ const MovieList = () => {
   }
 
   return (
-    <GridContainer>
+    
+    <Swiper
+    spaceBetween={50}
+    slidesPerView={3}
+    onSlideChange={() => console.log('slide change')}
+    onSwiper={(swiper) => console.log(swiper)}
+  >
       {movies.map((movie, index) => (
-        <Card
+        <SwiperSlide
           data-testid="movie-card"
           key={movie.id}>
           <Link to={`/movies/${movie.id}`}> 
@@ -230,9 +222,9 @@ const MovieList = () => {
           >
             {getGenresForMovie(movie.genre_ids).join(", ")}
           </p>
-        </Card>
+        </SwiperSlide>
       ))}
-    </GridContainer>
+   </Swiper>
   );
 };
 

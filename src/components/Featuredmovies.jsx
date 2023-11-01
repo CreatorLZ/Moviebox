@@ -8,7 +8,6 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     padding: 40px 80px;
-    overflow: hidden;
     @media only screen and (max-width: 420px) {
     padding: 20px;
    

@@ -8,8 +8,6 @@ const Container = styled.div`
   width: 100%;
   padding: 10px 50px;
   color: #ffffff;
-  /* position: fixed;
-  top: 0; */
   display: flex;
   justify-content: space-between;
   z-index: 5;

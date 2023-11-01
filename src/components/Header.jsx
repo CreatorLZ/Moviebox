@@ -4,8 +4,7 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import Spinner2 from "./Spinner2";
 import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+
 
 const Container = styled.div`
   width: 100vw;
@@ -239,10 +238,10 @@ const Header = () => {
             </Link>
 
             <Button1 onClick={previousMovie}>
-              <img src="/images/back.png" alt="" />
+              <img src="/images/back.png" alt="prev_movie" />
             </Button1>
             <Button2 onClick={nextMovie}>
-              <img src="/images/forward.png" alt="" />
+              <img src="/images/forward.png" alt="next-movie" />
             </Button2>
           </Description>
         ) : (
