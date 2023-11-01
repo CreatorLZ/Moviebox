@@ -182,6 +182,13 @@ const Header = () => {
         .catch((error) => {
           console.error("Error fetching movie details:", error);
         });
+      // Start the interval for changing movies
+      const intervalId = setInterval(() => {
+        nextMovie();
+      }, 8000); // 8000 milliseconds = 8 seconds
+
+      // Clean up the interval when the component unmounts
+      return () => clearInterval(intervalId);
     }
   }, [currentMovieIndex, movies, apiKey, imageBaseUrl]);
 
@@ -196,12 +203,6 @@ const Header = () => {
       setCurrentMovieIndex(currentMovieIndex + 1);
     }
   };
-  useEffect(() => {
-    const intervalId = setInterval(nextMovie, 8000); // 5000 milliseconds = 5 seconds
-
-    // Clear the interval when the component unmounts to prevent memory leaks
-    return () => clearInterval(intervalId);
-  }, [currentMovieIndex]); // The empty dependency array ensures the effect runs only once on component mount
 
   return (
     <Container style={{ backgroundImage: `url(${backgroundImage})` }}>
