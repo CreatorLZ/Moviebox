@@ -2,20 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link , Navigate} from "react-router-dom";
 import styled from "styled-components";
-import { Swiper, SwiperSlide } from "swiper/react";
-import 'swiper/swiper.min.css';
-// import 'swiper/css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 const GridContainer = styled.div`
   display: flex;
 `;
 const Card = styled.div`
- text-align: left;
+ /* text-align: left;
   box-sizing: border-box;
   gap: 16px;
   position: relative;
+  width: 200px;
+  height: 100px;
+  margin: 20px; */
+  box-sizing: border-box;
+  width: 270px;
+  height: 200px;
+  text-align: left;
+  gap: 16px;
+  position: relative;
   img {
-    width: 100%;
-    max-height: 100%;
+    width: 270px;
+    height: 100%;
     object-fit: cover;
   }
   @media only screen and (max-width: 420px) {
@@ -23,21 +32,7 @@ const Card = styled.div`
    
   }
 `;
-const SvgContainer = styled.div`
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 20px;
-  left: 188px;
-  cursor: pointer;
-  transition: fill 0.3s ease;
 
-  &.change-fill {
-    svg {
-      fill: red;
-    }
-  }
-`;
 const Like = styled.img`
    @media only screen and (max-width: 420px) {
   
@@ -46,6 +41,7 @@ left:100px
 `;
 const Card2 = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 export const Ratings = styled.div`
@@ -117,17 +113,41 @@ const MovieList = () => {
   if (goToMovie){
     return <Navigate to ={`/movies/${movie.id}`} />
   }
-
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "red" }}
+        onClick={onClick}
+      />
+    );
+  }
+  
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "green" }}
+        onClick={onClick}
+      />
+    );
+  }
+  
+     const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 4,
+      slidesToScroll: 4
+    };
   return (
     
-    <Swiper
-    spaceBetween={50}
-    slidesPerView={3}
-    onSlideChange={() => console.log('slide change')}
-    onSwiper={(swiper) => console.log(swiper)}
-  >
+   <>
+   <Slider {...settings}>
       {movies.map((movie, index) => (
-        <SwiperSlide
+        <Card
           data-testid="movie-card"
           key={movie.id}>
           <Link to={`/movies/${movie.id}`}> 
@@ -185,6 +205,7 @@ const MovieList = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              width:"80%",
               paddingTop: "8px",
               fontSize: "12px",
               fontWeight: "400",
@@ -222,9 +243,11 @@ const MovieList = () => {
           >
             {getGenresForMovie(movie.genre_ids).join(", ")}
           </p>
-        </SwiperSlide>
+        </Card>
       ))}
-   </Swiper>
+       </Slider>
+      
+      </>
   );
 };
 

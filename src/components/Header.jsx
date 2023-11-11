@@ -11,7 +11,7 @@ const Container = styled.div`
   min-height: 100vh;
   max-height: 100vh;
   transition: all 0.5s ease-in-out;
-
+  /* overflow-x: hidden; */
   display: flex;
   flex-direction: column;
   background-image: url(${(props) => props.backgroundImage});
