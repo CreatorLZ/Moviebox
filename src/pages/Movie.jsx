@@ -414,7 +414,7 @@ const Movie = () => {
   // Function to fetch star information
   const getStarsInfo = async (movieId) => {
     try {
-      const apiKey = "YOUR_API_KEY";
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
       const response = await axios.get(apiUrl, {
@@ -701,8 +701,9 @@ const Movie = () => {
                 {Array.isArray(stars) ? (
                   <div>
                     <p>
-                      Stars:{" "}
-                      <span>{stars.map((star) => star.name).join(", ")}</span>
+                    Stars:{" "}
+      <span>{stars.slice(0, 4).map((star) => star.name).join(", ")}</span>
+      {stars.length > 4 && " + more"} {/* Add this line to indicate more stars */}
                     </p>
                   </div>
                 ) : (
