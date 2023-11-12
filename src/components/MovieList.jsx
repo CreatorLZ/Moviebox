@@ -10,6 +10,7 @@ const GridContainer = styled.div`
 `;
 const Card = styled.div`
   box-sizing: border-box;
+  border: none;
   width: 270px;
   height: 200px;
   text-align: left;
@@ -284,7 +285,7 @@ const MovieList = () => {
                     objectFit: "cover",
                   }}
                 />
-                <p>979%</p>
+                <p>97%</p>
               </div>
             </Div1>
             <p
