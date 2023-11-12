@@ -28,6 +28,9 @@ const Card = styled.div`
       height: 100%;
       object-fit: cover;
     }
+    :focus {
+      outline: none;
+    }
   }
 `;
 
@@ -172,7 +175,7 @@ const MovieList = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 300,
+    speed: 200,
     slidesToShow: 4,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
@@ -265,9 +268,7 @@ const MovieList = () => {
                   alt="imdb"
                   style={{ marginRight: "10px", width: "35px", height: "17px" }}
                 />
-                <p style={{ marginRight: "30px" }}>
-                  {movie.vote_average}
-                </p>
+                <p style={{ marginRight: "30px" }}>{movie.vote_average}</p>
               </div>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <img
