@@ -15,6 +15,9 @@ const Card = styled.div`
   text-align: left;
   gap: 16px;
   position: relative;
+  :focus {
+  outline: none;
+}
   img {
     width: 270px;
     height: 100%;
@@ -281,7 +284,7 @@ const MovieList = () => {
                     objectFit: "cover",
                   }}
                 />
-                <p>97%</p>
+                <p>979%</p>
               </div>
             </Div1>
             <p
