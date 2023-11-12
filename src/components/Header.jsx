@@ -11,7 +11,6 @@ const Container = styled.div`
   min-height: 100vh;
   max-height: 100vh;
   transition: all 0.5s ease-in-out;
-  /* overflow-x: hidden; */
   display: flex;
   flex-direction: column;
   background-image: url(${(props) => props.backgroundImage});
@@ -32,8 +31,7 @@ const Wrapper = styled.div`
   background: transparent;
   float: left;
   @media only screen and (max-width: 420px) {
-    min-height: 50%;
-    max-height: 50%;
+    height: 50%;
     overflow: scroll;
   }
 `;
@@ -53,6 +51,7 @@ const Description = styled.div`
     font-weight: 700;
     font-size: 48px;
     line-height: 56px;
+    
   }
   p {
     font-size: 14px;
@@ -63,6 +62,9 @@ const Description = styled.div`
     margin-left: 0px;
     height: fit-content;
     padding: 5px 20px;
+    h1{
+      font-size: 24px;
+    }
   }
 `;
 
@@ -226,7 +228,20 @@ const Header = () => {
               />
               <p>97%</p>
             </Ratings>
-            <p>{movies[currentMovieIndex].overview}</p>
+            <p>
+              {(() => {
+                const overview = movies[currentMovieIndex].overview;
+                const words = overview.split(' ');
+                const maxWords = 55;
+
+                if (words.length > maxWords) {
+                  const truncatedOverview = words.slice(0, maxWords).join(' ');
+                  return `${truncatedOverview} ...`;
+                } else {
+                  return overview;
+                }
+              })()}
+            </p>
             <Link
               style={{ textDecoration: "none", color: "white" }}
               to={`/movies/${movies[currentMovieIndex].id}`}
