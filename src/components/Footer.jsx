@@ -10,6 +10,10 @@ const Container = styled.div`
   flex-direction: column;
   background: whitesmoke;
   gap: 20px;
+  @media only screen and (max-width: 420px) {
+    margin-top:20px;
+    height: 50vh;
+  }
 `;
 const Icondiv = styled.div`
   display: flex;
@@ -22,6 +26,9 @@ const Navdiv = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  @media only screen and (max-width: 420px) {
+    flex-direction: column;
+  }
 `;
 const Credits = styled.div`
   display: flex;
@@ -33,10 +40,10 @@ const Footer = () => {
   return (
     <Container>
       <Icondiv>
-        <img src="./images/fa-brands_facebook-square.png" alt="fb" />
-        <img src="./images/fa-brands_instagram.png" alt="inst" />
-        <img src="./images/fa-brands_twitter.png" alt="X" />
-        <img src="./images/fa-brands_youtube.png" alt="you" />
+        <img src="/images/fa-brands_facebook-square.png" alt="fb" />
+        <img src="/images/fa-brands_instagram.png" alt="inst" />
+        <img src="/images/fa-brands_twitter.png" alt="X" />
+        <img src="/images/fa-brands_youtube.png" alt="you" />
       </Icondiv>
       <Navdiv>
         <p>Conditions of Use</p>

@@ -4,6 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import Navbar2 from "../components/Navbar2";
+import Footer from "../components/Footer";
+import YouTube from "react-youtube";
+
 const LOCAL_STORAGE_KEY = "movieData";
 
 const Container = styled.div`
@@ -125,17 +128,11 @@ const Poster = styled.div`
   margin-bottom: 20px;
   background-repeat: no-repeat;
   background-size: cover;
-  /* border-radius: 10px; */
-  iframe {
-    /* border-radius: 10px; */
-  }
+  position: relative;
+
   @media only screen and (max-width: 420px) {
     height: 30vh;
     width: 100%;
-    iframe {
-      height: 100%;
-      width: 100%;
-    }
   }
 `;
 
@@ -295,7 +292,7 @@ const Ads = styled.div`
   }
   margin-top: 20px;
   @media only screen and (max-width: 420px) {
-    width: 100%;
+    width: 80%;
   }
 `;
 const Adbottom = styled.div`
@@ -323,6 +320,7 @@ const Omega = styled.div`
   @media only screen and (max-width: 420px) {
     display: flex;
     flex-direction: column;
+    padding: 10px;
   }
 `;
 const Movie = () => {
@@ -332,6 +330,9 @@ const Movie = () => {
   const [movieCredits, setMovieCredits] = useState(null);
   const [runtime, setRunTime] = useState(null);
   const [releaseDate, setReleaseDate] = useState("");
+  const [director, setDirector] = useState("");
+  const [writers, setWriters] = useState([]);
+  const [stars, setStars] = useState([]);
 
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
@@ -348,7 +349,93 @@ const Movie = () => {
       return `${minutes}min`;
     }
   }
+  // Async function to fetch director's information
+  const getDirectorInfo = async (movieId) => {
+    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
+    try {
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+        },
+      });
+
+      if (response.status === 200) {
+        const directors = response.data.crew.filter(
+          (member) => member.job === "Director"
+        );
+        if (directors.length > 0) {
+          const director = directors[0];
+          return {
+            name: director.name,
+            profilePath: director.profile_path,
+          };
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching director's information:", error);
+    }
+
+    return null;
+  };
+
+  // Async function to fetch writers' information
+  const getWriterInfo = async (movieId) => {
+    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+
+    try {
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+        },
+      });
+      if (response.status === 200) {
+        const writers = response.data.crew.filter(
+          (member) => member.department === "Writing"
+        );
+
+        if (writers.length > 0) {
+          const writerInfo = writers.map((writer) => ({
+            name: writer.name,
+            profilePath: writer.profile_path,
+          }));
+          return writerInfo;
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching writers' information:", error);
+    }
+
+    return null;
+  };
+
+  // Function to fetch star information
+  const getStarsInfo = async (movieId) => {
+    try {
+      const apiKey = "YOUR_API_KEY";
+      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+        },
+      });
+      if (response.status === 200) {
+        const stars = response.data.cast.map((star) => ({
+          name: star.name,
+          profilePath: star.profile_path,
+        }));
+        return stars;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching stars data:", error);
+      return null;
+    }
+  };
   // Define a function to fetch trailer data for a movie by its ID
   const getTrailerDataForMovie = async (movieId) => {
     try {
@@ -439,7 +526,34 @@ const Movie = () => {
           const trailerKey = await getTrailerDataForMovie(id);
           setTrailerKey(trailerKey);
           // Fetch movie credits using the fetchMovieCredits function
-          fetchMovieCredits(id);
+          await fetchMovieCredits(id);
+          // Fetch director's information
+          const directorInfo = await getDirectorInfo(id);
+          // Set the director's information to state
+          if (directorInfo) {
+            setDirector(directorInfo.name);
+            // You can set additional properties if needed, such as profile picture path
+          } else {
+            setDirector("Director information not found.");
+          }
+
+          // Fetch writers' information
+          const writersInfo = await getWriterInfo(id);
+          // Set the writers' information to state
+          if (writersInfo) {
+            setWriters(writersInfo);
+            console.log(writers);
+            //  additional properties later, such as profile picture path
+          } else {
+            setWriters("Writers information not found.");
+          }
+          // Fetch stars' information
+          const starsInfo = await getStarsInfo(id);
+          if (starsInfo) {
+            setStars(starsInfo);
+          } else {
+            setStars("Stars information not found.");
+          }
           const runtimeInMinutes = response.data.runtime;
           const formattedRuntime =
             convertRuntimeToHoursAndMinutes(runtimeInMinutes);
@@ -524,16 +638,20 @@ const Movie = () => {
         <Wrapper>
           <Navbar2 />
           <Poster>
-            <iframe
-              width="100%"
-              height="100%"
-              src={`https://www.youtube.com/embed/${trailerKey}`}
-              title="YouTube Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </Poster>
+  {trailerKey && (
+    <YouTube
+      videoId={trailerKey}
+      opts={{
+        width: "100%",
+        height: "100%",
+        playerVars: {
+          autoplay: 1,
+        },
+      }}
+      style={{width:"100%", height:"100%"}}
+    />
+  )}
+</Poster>
           <Omega style={{ display: "flex", width: "100%" }}>
             <Moviedetails>
               <Top>
@@ -566,15 +684,30 @@ const Movie = () => {
               </Description>
               <Description2>
                 <p>
-                  Director : <span>Joseph Kosinski</span>{" "}
+                  Director : <span>{director ? director : "Not Found"}</span>{" "}
                 </p>
-                <p>
-                  Writers : <span>Jim Cash, Jack Epps Jr, Peter Craig</span>{" "}
-                </p>
-                <p>
-                  Stars :{" "}
-                  <span> Tom Cruise, Jennifer Connelly, Miles Teller</span>{" "}
-                </p>
+                {Array.isArray(writers) ? (
+                  <div>
+                    <p>
+                      Writers:{" "}
+                      <span>
+                        {writers.map((writer) => writer.name).join(", ")}
+                      </span>
+                    </p>
+                  </div>
+                ) : (
+                  <p>{writers}</p>
+                )}
+                {Array.isArray(stars) ? (
+                  <div>
+                    <p>
+                      Stars:{" "}
+                      <span>{stars.map((star) => star.name).join(", ")}</span>
+                    </p>
+                  </div>
+                ) : (
+                  <span>No star information found for the movie.</span>
+                )}
               </Description2>
               <Descbottom>
                 <p
@@ -643,6 +776,7 @@ const Movie = () => {
       ) : (
         <Spinner />
       )}
+      <Footer />
     </Container>
   );
 };
