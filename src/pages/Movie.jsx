@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import Navbar2 from "../components/Navbar2";
-const LOCAL_STORAGE_KEY = "movieData"; 
+const LOCAL_STORAGE_KEY = "movieData";
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const Container = styled.div`
   width: 100%;
   overflow-x: hidden;
   @media only screen and (max-width: 420px) {
-   flex-direction: column;
+    flex-direction: column;
   }
 `;
 
@@ -64,8 +64,8 @@ const Wrapper = styled.div`
   margin-left: 20%;
   @media only screen and (max-width: 420px) {
     margin-left: 0px;
-    padding: 5px 20px;
-    width: 100%;
+    padding: 0px;
+    width: 100vw;
   }
 `;
 
@@ -125,9 +125,9 @@ const Poster = styled.div`
   margin-bottom: 20px;
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   iframe {
-    border-radius: 10px;
+    /* border-radius: 10px; */
   }
   @media only screen and (max-width: 420px) {
     height: 30vh;
@@ -142,12 +142,18 @@ const Poster = styled.div`
 const Moviedetails = styled.div`
   width: 744px;
   height: 100%;
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+  }
 `;
 const Moviedetailsright = styled.div`
   width: 350px;
   height: 100%;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+  }
 `;
 const Top = styled.div`
   display: flex;
@@ -158,7 +164,7 @@ const Top = styled.div`
   margin-bottom: 10px;
   @media only screen and (max-width: 420px) {
     width: 100%;
-    font-weight: 400;
+    font-weight: 700;
     font-size: 14px;
     flex-wrap: wrap;
   }
@@ -192,7 +198,9 @@ const Description = styled.p`
   @media only screen and (max-width: 420px) {
     width: 100%;
     text-align: left;
-    width: 300px;
+    width: 100%;
+    font-size: 12px;
+    line-height: 30px;
   }
 `;
 const Description2 = styled.div`
@@ -210,7 +218,7 @@ const Description2 = styled.div`
     color: #be123c;
   }
   @media only screen and (max-width: 420px) {
-    width: 300px;
+    width: 100%;
     margin-bottom: 20px;
     p {
       font-size: 16px;
@@ -250,7 +258,7 @@ const Button1 = styled.div`
   cursor: pointer;
   gap: 5px;
   @media only screen and (max-width: 420px) {
-    width: 70%;
+    width: 80%;
     padding: 10px 20px;
     margin-top: 20px;
     font-size: 16px;
@@ -272,7 +280,7 @@ const Button2 = styled.div`
   cursor: pointer;
   gap: 5px;
   @media only screen and (max-width: 420px) {
-    width: 70%;
+    width: 80%;
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 400;
@@ -287,7 +295,7 @@ const Ads = styled.div`
   }
   margin-top: 20px;
   @media only screen and (max-width: 420px) {
-    width: 70%;
+    width: 100%;
   }
 `;
 const Adbottom = styled.div`
@@ -324,7 +332,7 @@ const Movie = () => {
   const [movieCredits, setMovieCredits] = useState(null);
   const [runtime, setRunTime] = useState(null);
   const [releaseDate, setReleaseDate] = useState("");
-  
+
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
     const hours = Math.floor(runtime / 60);
@@ -420,7 +428,9 @@ const Movie = () => {
 
           // Convert release_date to UTC format
           const releaseDate = new Date(response.data.release_date);
-          const releaseDateUTC = releaseDate.toUTCString();
+
+          // Convert releaseDate back to UTC string without GMT time
+          const releaseDateUTC = releaseDate.toISOString().split("T")[0];
 
           // Set the formatted release date to the state
           setReleaseDate(releaseDateUTC);
@@ -512,7 +522,7 @@ const Movie = () => {
       </Sidebar>
       {movieDetails ? (
         <Wrapper>
-          <Navbar2/>
+          <Navbar2 />
           <Poster>
             <iframe
               width="100%"

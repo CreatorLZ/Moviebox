@@ -149,9 +149,9 @@ const PopularList = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "rgba(172, 170, 170, 0.2)",
-          width: "40px",
-          height: "50px",
+          background: "rgba(109, 107, 107, 0.2)",
+          width: "50px",
+          height: "70px",
           zIndex: "10",
         }}
         onClick={onClick}
@@ -169,9 +169,9 @@ const PopularList = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "rgba(172, 170, 170, 0.2)",
-          width: "40px",
-          height: "50px",
+          background: "rgba(109, 107, 107, 0.2)",
+          width: "50px",
+          height: "70px",
           zIndex: "10",
         }}
         onClick={onClick}
