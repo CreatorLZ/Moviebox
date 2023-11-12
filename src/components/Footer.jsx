@@ -11,7 +11,7 @@ const Container = styled.div`
   background: whitesmoke;
   gap: 20px;
   @media only screen and (max-width: 420px) {
-    margin-top:20px;
+    padding-top:20px;
     height: 50vh;
   }
 `;
