@@ -638,20 +638,20 @@ const Movie = () => {
         <Wrapper>
           <Navbar2 />
           <Poster>
-  {trailerKey && (
-    <YouTube
-      videoId={trailerKey}
-      opts={{
-        width: "100%",
-        height: "100%",
-        playerVars: {
-          autoplay: 1,
-        },
-      }}
-      style={{width:"100%", height:"100%"}}
-    />
-  )}
-</Poster>
+            {trailerKey && (
+              <YouTube
+                videoId={trailerKey}
+                opts={{
+                  width: "100%",
+                  height: "100%",
+                  playerVars: {
+                    autoplay: 1,
+                  },
+                }}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
+          </Poster>
           <Omega style={{ display: "flex", width: "100%" }}>
             <Moviedetails>
               <Top>
@@ -701,9 +701,15 @@ const Movie = () => {
                 {Array.isArray(stars) ? (
                   <div>
                     <p>
-                    Stars:{" "}
-      <span>{stars.slice(0, 4).map((star) => star.name).join(", ")}</span>
-      {stars.length > 4 && " + more"} {/* Add this line to indicate more stars */}
+                      Stars:{" "}
+                      <span>
+                        {stars
+                          .slice(0, 4)
+                          .map((star) => star.name)
+                          .join(", ")}
+                      </span>
+                      {stars.length > 4 && " + more"}{" "}
+                      {/* Add this line to indicate more stars */}
                     </p>
                   </div>
                 ) : (
