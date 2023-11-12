@@ -11,14 +11,16 @@ const GridContainer = styled.div`
 const Card = styled.div`
   /* box-sizing: border-box; */
   border: none;
+  outline:none;
   width: 270px;
   height: 200px;
   text-align: left;
   gap: 16px;
   position: relative;
   :focus {
-  outline: none;
-}
+    outline: none;
+    border: none;
+  }
   img {
     width: 270px;
     height: 100%;

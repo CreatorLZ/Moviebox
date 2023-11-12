@@ -45,7 +45,7 @@ const Description = styled.div`
   height: fit-content;
   padding: 30px 40px;
   margin-left: 60px;
-  color: #ffffff;
+  color: #f5f5f5;
 
   h1 {
     font-weight: 700;
@@ -157,7 +157,7 @@ const Header = () => {
         setMovies(topRatedMovies);
 
         // Initially, display the first movie
-        setCurrentMovieIndex(0);
+        setCurrentMovieIndex(1);
       })
       .catch((error) => {
         console.error("Error fetching top-rated movies:", error);
