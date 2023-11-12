@@ -9,7 +9,7 @@ const GridContainer = styled.div`
   display: flex;
 `;
 const Card = styled.div`
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   border: none;
   width: 270px;
   height: 200px;
