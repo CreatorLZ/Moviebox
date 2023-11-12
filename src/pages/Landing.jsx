@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import Featuredmovies from '../components/Featuredmovies'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
+import Latestmovies from '../components/Latestmovies'
 
 const Container = styled.div`
   overflow-x: hidden;
@@ -13,6 +14,7 @@ const Landing = () => {
     <Container>
     <Header/>
     <Featuredmovies/>
+    <Latestmovies/>
     <Footer/>
     </Container>
   )

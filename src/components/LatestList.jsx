@@ -11,8 +11,8 @@ const GridContainer = styled.div`
 const Card = styled.div`
   /* box-sizing: border-box; */
   border: none;
-  outline:none;
-  width: 270px;
+  outline: none;
+  width: 370px;
   height: 200px;
   text-align: left;
   gap: 16px;
@@ -22,16 +22,16 @@ const Card = styled.div`
     border: none;
   }
   img {
-    width: 270px;
+    width: 370px;
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
   }
   @media only screen and (max-width: 420px) {
-    width: 170px;
+    width: 270px;
     height: 200px;
     img {
-      width: 170px;
+      width: 270px;
       height: 100%;
       object-fit: cover;
     }
@@ -76,8 +76,8 @@ const Div1 = styled.div`
   }
 `;
 
-const MovieList = () => {
-  const apiUrl = "https://api.themoviedb.org/3/movie/popular";
+const LatestList = () => {
+  const apiUrl = "https://api.themoviedb.org/3/movie/now_playing";
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -183,7 +183,7 @@ const MovieList = () => {
     dots: true,
     infinite: true,
     speed: 200,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -211,7 +211,7 @@ const MovieList = () => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
@@ -254,7 +254,6 @@ const MovieList = () => {
             />
 
             <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
-              
               <p
                 data-testid="movie-release-date"
                 style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}
@@ -306,4 +305,4 @@ const MovieList = () => {
   );
 };
 
-export default MovieList;
+export default LatestList;
