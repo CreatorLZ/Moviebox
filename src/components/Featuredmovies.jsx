@@ -42,7 +42,7 @@ const Featuredmovies = () => {
   return (
     <Container>
         <Top>
-            <h1 style={{ cursor:"pointer",color:"#be123c"}}>Popular</h1>
+            <h1 style={{ cursor:"pointer",color:"#be123c"}}>Trending</h1>
         </Top>
         <MovieList/>
     </Container>

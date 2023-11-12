@@ -11,7 +11,7 @@ const GridContainer = styled.div`
 const Card = styled.div`
   /* box-sizing: border-box; */
   border: none;
-  outline:none;
+  outline: none;
   width: 270px;
   height: 200px;
   text-align: left;
@@ -76,8 +76,8 @@ const Div1 = styled.div`
   }
 `;
 
-const MovieList = () => {
-  const apiUrl = "https://api.themoviedb.org/3/trending/movie/week";
+const PopularList = () => {
+  const apiUrl = "https://api.themoviedb.org/3/movie/popular";
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -254,7 +254,6 @@ const MovieList = () => {
             />
 
             <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
-              
               <p
                 data-testid="movie-release-date"
                 style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}
@@ -306,4 +305,4 @@ const MovieList = () => {
   );
 };
 
-export default MovieList;
+export default PopularList;
