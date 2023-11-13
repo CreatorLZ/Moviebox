@@ -162,7 +162,7 @@ const Top = styled.div`
   @media only screen and (max-width: 420px) {
     width: 100%;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     flex-wrap: wrap;
   }
 `;

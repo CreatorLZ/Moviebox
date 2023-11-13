@@ -39,6 +39,18 @@ const Card = styled.div`
       outline: none;
     }
   }
+  @media only screen and (max-width: 385px) {
+    width: 152px;
+    height: 200px;
+    img {
+      width: 152px;
+      height: 100%;
+      object-fit: cover;
+    }
+    :focus {
+      outline: none;
+    }
+  }
 `;
 
 const Like = styled.img`
