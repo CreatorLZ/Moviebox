@@ -87,7 +87,71 @@ const Div1 = styled.div`
     width: 50%;
   }
 `;
+const Dots = styled.div`
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    object-fit: cover;
+    top: 10px;
+    left: 220px;
+    cursor: pointer;
+    z-index: 10;
+    outline: none;
+    background-color:#ebdede ;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover{
+      background-color:#da2f2f;
+    }
+    @media only screen and (max-width: 420px) {
+    left: 110px;
+  }
+    img{
+      object-fit: contain;
+      width: 25px;
+      height: 25px;
+      
+    }
 
+`
+const Options = styled.div`
+  width: 120px;
+  height: fit-content;
+  background-color: white;
+  position: absolute;
+  top: 50px;
+  left: 140px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius:5px;
+  padding: 10px;
+  @media only screen and (max-width: 420px) {
+    left: 30px;
+  }
+ul{
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  li{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    border-bottom:1px solid black;
+    padding: 5px;
+    &:hover{
+      transform: scale(0.9);
+    }
+    img{
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+`
 const PopularList = () => {
   const apiUrl = "https://api.themoviedb.org/3/movie/popular";
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
@@ -95,7 +159,21 @@ const PopularList = () => {
   const [genres, setGenres] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);
   const [goToMovie, setGoToMovie] = useState(false);
+  const [optionsVisibility, setOptionsVisibility] = useState([]);
 
+ 
+  useEffect(() => {
+    // Initialize optionsVisibility array with false values for each card
+    setOptionsVisibility(Array(movies.length).fill(false));
+  }, [movies]);
+  const handleDotsClick = (index) => {
+    // Toggle the visibility of the Options div for the specific card
+    setOptionsVisibility((prevVisibility) => {
+      const updatedVisibility = [...prevVisibility];
+      updatedVisibility[index] = !updatedVisibility[index];
+      return updatedVisibility;
+    });
+  };
   const handleLikeClick = (index) => {
     // Prevent the click event from propagating to the parent link
     event.stopPropagation();
@@ -241,7 +319,7 @@ const PopularList = () => {
                 data-testid="movie-poster"
               />
             </Link>
-            <Like
+            {/* <Like
               style={{
                 width: "50px",
                 height: "50px",
@@ -263,7 +341,18 @@ const PopularList = () => {
               }
               alt={movie.title}
               onClick={(event) => handleLikeClick(index, event)}
-            />
+            /> */}
+            <Dots  onClick={() => handleDotsClick(index)}><img src="./images/dots.png" alt="dots" /></Dots>
+             {/* Display the Options div only if isOptionsVisible is true */}
+             {optionsVisibility[index] &&  (
+              <Options>
+               <ul>
+                <li><img src="./images/Favorite.svg" alt="add" /><p> Favourite</p></li>
+                <li><img src="./images/List.png" alt="list" /><p> Watchlist</p></li>
+                <li><img src="./images/Star (1).png" alt="love" /><p> Your rating</p></li>
+               </ul>
+              </Options>
+            )}
 
             <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
               <p

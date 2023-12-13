@@ -119,18 +119,18 @@ const Dots = styled.div`
 
 `
 const Options = styled.div`
-  width: 100px;
+  width: 120px;
   height: fit-content;
   background-color: white;
   position: absolute;
   top: 50px;
-  left: 200px;
+  left: 140px;
   cursor: pointer;
   z-index: 10;
   border-radius:5px;
   padding: 10px;
   @media only screen and (max-width: 420px) {
-    left: 50px;
+    left: 30px;
   }
 ul{
   font-size: 0.8rem;
