@@ -83,7 +83,6 @@ const Div1 = styled.div`
   padding-top: 8px;
   font-size: 12px;
   font-weight: 400;
-  color: #ebdede;
   @media only screen and (max-width: 420px) {
     width: 50%;
   }
