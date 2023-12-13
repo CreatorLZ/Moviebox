@@ -134,8 +134,8 @@ const Searchresults = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 85px;
-  left: 445px;
+  top: ${({ searchInput }) => (searchInput ? "83px" : "-200px")};
+  left: 442px;
   width: 528px;
   min-height: 50px;
   max-height: 200px;
@@ -182,9 +182,9 @@ const Searchresults = styled.div`
   }
 
   @media only screen and (max-width: 420px) {
-    top: 60px;
-    left: 78px;
-    width: 225px;
+    top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
+    left: 81px;
+    width: 211px;
   }
 `;
 
@@ -257,9 +257,9 @@ const Navbar = () => {
            {isSearchEmpty ? (
             <img src="/images/Search.png" alt="search" />
           ) : (
-            <Div onClick={clearSearchInput}>
-              <img style={{width:"25px", height:"25px"}} src="/images/cancel2.png" alt="cancel" />
-            </Div>
+           
+              <img onClick={clearSearchInput}style={{width:"20px", height:"20px", cursor:"pointer"}} src="/images/cancel2.png" alt="cancel" />
+           
           )}
         </Searchbox>
       </Search>
@@ -273,7 +273,7 @@ const Navbar = () => {
       
         
       {searchInput && (
-        <Searchresults style={{ top: searchInput ? "95px" : "-200px" }}>
+        <Searchresults  searchInput={searchInput}>
           {isLoading ? <Spinner2/>:
           <ul>
             {searchResults.map((movie) => (

@@ -33,6 +33,7 @@ const Wrapper = styled.div`
   @media only screen and (max-width: 420px) {
     height: 50%;
     overflow: scroll;
+    margin-top: 0px;
   }
 `;
 
@@ -87,9 +88,17 @@ const Button1 = styled.div`
     height: 30px;
   }
   @media only screen and (max-width: 420px) {
-    display: none;
+    top: 90%;
+    left: 225px;
+    img{
+      width: 20px;
+      height: 20px;
+ 
+    }
+
   }
 `;
+
 const Button2 = styled.div`
   display: flex;
   align-items: center;
@@ -110,7 +119,12 @@ const Button2 = styled.div`
     height: 30px;
   }
   @media only screen and (max-width: 420px) {
-    display: none;
+    top: 90%;
+    img{
+      width: 20px;
+      height: 20px;
+    }
+
   }
 `;
 export const Ratings = styled.div`
