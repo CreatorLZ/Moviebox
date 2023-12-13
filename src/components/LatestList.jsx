@@ -9,7 +9,7 @@ const GridContainer = styled.div`
   display: flex;
 `;
 const Card = styled.div`
-  /* box-sizing: border-box; */
+  box-sizing: border-box;
   border: none;
   outline: none;
   width: 370px;
@@ -107,6 +107,7 @@ const LatestList = () => {
       .then((response) => {
         const topMovies = response.data.results.slice(0, 10);
         setMovies(topMovies);
+        console.log(topMovies[0]);
         // Initialize likedMovies with all values set to false
         setLikedMovies(Array(topMovies.length).fill(false));
 

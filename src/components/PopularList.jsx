@@ -60,7 +60,7 @@ const Like = styled.img`
 `;
 const Card2 = styled.div`
   display: flex;
-  width: 100%;
+  width: 60%;
 
   padding-top: 8px;
   font-size: 18px;
@@ -117,7 +117,7 @@ const PopularList = () => {
         },
       })
       .then((response) => {
-        const topMovies = response.data.results.slice(0, 10);
+        const topMovies = response.data.results;
         setMovies(topMovies);
         // Initialize likedMovies with all values set to false
         setLikedMovies(Array(topMovies.length).fill(false));

@@ -103,18 +103,39 @@ const Auth = styled.div`
   align-items: center;
   gap: 20px;
   float: right;
+
+  p:first-child{
+    cursor: pointer;
+    &:hover{
+      padding: 5px 0px ;
+      border-radius: 5px;
+      color:whitesmoke;
+      background-color: rgba(146, 142, 142, 0.2);
+    }
+  }
+
   @media only screen and (max-width: 420px) {
     p {
       display: none;
     }
   }
 `;
+const Div =styled.div`
+width: fit-content;
+padding: 3px;
+border-radius: 5px;
+cursor: pointer;
+  &:hover{
+      background-color: rgba(124, 122, 122, 0.2);
+
+    }
+`
 const Searchresults = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 85px;
-  left: 468px;
+  left: 445px;
   width: 528px;
   min-height: 50px;
   max-height: 200px;
@@ -122,7 +143,7 @@ const Searchresults = styled.div`
   border-radius: 3px;
   overflow: scroll;
   overflow-x: hidden;
-  transition: top 0.3s ease-in-out;
+  transition: top 0.5s ease-in-out;
    /* Customize scrollbar */
    &::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
@@ -161,9 +182,9 @@ const Searchresults = styled.div`
   }
 
   @media only screen and (max-width: 420px) {
-    top: 70px;
-    left: 82px;
-    width: 250px;
+    top: 60px;
+    left: 78px;
+    width: 225px;
   }
 `;
 
@@ -175,6 +196,8 @@ const Navbar = () => {
   const [searchInput, setSearchInput] = useState(""); // State variable for user input
   const [searchResults, setSearchResults] = useState([]); // State variable for search results
   const [isLoading, setIsLoading] = useState(false); // State variable for loading state
+  const [isSearchEmpty, setIsSearchEmpty] = useState(true);
+
   const searchMovies = () => {
     if (searchInput) {
       setIsLoading(true);
@@ -205,6 +228,16 @@ const Navbar = () => {
   useEffect(() => {
     searchMovies();
   }, [searchInput]);
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    setSearchInput(inputValue);
+    setIsSearchEmpty(!inputValue.trim());
+  };
+
+  const clearSearchInput = () => {
+    setSearchInput('');
+    setIsSearchEmpty(true);
+  };
   return (
     <Container>
       <Logo>
@@ -219,19 +252,28 @@ const Navbar = () => {
             type="text"
             placeholder="What do you want to watch?"
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={handleInputChange}
           />
-          <img src="/images/Search.png" alt="search" />
+           {isSearchEmpty ? (
+            <img src="/images/Search.png" alt="search" />
+          ) : (
+            <Div onClick={clearSearchInput}>
+              <img style={{width:"25px", height:"25px"}} src="/images/cancel2.png" alt="cancel" />
+            </Div>
+          )}
         </Searchbox>
       </Search>
       <Auth>
         <p>Sign in</p>
+        <Div style={{display:"flex", alignItems:"center",gap:"5px",}}>
         <img src="/images/Menu.png" alt="menu" />
+        <p>Menu</p>
+        </Div>
       </Auth>
       
         
       {searchInput && (
-        <Searchresults style={{ top: searchInput ? "85px" : "-200px" }}>
+        <Searchresults style={{ top: searchInput ? "95px" : "-200px" }}>
           {isLoading ? <Spinner2/>:
           <ul>
             {searchResults.map((movie) => (

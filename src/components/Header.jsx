@@ -186,7 +186,7 @@ const Header = () => {
       // Start the interval for changing movies
       const intervalId = setInterval(() => {
         nextMovie();
-      }, 8000); // 8000 milliseconds = 8 seconds
+      }, 9000); // 9000 milliseconds = 9 seconds
 
       // Clean up the interval when the component unmounts
       return () => clearInterval(intervalId);
