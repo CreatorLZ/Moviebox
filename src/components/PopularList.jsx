@@ -60,7 +60,7 @@ const Like = styled.img`
 `;
 const Card2 = styled.div`
   display: flex;
-  width: 60%;
+  width: 80%;
 
   padding-top: 8px;
   font-size: 18px;
