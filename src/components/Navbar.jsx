@@ -72,7 +72,7 @@ const Search = styled.div`
   }
   @media only screen and (max-width: 420px) {
     width: 80%;
-    input{
+    input {
       font-size: 12px;
       width: 90%;
       font-weight: 300;
@@ -104,12 +104,12 @@ const Auth = styled.div`
   gap: 20px;
   float: right;
 
-  p:first-child{
+  p:first-child {
     cursor: pointer;
-    &:hover{
-      padding: 5px 0px ;
+    &:hover {
+      padding: 5px 0px;
       border-radius: 5px;
-      color:whitesmoke;
+      color: whitesmoke;
       background-color: rgba(146, 142, 142, 0.2);
     }
   }
@@ -120,16 +120,15 @@ const Auth = styled.div`
     }
   }
 `;
-const Div =styled.div`
-width: fit-content;
-padding: 3px;
-border-radius: 5px;
-cursor: pointer;
-  &:hover{
-      background-color: rgba(124, 122, 122, 0.2);
-
-    }
-`
+const Div = styled.div`
+  width: fit-content;
+  padding: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(124, 122, 122, 0.2);
+  }
+`;
 const Searchresults = styled.div`
   display: flex;
   flex-direction: column;
@@ -144,8 +143,8 @@ const Searchresults = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   transition: top 0.5s ease-in-out;
-   /* Customize scrollbar */
-   &::-webkit-scrollbar {
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
   }
 
@@ -235,7 +234,7 @@ const Navbar = () => {
   };
 
   const clearSearchInput = () => {
-    setSearchInput('');
+    setSearchInput("");
     setIsSearchEmpty(true);
   };
   return (
@@ -254,46 +253,51 @@ const Navbar = () => {
             value={searchInput}
             onChange={handleInputChange}
           />
-           {isSearchEmpty ? (
+          {isSearchEmpty ? (
             <img src="/images/Search.png" alt="search" />
           ) : (
-           
-              <img onClick={clearSearchInput}style={{width:"20px", height:"20px", cursor:"pointer"}} src="/images/cancel2.png" alt="cancel" />
-           
+            <img
+              onClick={clearSearchInput}
+              style={{ width: "20px", height: "20px", cursor: "pointer" }}
+              src="/images/cancel2.png"
+              alt="cancel"
+            />
           )}
         </Searchbox>
       </Search>
       <Auth>
         <p>Sign in</p>
-        <Div style={{display:"flex", alignItems:"center",gap:"5px",}}>
-        <img src="/images/Menu.png" alt="menu" />
-        <p>Menu</p>
+        <Div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <img src="/images/Menu.png" alt="menu" />
+          <p>Menu</p>
         </Div>
       </Auth>
-      
-        
+
       {searchInput && (
-        <Searchresults  searchInput={searchInput}>
-          {isLoading ? <Spinner2/>:
-          <ul>
-            {searchResults.map((movie) => (
-              <Link
-                style={{ textDecoration: "none", color: "black" }}
-                to={`/movies/${movie.id}`}
-              >
-                <li
+        <Searchresults searchInput={searchInput}>
+          {isLoading ? (
+            <Spinner2 />
+          ) : (
+            <ul>
+              {searchResults.map((movie) => (
+                <Link
                   style={{ textDecoration: "none", color: "black" }}
-                  key={movie.id}
+                  to={`/movies/${movie.id}`}
                 >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                    alt={movie.title}
-                  />
-                  {movie.title}
-                </li>
-              </Link>
-            ))}
-          </ul> }
+                  <li
+                    style={{ textDecoration: "none", color: "black" }}
+                    key={movie.id}
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                    {movie.title}
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          )}
         </Searchresults>
       )}
     </Container>

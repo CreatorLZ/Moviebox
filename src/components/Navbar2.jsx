@@ -5,21 +5,21 @@ import styled from "styled-components";
 import Spinner2 from "./Spinner2";
 
 const Container = styled.div`
-display: none;
+  display: none;
   @media only screen and (max-width: 420px) {
     padding: 5px;
     width: 100%;
- 
- color: #ffffff;
- display: flex;
- justify-content: space-between;
- z-index: 5;
- Link {
-   text-decoration: none;
-   p {
-     text-decoration: none;
-   }
- }
+
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    z-index: 5;
+    Link {
+      text-decoration: none;
+      p {
+        text-decoration: none;
+      }
+    }
   }
 `;
 
@@ -73,7 +73,7 @@ const Search = styled.div`
   }
   @media only screen and (max-width: 420px) {
     width: 80%;
-    input{
+    input {
       font-size: 12px;
       width: 90%;
       font-weight: 300;
@@ -114,7 +114,7 @@ const Searchresults = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 85px;
+  top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
   left: 480px;
   width: 500px;
   min-height: 50px;
@@ -124,8 +124,8 @@ const Searchresults = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   transition: top 0.3s ease-in-out;
-   /* Customize scrollbar */
-   &::-webkit-scrollbar {
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
   }
 
@@ -162,9 +162,9 @@ const Searchresults = styled.div`
   }
 
   @media only screen and (max-width: 420px) {
-    top: 70px;
-    left: 82px;
-    width: 250px;
+    top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
+    left: 81px;
+    width: 211px;
   }
 `;
 
@@ -176,6 +176,7 @@ const Navbar2 = () => {
   const [searchInput, setSearchInput] = useState(""); // State variable for user input
   const [searchResults, setSearchResults] = useState([]); // State variable for search results
   const [isLoading, setIsLoading] = useState(false); // State variable for loading state
+  const [isSearchEmpty, setIsSearchEmpty] = useState(true);
   const searchMovies = () => {
     if (searchInput) {
       setIsLoading(true);
@@ -206,6 +207,16 @@ const Navbar2 = () => {
   useEffect(() => {
     searchMovies();
   }, [searchInput]);
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    setSearchInput(inputValue);
+    setIsSearchEmpty(!inputValue.trim());
+  };
+
+  const clearSearchInput = () => {
+    setSearchInput("");
+    setIsSearchEmpty(true);
+  };
   return (
     <Container>
       <Logo>
@@ -220,39 +231,50 @@ const Navbar2 = () => {
             type="text"
             placeholder="What do you want to watch?"
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={handleInputChange}
           />
-          <img src="/images/Search.png" alt="search" />
+          {isSearchEmpty ? (
+            <img src="/images/Search.png" alt="search" />
+          ) : (
+            <img
+              onClick={clearSearchInput}
+              style={{ width: "20px", height: "20px", cursor: "pointer" }}
+              src="/images/cancel2.png"
+              alt="cancel"
+            />
+          )}{" "}
         </Searchbox>
       </Search>
       <Auth>
         <p>Sign in</p>
         <img src="/images/Menu.png" alt="menu" />
       </Auth>
-      
-        
+
       {searchInput && (
         <Searchresults style={{ top: searchInput ? "85px" : "-200px" }}>
-          {isLoading ? <Spinner2/>:
-          <ul>
-            {searchResults.map((movie) => (
-              <Link
-                style={{ textDecoration: "none", color: "black" }}
-                to={`/movies/${movie.id}`}
-              >
-                <li
+          {isLoading ? (
+            <Spinner2 />
+          ) : (
+            <ul>
+              {searchResults.map((movie) => (
+                <Link
                   style={{ textDecoration: "none", color: "black" }}
-                  key={movie.id}
+                  to={`/movies/${movie.id}`}
                 >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                    alt={movie.title}
-                  />
-                  {movie.title}
-                </li>
-              </Link>
-            ))}
-          </ul> }
+                  <li
+                    style={{ textDecoration: "none", color: "black" }}
+                    key={movie.id}
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                    {movie.title}
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          )}
         </Searchresults>
       )}
     </Container>
