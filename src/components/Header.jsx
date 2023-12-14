@@ -56,7 +56,7 @@ const Description = styled.div`
   }
   p {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 700;
   }
   @media only screen and (max-width: 420px) {
     min-width: 100vw;
