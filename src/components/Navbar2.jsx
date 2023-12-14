@@ -5,7 +5,8 @@ import styled from "styled-components";
 import Spinner2 from "./Spinner2";
 
 const Container = styled.div`
-  display: none;
+  display: flex;
+  background: #be123c1a;
   @media only screen and (max-width: 420px) {
     padding: 5px;
     width: 100%;
@@ -13,7 +14,7 @@ const Container = styled.div`
     color: #ffffff;
     display: flex;
     justify-content: space-between;
-    z-index: 5;
+    z-index: 10;
     Link {
       text-decoration: none;
       p {
@@ -115,8 +116,8 @@ const Searchresults = styled.div`
   flex-direction: column;
   position: absolute;
   top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
-  left: 480px;
-  width: 500px;
+  left: 400px;
+  width: 550px;
   min-height: 50px;
   max-height: 200px;
   background-color: whitesmoke;
@@ -124,6 +125,7 @@ const Searchresults = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   transition: top 0.3s ease-in-out;
+  z-index: 10;
   /* Customize scrollbar */
   &::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
@@ -229,7 +231,7 @@ const Navbar2 = () => {
         <Searchbox>
           <input
             type="text"
-            placeholder="What do you want to watch?"
+            placeholder="Search Moviebox"
             value={searchInput}
             onChange={handleInputChange}
           />

@@ -6,8 +6,8 @@ import Spinner from "../components/Spinner";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
 import YouTube from "react-youtube";
-import { Helmet } from 'react-helmet';
-
+import { Helmet } from "react-helmet";
+import Navbar from "../components/Navbar";
 
 const LOCAL_STORAGE_KEY = "movieData";
 
@@ -16,6 +16,7 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
   overflow-x: hidden;
+  background-color: whitesmoke;
   @media only screen and (max-width: 420px) {
     flex-direction: column;
   }
@@ -30,6 +31,7 @@ const Sidebar = styled.div`
   background: #ffffff;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -63,10 +65,9 @@ const Logo = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  background: #ffffff;
-  padding: 20px;
-  margin-left: 20%;
+  width: 100%;
+  height: auto;
+  background: #f8e7eb;
   @media only screen and (max-width: 420px) {
     margin-left: 0px;
     padding: 0px;
@@ -125,8 +126,8 @@ const Promotion = styled.div`
   }
 `;
 const Poster = styled.div`
-  width: 100%;
-  height: 55vh;
+  width: 70%;
+  height: 70vh;
   margin-bottom: 20px;
   background-repeat: no-repeat;
   background-size: cover;
@@ -152,6 +153,7 @@ const Moviedetailsright = styled.div`
   flex-direction: column;
   @media only screen and (max-width: 420px) {
     width: 100%;
+    display: none;
   }
 `;
 const Top = styled.div`
@@ -166,6 +168,38 @@ const Top = styled.div`
     font-weight: 700;
     font-size: 16px;
     flex-wrap: wrap;
+  }
+`;
+const Top2 = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 23px;
+  margin-bottom: 10px;
+  padding: 5px 30px;
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    flex-wrap: wrap;
+    padding: 0px;
+  }
+`;
+const Top3 = styled.div`
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  gap: 5px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 5px 30px;
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    flex-wrap: wrap;
+    padding: 0px;
   }
 `;
 const Genrecard = styled.div`
@@ -183,6 +217,24 @@ const Genrecard = styled.div`
     font-size: 12px;
     flex-wrap: wrap;
     padding: 0px;
+  }
+`;
+const Genrecard2 = styled.div`
+  display: flex;
+  align-items: center;
+  width: 60%;
+  padding: 5px;
+  border-radius: 15px;
+  border: 1px solid #f8e7eb;
+  color: #be123c;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 23px;
+  @media only screen and (max-width: 420px) {
+    font-size: 12px;
+    flex-wrap: wrap;
+    padding: 10px;
+    width: 100%;
   }
 `;
 const Description = styled.p`
@@ -319,6 +371,7 @@ const Adbottom = styled.div`
   }
 `;
 const Omega = styled.div`
+  padding: 0px 30px;
   @media only screen and (max-width: 420px) {
     display: flex;
     flex-direction: column;
@@ -335,7 +388,9 @@ const Movie = () => {
   const [director, setDirector] = useState("");
   const [writers, setWriters] = useState([]);
   const [stars, setStars] = useState([]);
+  const [genres, setGenres] = useState([]);
 
+  // console.log(movieDetails)
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
     const hours = Math.floor(runtime / 60);
@@ -413,6 +468,20 @@ const Movie = () => {
     return null;
   };
 
+  // Fetch genres
+  axios
+    .get("https://api.themoviedb.org/3/genre/movie/list", {
+      params: {
+        api_key: "14526ed9b5bfe3871ae714ee0a0c7f07",
+        language: "en-US",
+      },
+    })
+    .then((genreResponse) => {
+      setGenres(genreResponse.data.genres);
+    })
+    .catch((genreError) => {
+      console.error("Error fetching genre data:", genreError);
+    });
   // Function to fetch star information
   const getStarsInfo = async (movieId) => {
     try {
@@ -476,7 +545,7 @@ const Movie = () => {
 
       if (response.status === 200) {
         // Set the fetched movie credits to the state
-        console.log(response.data);
+        // console.log(response.data);
         setMovieCredits(response.data);
       } else {
         // Handle error or return null if no credits are available
@@ -514,6 +583,15 @@ const Movie = () => {
         .then(async (response) => {
           // Set the fetched movie details to the state
           setMovieDetails(response.data);
+
+          // Fetch genres associated with the movie
+          const movieGenres = response.data.genres.map((genreId) => {
+            const genre = genres.find((g) => g.id === genreId);
+            return genre ? genre.name : "Unknown Genre";
+          });
+
+          // Set the genres to state
+          setGenres(movieGenres);
 
           // Convert release_date to UTC format
           const releaseDate = new Date(response.data.release_date);
@@ -574,10 +652,10 @@ const Movie = () => {
 
   return (
     <Container>
-     <Helmet>
+      <Helmet>
         <title>{movieDetails.title} - Official trailer</title>
       </Helmet>
-      <Sidebar>
+      {/* <Sidebar>
         <Logo>
           <Link to="/">
             <img src="/images/tv.png" alt="Movielogo" />
@@ -638,42 +716,82 @@ const Movie = () => {
           <img src="/images/Logout.png" alt="date" />
           <p>Log out</p>
         </Navcontent>
-      </Sidebar>
+      </Sidebar> */}
       {movieDetails ? (
         <Wrapper>
           <Navbar2 />
-          <Poster>
-            {trailerKey && (
-              <YouTube
-                videoId={trailerKey}
-                opts={{
-                  width: "100%",
-                  height: "100%",
-                  playerVars: {
-                    autoplay: 1,
-                  },
-                }}
-                style={{ width: "100%", height: "100%" }}
-              />
-            )}
-          </Poster>
-          <Omega style={{ display: "flex", width: "100%" }}>
-            <Moviedetails>
-              <Top>
-                <p data-testid="movie-title" style={{ marginRight: "20px" }}>
-                  {movieDetails.title}
-                </p>
-                <p
+          <Top3>
+            <h1 data-testid="movie-title" style={{ marginRight: "10px" }}>
+              {movieDetails.title}
+            </h1>
+            <p
                   data-testid="movie-release-date"
                   style={{ marginRight: "20px" }}
                 >
                   {releaseDate}
                 </p>
-              </Top>
+                <p data-testid="movie-runtime">Runtime:{runtime}</p>
+          </Top3>
+          <Top2>
+            <Poster>
+              {trailerKey && (
+                <YouTube
+                  videoId={trailerKey}
+                  opts={{
+                    width: "100%",
+                    height: "100%",
+                    playerVars: {
+                      autoplay: 1,
+                    },
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              )}
+            </Poster>
+            <Moviedetailsright>
               <Top>
-                <p data-testid="movie-runtime">{runtime}</p>
-                <Genrecard>Action</Genrecard>
-                <Genrecard>Drama</Genrecard>
+                <img
+                  style={{ width: "24px", height: "24px" }}
+                  src="/images/save.png"
+                  alt="heart"
+                />
+                <img src="/images/share2.png" alt="share" />
+                <img src="/images/bookmark2.png" alt="save" />
+                <img src="/images/Star (1).png" alt="heart" />
+                <p>8.5 </p>
+                <p>| 350k</p>
+              </Top>
+              <Button1>
+                {" "}
+                <img src="/images/Two Tickets.png" alt="ticket" /> See Showtimes
+              </Button1>
+              <Button2>
+                {" "}
+                <img src="/images/List.png" alt="list" /> More watch options
+              </Button2>
+              <Ads>
+                {" "}
+                <img src="/images/Rectangle 37.png" alt="ad" />
+                <Adbottom>
+                  <img src="/images/List.png" alt="list2" />
+                  <p>The Best Movies and Shows in September</p>
+                </Adbottom>
+              </Ads>
+            </Moviedetailsright>
+          </Top2>
+
+          <Omega style={{ display: "flex", width: "100%" }}>
+            <Moviedetails>
+             
+              <Top>
+                <div>
+                  <p>
+                    Genres:{" "}
+                    <Genrecard2>
+                      {genres.map((genre) => genre.name).join(", ")}
+                    </Genrecard2>
+                  </p>
+                </div>
               </Top>
               <Description>
                 <p
@@ -753,42 +871,13 @@ const Movie = () => {
                 </p>
               </Descbottom>
             </Moviedetails>
-            <Moviedetailsright>
-              <Top>
-                <img
-                  style={{ width: "24px", height: "24px" }}
-                  src="/images/save.png"
-                  alt="heart"
-                />
-                <img src="/images/share2.png" alt="share" />
-                <img src="/images/bookmark2.png" alt="save" />
-                <img src="/images/Star (1).png" alt="heart" />
-                <p>8.5 </p>
-                <p>| 350k</p>
-              </Top>
-              <Button1>
-                {" "}
-                <img src="/images/Two Tickets.png" alt="ticket" /> See Showtimes
-              </Button1>
-              <Button2>
-                {" "}
-                <img src="/images/List.png" alt="list" /> More watch options
-              </Button2>
-              <Ads>
-                {" "}
-                <img src="/images/Rectangle 37.png" alt="ad" />
-                <Adbottom>
-                  <img src="/images/List.png" alt="list2" />
-                  <p>The Best Movies and Shows in September</p>
-                </Adbottom>
-              </Ads>
-            </Moviedetailsright>
+
           </Omega>
+          <Footer />
         </Wrapper>
       ) : (
         <Spinner />
       )}
-      <Footer />
     </Container>
   );
 };
