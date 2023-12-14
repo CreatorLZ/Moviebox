@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 const GridContainer = styled.div`
   display: flex;
 `;
@@ -310,8 +312,10 @@ const PopularList = () => {
   return (
     <>
       <Slider {...settings}>
+        
         {movies.map((movie, index) => (
           <Card data-testid="movie-card" key={movie.id}>
+            
             <Link to={`/movies/${movie.id}`}>
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
@@ -398,9 +402,9 @@ const PopularList = () => {
               }}
             >
               {getGenresForMovie(movie.genre_ids).join(", ")}
-            </p>
+            </p> 
           </Card>
-        ))}
+        )) || <Skeleton/>}
       </Slider>
     </>
   );

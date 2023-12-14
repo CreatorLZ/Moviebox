@@ -387,7 +387,7 @@ const LatestList = () => {
               {getGenresForMovie(movie.genre_ids).join(", ")}
             </p>
           </Card>
-        ))}
+        ))|| <Skeleton/>}
       </Slider>
     </>
   );
