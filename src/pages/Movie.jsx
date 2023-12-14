@@ -6,6 +6,8 @@ import Spinner from "../components/Spinner";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
 import YouTube from "react-youtube";
+import { Helmet } from 'react-helmet';
+
 
 const LOCAL_STORAGE_KEY = "movieData";
 
@@ -572,6 +574,9 @@ const Movie = () => {
 
   return (
     <Container>
+     <Helmet>
+        <title>{movieDetails.title} - Official trailer</title>
+      </Helmet>
       <Sidebar>
         <Logo>
           <Link to="/">
