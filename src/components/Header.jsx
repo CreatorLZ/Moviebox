@@ -66,6 +66,10 @@ const Description = styled.div`
     h1{
       font-size: 24px;
     }
+    p {
+    font-size: 14px;
+    font-weight: 700;
+  }
   }
 `;
 
@@ -242,7 +246,7 @@ const Header = () => {
               />
               <p>97%</p>
             </Ratings>
-            <p>
+            <h5>
               {(() => {
                 const overview = movies[currentMovieIndex].overview;
                 const words = overview.split(' ');
@@ -255,7 +259,7 @@ const Header = () => {
                   return overview;
                 }
               })()}
-            </p>
+            </h5>
             <Link
               style={{ textDecoration: "none", color: "white" }}
               to={`/movies/${movies[currentMovieIndex].id}`}
