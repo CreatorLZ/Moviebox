@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 const GridContainer = styled.div`
   display: flex;
 `;
@@ -50,6 +52,10 @@ const Card = styled.div`
     :focus {
       outline: none;
     }
+  }
+  .skeleton-wrapper {
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -309,9 +315,12 @@ const MovieList = () => {
   };
   return (
     <>
+    <SkeletonTheme baseColor="#313131" highlightColor="#525252">
       <Slider {...settings}>
         {movies.map((movie, index) => (
           <Card data-testid="movie-card" key={movie.id}>
+            {movies.length > 0 ?  (
+              <>
             <Link to={`/movies/${movie.id}`}>
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
@@ -319,6 +328,7 @@ const MovieList = () => {
                 data-testid="movie-poster"
               />
             </Link>
+            
             {/* <Like
               style={{
                 width: "50px",
@@ -401,9 +411,15 @@ const MovieList = () => {
             >
               {getGenresForMovie(movie.genre_ids).join(", ")}
             </p>
+            </>)  : (
+              <div className="skeleton-wrapper">
+                <Skeleton height={200} count={1} />
+              </div>
+            )}
           </Card>
-        )) || <Skeleton/>}
+        )) }
       </Slider>
+      </SkeletonTheme>
     </>
   );
 };
