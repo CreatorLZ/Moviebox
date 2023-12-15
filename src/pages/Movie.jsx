@@ -251,6 +251,7 @@ const Genrecard = styled.div`
   font-size: 15px;
   font-weight: 700;
   line-height: 23px;
+  cursor: pointer;
   @media only screen and (max-width: 420px) {
     font-size: 12px;
     flex-wrap: wrap;
@@ -261,6 +262,7 @@ const Genrecard2 = styled.div`
   display: flex;
   align-items: center;
   width: fit-content;
+  flex-wrap: wrap;
   gap: 3px;
   @media only screen and (max-width: 420px) {
     display: none;
@@ -297,7 +299,7 @@ const Description = styled.p`
   }
 `;
 const Description2 = styled.div`
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 400;
   line-height: 30px;
   letter-spacing: 0em;
@@ -600,10 +602,10 @@ const Movie = () => {
 
     // Check if the data is already in localStorage
     const cachedMovieData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    console.log(cachedMovieData);
 
     if (cachedMovieData) {
       // If data is found in storage, set it to state
-      setMovieDetails(cachedMovieData);
       setIsLoading(false); // Set loading to false since data is already available
     } else {
       // If data is not found in localstorage

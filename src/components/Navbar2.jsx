@@ -67,7 +67,7 @@ const Search = styled.div`
       font-size: 16px;
       font-weight: 400;
     }
-    :focus {
+    &:focus {
       border: none;
       outline: none;
     }
@@ -89,10 +89,11 @@ const Searchbox = styled.div`
   padding: 10px;
   font-size: 30px;
   width: 60%;
-  border: 2px solid #ffffff;
+  border: 1px solid #ffffff;
   border-radius: 10px;
   background: rgba(128, 128, 128, 0.5);
   color: #ffffff;
+  
   img {
     object-fit: contain;
   }
@@ -105,10 +106,29 @@ const Auth = styled.div`
   align-items: center;
   gap: 20px;
   float: right;
+
+  p:first-child {
+    cursor: pointer;
+    &:hover {
+      padding: 5px 0px;
+      border-radius: 5px;
+      color: black;
+      background-color: rgba(146, 142, 142, 0.2);
+    }
+  }
   @media only screen and (max-width: 420px) {
     p {
       display: none;
     }
+  }
+`;
+const Div = styled.div`
+  width: fit-content;
+  padding: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(124, 122, 122, 0.2);
   }
 `;
 const Searchresults = styled.div`
@@ -248,8 +268,11 @@ const Navbar2 = () => {
         </Searchbox>
       </Search>
       <Auth>
-        <p>Sign in</p>
-        <img src="/images/Menu.png" alt="menu" />
+      <p>Sign in</p>
+        <Div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <img src="/images/Menu.png" alt="menu" />
+          <p>Menu</p>
+        </Div>
       </Auth>
 
       {searchInput && (
