@@ -7,6 +7,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+
+
 const GridContainer = styled.div`
   display: flex;
 `;
@@ -54,8 +56,11 @@ const Card = styled.div`
     }
   }
   .skeleton-wrapper {
-    width: 100%;
+    width: 270px;
     height: 100%;
+    @media only screen and (max-width: 420px) {
+      width: 160px;
+    }
   }
 `;
 
@@ -166,6 +171,8 @@ const PopularList = () => {
   const [likedMovies, setLikedMovies] = useState([]);
   const [goToMovie, setGoToMovie] = useState(false);
   const [optionsVisibility, setOptionsVisibility] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
 
  
   useEffect(() => {
@@ -203,9 +210,10 @@ const PopularList = () => {
       .then((response) => {
         const topMovies = response.data.results;
         setMovies(topMovies);
+        setIsLoading(false);
         // Initialize likedMovies with all values set to false
         setLikedMovies(Array(topMovies.length).fill(false));
-
+        
         // Fetch genres
         axios
           .get("https://api.themoviedb.org/3/genre/movie/list", {
@@ -223,6 +231,7 @@ const PopularList = () => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setIsLoading(true);
       });
   }, []);
 
@@ -313,6 +322,7 @@ const PopularList = () => {
       },
     ],
   };
+  
   return (
     <>
     <SkeletonTheme baseColor="#313131" highlightColor="#525252">
@@ -321,7 +331,7 @@ const PopularList = () => {
         
         {movies.map((movie, index) => (
           <Card data-testid="movie-card" key={movie.id}>
-             {movies.length > 0 ?  (
+             {movies.length > 0 && isLoading === false ?  (
               <>
             <Link to={`/movies/${movie.id}`}>
               <img
@@ -411,9 +421,11 @@ const PopularList = () => {
               {getGenresForMovie(movie.genre_ids).join(", ")}
             </p> 
             </>)  : (
+            
               <div className="skeleton-wrapper">
                 <Skeleton height={200} count={1} />
               </div>
+              
             )}
           </Card>
         ))}

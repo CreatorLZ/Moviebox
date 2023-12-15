@@ -154,6 +154,7 @@ const LatestList = () => {
   const [likedMovies, setLikedMovies] = useState([]);
   const [goToMovie, setGoToMovie] = useState(false);
   const [optionsVisibility, setOptionsVisibility] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Initialize optionsVisibility array with false values for each card
@@ -190,6 +191,7 @@ const LatestList = () => {
       .then((response) => {
         const topMovies = response.data.results.slice(0, 10);
         setMovies(topMovies);
+        setIsLoading(false);
         console.log(topMovies[0]);
         // Initialize likedMovies with all values set to false
         setLikedMovies(Array(topMovies.length).fill(false));
@@ -211,6 +213,7 @@ const LatestList = () => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setIsLoading(true);
       });
   }, []);
 
@@ -301,12 +304,15 @@ const LatestList = () => {
       },
     ],
   };
+  console.log(movies.length)
+  console.log(isLoading)
   return (
     <>
+        <SkeletonTheme baseColor="#313131" highlightColor="#525252">
       <Slider {...settings}>
         {movies.map((movie, index) => (
           <Card data-testid="movie-card" key={movie.id}>
-             {movies.length > 0 ?  (
+             {movies.length > 0 && isLoading === false ?(
               <>
             <Link to={`/movies/${movie.id}`}>
               <img
@@ -401,6 +407,7 @@ const LatestList = () => {
           </Card>
         ))|| <Skeleton/>}
       </Slider>
+      </SkeletonTheme>
     </>
   );
 };

@@ -134,8 +134,9 @@ const Poster = styled.div`
   position: relative;
 
   @media only screen and (max-width: 420px) {
-    height: 30vh;
+    height: 40vh;
     width: 100%;
+    margin-bottom: 0px;
   }
 `;
 
@@ -200,6 +201,24 @@ const Top3 = styled.div`
     font-size: 16px;
     flex-wrap: wrap;
     padding: 0px;
+    display: none;
+  }
+`;
+const Top4 = styled.div`
+  display: none;
+  /* align-items: center; */
+  flex-direction: column;
+  gap: 5px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 5px 30px;
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    flex-wrap: wrap;
+    padding: 0px;
+    display: flex;
   }
 `;
 const Genrecard = styled.div`
@@ -748,6 +767,18 @@ const Movie = () => {
                 />
               )}
             </Poster>
+            <Top4>
+            <h1 data-testid="movie-title" style={{ marginRight: "10px" }}>
+              {movieDetails.title}
+            </h1>
+            <p
+                  data-testid="movie-release-date"
+                  style={{ marginRight: "20px" }}
+                >
+                  {releaseDate}
+                </p>
+                <p data-testid="movie-runtime">Runtime:{runtime}</p>
+          </Top4>
             <Moviedetailsright>
               <Top>
                 <img
