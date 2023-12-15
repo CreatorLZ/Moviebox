@@ -127,8 +127,7 @@ const Promotion = styled.div`
 `;
 const Poster = styled.div`
   width: 70%;
-  height: 70vh;
-  margin-bottom: 20px;
+  height: 80vh;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -155,6 +154,23 @@ const Moviedetailsright = styled.div`
   @media only screen and (max-width: 420px) {
     width: 100%;
     display: none;
+  }
+`;
+const Details = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  p {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    flex-wrap: wrap;
   }
 `;
 const Top = styled.div`
@@ -217,7 +233,7 @@ const Top4 = styled.div`
     font-weight: 700;
     font-size: 16px;
     flex-wrap: wrap;
-    padding: 0px;
+    padding: 0px 10px;
     display: flex;
   }
 `;
@@ -390,13 +406,19 @@ const Adbottom = styled.div`
   }
 `;
 const Omega = styled.div`
-  padding: 0px 30px;
+  padding: 10px 30px;
   @media only screen and (max-width: 420px) {
     display: flex;
     flex-direction: column;
     padding: 10px;
   }
 `;
+const MovieImg = styled.img`
+  display: flex;
+  @media only screen and (max-width: 420px) {
+   display: none;
+  }
+`
 const Movie = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -668,7 +690,6 @@ const Movie = () => {
     // Render loading or error state while fetching data
     return <Spinner />;
   }
-
   return (
     <Container>
       <Helmet>
@@ -739,19 +760,14 @@ const Movie = () => {
       {movieDetails ? (
         <Wrapper>
           <Navbar2 />
-          <Top3>
-            <h1 data-testid="movie-title" style={{ marginRight: "10px" }}>
-              {movieDetails.title}
-            </h1>
-            <p
-                  data-testid="movie-release-date"
-                  style={{ marginRight: "20px" }}
-                >
-                  {releaseDate}
-                </p>
-                <p data-testid="movie-runtime">Runtime:{runtime}</p>
-          </Top3>
+
           <Top2>
+            <MovieImg
+              style={{ height: "80vh" }}
+              src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
+              alt={movieDetails.title}
+              data-testid="movie-poster"
+            />
             <Poster>
               {trailerKey && (
                 <YouTube
@@ -768,31 +784,77 @@ const Movie = () => {
               )}
             </Poster>
             <Top4>
-            <h1 data-testid="movie-title" style={{ marginRight: "10px" }}>
-              {movieDetails.title}
-            </h1>
-            <p
-                  data-testid="movie-release-date"
-                  style={{ marginRight: "20px" }}
-                >
-                  {releaseDate}
-                </p>
-                <p data-testid="movie-runtime">Runtime:{runtime}</p>
-          </Top4>
+              <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
+                {movieDetails.title}
+              </h3>
+              <p
+                data-testid="movie-release-date"
+                style={{ marginRight: "20px" }}
+              >
+                {releaseDate}
+              </p>
+              <p data-testid="movie-runtime">Runtime: <span style={{fontSize:"14px", fontWeight:"400"}}>{runtime}</span></p>
+            </Top4>
             <Moviedetailsright>
-              <Top>
-                <img
+              <Details>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <h4 data-testid="movie-title" style={{ marginRight: "10px" }}>
+                    {movieDetails.title}
+                  </h4>
+                  <p
+                    data-testid="movie-release-date"
+                    style={{ marginRight: "20px" }}
+                  >
+                    {releaseDate}
+                  </p>
+                  <p data-testid="movie-runtime">
+                    Runtime:{" "}
+                    <span style={{ fontWeight: "normal" }}>{runtime}</span>
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "10px 0px",
+                      cursor: "pointer",
+                      backgroundColor:"#be123c1a"
+                    }}
+                  >
+                    <img
+                      style={{ width: "24px", height: "24px" }}
+                      src="/images/add.png"
+                      alt="add"
+                    />
+                    <p>Add to watchlist</p>
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {/* <img
                   style={{ width: "24px", height: "24px" }}
                   src="/images/save.png"
                   alt="heart"
                 />
                 <img src="/images/share2.png" alt="share" />
-                <img src="/images/bookmark2.png" alt="save" />
-                <img src="/images/Star (1).png" alt="heart" />
-                <p>8.5 </p>
-                <p>| 350k</p>
-              </Top>
-              <Button1>
+                <img src="/images/bookmark2.png" alt="save" /> */}
+                  <p style={{ fontSize: "14px", fontWeight: "normal" }}>
+                    {" "}
+                    Added by 8.5K users
+                  </p>
+                </div>
+               <h5 style={{paddingTop:"15px"}}>Synopsis: </h5>
+                <p
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    lineHeight: "30px",
+                  }}
+                  data-testid="movie-overview"
+                >
+                  {movieDetails.overview}
+                </p>
+              
+              </Details>
+              {/* <Button1>
                 {" "}
                 <img src="/images/Two Tickets.png" alt="ticket" /> See Showtimes
               </Button1>
@@ -807,17 +869,20 @@ const Movie = () => {
                   <img src="/images/List.png" alt="list2" />
                   <p>The Best Movies and Shows in September</p>
                 </Adbottom>
-              </Ads>
+              </Ads> */}
             </Moviedetailsright>
           </Top2>
 
           <Omega style={{ display: "flex", width: "100%" }}>
             <Moviedetails>
-             
               <Top>
                 <div>
+                <p style={{
+                    fontSize: "18px",
+                    fontWeight: "700",
+                  }}>Genres:</p>
                   <p>
-                    Genres:{" "}
+                    
                     <Genrecard2>
                       {genres.map((genre) => genre.name).join(", ")}
                     </Genrecard2>
@@ -825,9 +890,13 @@ const Movie = () => {
                 </div>
               </Top>
               <Description>
+                <p style={{
+                    fontSize: "18px",
+                    fontWeight: "700",
+                  }}>Synopsis:</p>
                 <p
                   style={{
-                    fontSize: "18px",
+                    fontSize: "16px",
                     fontWeight: "400",
                     lineHeight: "30px",
                   }}
@@ -902,7 +971,6 @@ const Movie = () => {
                 </p>
               </Descbottom>
             </Moviedetails>
-
           </Omega>
           <Footer />
         </Wrapper>
