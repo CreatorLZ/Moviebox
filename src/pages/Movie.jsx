@@ -148,9 +148,10 @@ const Moviedetails = styled.div`
 `;
 const Moviedetailsright = styled.div`
   width: 350px;
-  height: 100%;
+  height: 80vh;
   display: flex;
   flex-direction: column;
+  padding-left:10px;
   @media only screen and (max-width: 420px) {
     width: 100%;
     display: none;
@@ -185,6 +186,7 @@ const Top = styled.div`
     font-weight: 700;
     font-size: 16px;
     flex-wrap: wrap;
+    display: none;
   }
 `;
 const Top2 = styled.div`
@@ -235,6 +237,7 @@ const Top4 = styled.div`
     flex-wrap: wrap;
     padding: 0px 10px;
     display: flex;
+    margin-bottom: 0px;
   }
 `;
 const Genrecard = styled.div`
@@ -243,7 +246,7 @@ const Genrecard = styled.div`
   width: fit-content;
   padding: 5px;
   border-radius: 15px;
-  border: 1px solid #f8e7eb;
+  border: 1px solid #be123c;
   color: #be123c;
   font-size: 15px;
   font-weight: 700;
@@ -251,25 +254,27 @@ const Genrecard = styled.div`
   @media only screen and (max-width: 420px) {
     font-size: 12px;
     flex-wrap: wrap;
-    padding: 0px;
+    padding: 3px;
   }
 `;
 const Genrecard2 = styled.div`
   display: flex;
   align-items: center;
-  width: 60%;
-  padding: 5px;
-  border-radius: 15px;
-  border: 1px solid #f8e7eb;
-  color: #be123c;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 23px;
+  width: fit-content;
+  gap: 3px;
   @media only screen and (max-width: 420px) {
-    font-size: 12px;
-    flex-wrap: wrap;
-    padding: 10px;
-    width: 100%;
+    display: none;
+    gap: 3px;
+  }
+`;
+const Genrecard3 = styled.div`
+  display: none;
+  align-items: center;
+  width: fit-content;
+  gap: 3px;
+  @media only screen and (max-width: 420px) {
+    display: flex;
+    gap: 3px;
   }
 `;
 const Description = styled.p`
@@ -418,9 +423,9 @@ const Omega = styled.div`
 const MovieImg = styled.img`
   display: flex;
   @media only screen and (max-width: 420px) {
-   display: none;
+    display: none;
   }
-`
+`;
 const Movie = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -432,7 +437,7 @@ const Movie = () => {
   const [writers, setWriters] = useState([]);
   const [stars, setStars] = useState([]);
   const [genres, setGenres] = useState([]);
-
+  const [genres2, setGenres2] = useState([]);
   // console.log(movieDetails)
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
@@ -511,20 +516,7 @@ const Movie = () => {
     return null;
   };
 
-  // Fetch genres
-  axios
-    .get("https://api.themoviedb.org/3/genre/movie/list", {
-      params: {
-        api_key: "14526ed9b5bfe3871ae714ee0a0c7f07",
-        language: "en-US",
-      },
-    })
-    .then((genreResponse) => {
-      setGenres(genreResponse.data.genres);
-    })
-    .catch((genreError) => {
-      console.error("Error fetching genre data:", genreError);
-    });
+
   // Function to fetch star information
   const getStarsInfo = async (movieId) => {
     try {
@@ -626,15 +618,7 @@ const Movie = () => {
         .then(async (response) => {
           // Set the fetched movie details to the state
           setMovieDetails(response.data);
-
-          // Fetch genres associated with the movie
-          const movieGenres = response.data.genres.map((genreId) => {
-            const genre = genres.find((g) => g.id === genreId);
-            return genre ? genre.name : "Unknown Genre";
-          });
-
-          // Set the genres to state
-          setGenres(movieGenres);
+        
 
           // Convert release_date to UTC format
           const releaseDate = new Date(response.data.release_date);
@@ -789,13 +773,23 @@ const Movie = () => {
               <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
                 {movieDetails.title}
               </h3>
+              <Genrecard3>
+                {movieDetails.genres.map((genre) => (
+                  <Genrecard key={genre.id}>{genre.name}</Genrecard>
+                ))}
+              </Genrecard3>
               <p
                 data-testid="movie-release-date"
                 style={{ marginRight: "20px" }}
               >
                 {releaseDate}
               </p>
-              <p data-testid="movie-runtime">Runtime: <span style={{fontSize:"14px", fontWeight:"400"}}>{runtime}</span></p>
+              <p data-testid="movie-runtime">
+                Runtime:{" "}
+                <span style={{ fontSize: "14px", fontWeight: "400" }}>
+                  {runtime}
+                </span>
+              </p>
             </Top4>
             <Moviedetailsright>
               <Details>
@@ -803,6 +797,11 @@ const Movie = () => {
                   <h4 data-testid="movie-title" style={{ marginRight: "10px" }}>
                     {movieDetails.title}
                   </h4>
+                  <Genrecard2>
+                    {movieDetails.genres.map((genre) => (
+                      <Genrecard key={genre.id}>{genre.name}</Genrecard>
+                    ))}
+                  </Genrecard2>
                   <p
                     data-testid="movie-release-date"
                     style={{ marginRight: "20px" }}
@@ -819,7 +818,7 @@ const Movie = () => {
                       alignItems: "center",
                       padding: "10px 0px",
                       cursor: "pointer",
-                      backgroundColor:"#be123c1a"
+                      backgroundColor: "#be123c1a",
                     }}
                   >
                     <img
@@ -843,7 +842,7 @@ const Movie = () => {
                     Added by 8.5K users
                   </p>
                 </div>
-               <h5 style={{paddingTop:"15px"}}>Synopsis: </h5>
+                <h5 style={{ paddingTop: "5px" }}>Synopsis: </h5>
                 <p
                   style={{
                     fontSize: "18px",
@@ -854,7 +853,6 @@ const Movie = () => {
                 >
                   {movieDetails.overview}
                 </p>
-              
               </Details>
               {/* <Button1>
                 {" "}
@@ -878,24 +876,21 @@ const Movie = () => {
           <Omega style={{ display: "flex", width: "100%" }}>
             <Moviedetails>
               <Top>
-                <div>
-                <p style={{
-                    fontSize: "18px",
-                    fontWeight: "700",
-                  }}>Genres:</p>
-                  <p>
-                    
-                    <Genrecard2>
-                      {genres.map((genre) => genre.name).join(", ")}
-                    </Genrecard2>
-                  </p>
-                </div>
+                <Genrecard2>
+                  {movieDetails.genres.map((genre) => (
+                    <Genrecard key={genre.id}>{genre.name}</Genrecard>
+                  ))}
+                </Genrecard2>
               </Top>
               <Description>
-                <p style={{
+                <p
+                  style={{
                     fontSize: "18px",
                     fontWeight: "700",
-                  }}>Synopsis:</p>
+                  }}
+                >
+                  Synopsis:
+                </p>
                 <p
                   style={{
                     fontSize: "16px",
@@ -909,12 +904,29 @@ const Movie = () => {
               </Description>
               <Description2>
                 <p>
-                  Director : <span>{director ? director : "Not Found"}</span>{" "}
+                  <span
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: "700",
+                      color: "black",
+                    }}
+                  >
+                    Directors:{" "}
+                  </span>{" "}
+                  <span>{director ? director : "Not Found"}</span>{" "}
                 </p>
                 {Array.isArray(writers) ? (
                   <div>
                     <p>
-                      Writers:{" "}
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "700",
+                          color: "black",
+                        }}
+                      >
+                        Writers:{" "}
+                      </span>
                       <span>
                         {writers.map((writer) => writer.name).join(", ")}
                       </span>
@@ -926,7 +938,15 @@ const Movie = () => {
                 {Array.isArray(stars) ? (
                   <div>
                     <p>
-                      Stars:{" "}
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "700",
+                          color: "black",
+                        }}
+                      >
+                        Stars: {" "}
+                      </span>
                       <span>
                         {stars
                           .slice(0, 4)
