@@ -281,8 +281,10 @@ const Description = styled.p`
   width: 744px;
   margin-bottom: 20px;
   flex-wrap: wrap;
+  display: none;
   @media only screen and (max-width: 420px) {
     width: 100%;
+    display: flex;
     text-align: left;
     width: 100%;
     font-size: 12px;
