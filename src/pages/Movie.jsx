@@ -22,46 +22,6 @@ const Container = styled.div`
   }
 `;
 
-const Sidebar = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20%;
-  height: 100vh;
-  background: #ffffff;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border: 1px solid gray;
-  @media only screen and (max-width: 420px) {
-    width: 15%;
-    border-radius: 0px;
-    display: none;
-  }
-`;
-
-const Logo = styled.div`
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  font-weight: normal;
-  img {
-    margin: 20px;
-    border: 50%;
-    object-fit: cover;
-  }
-  @media only screen and (max-width: 420px) {
-    img {
-      padding: 5px;
-    }
-    h4 {
-      display: none;
-    }
-  }
-`;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -75,41 +35,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Navcontent = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0px 60px;
-  width: 100%;
-  height: 66px;
-  font-weight: 600;
-  font-size: 20px;
-
-  &:hover {
-    background: #be123c1a;
-    border-right: 2px solid #be123c;
-    cursor: pointer;
-  }
-  img {
-    padding-right: 20px;
-  }
-  @media only screen and (max-width: 420px) {
-    p {
-      display: none;
-    }
-    justify-content: center;
-    &:hover {
-      background: transparent;
-      border-right: none;
-      cursor: pointer;
-    }
-    img {
-      padding-right: 0;
-      :hover {
-        transform: scale(1.1);
-      }
-    }
-  }
-`;
 const Promotion = styled.div`
   width: 170px;
   height: 200px;
@@ -162,6 +87,7 @@ const Details = styled.div`
   flex-direction: column;
   gap: 5px;
   font-weight: 700;
+  z-index: 10;
   margin-bottom: 10px;
   p {
     font-size: 16px;
@@ -172,6 +98,25 @@ const Details = styled.div`
     font-weight: 700;
     font-size: 16px;
     flex-wrap: wrap;
+  }
+`;
+const Actors = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+padding: 40px;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 23px;
+  margin-bottom: 10px;
+  @media only screen and (max-width: 420px) {
+    width: 100%;
+    font-weight: 700;
+    font-size: 18px;
+    flex-wrap: wrap;
+    display: flex;
+    overflow-x: scroll;
+    padding: 20px;
   }
 `;
 const Top = styled.div`
@@ -434,6 +379,37 @@ const MovieImg2 = styled.img`
     display: flex;
   }
 `;
+const ProductionLogo = styled.img`
+  width: 50px;
+  height: auto;
+  object-fit: cover;
+`
+
+const CastProfile = styled.img`
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  @media only screen and (max-width: 420px) {
+    width: 100px;
+    height: 100px;
+  }
+`;
+const CastGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; // gap between images 
+  overflow-x: auto; 
+  white-space: nowrap; 
+  @media only screen and (max-width: 420px) {
+    display: flex;
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    div{
+      flex-direction: column;
+    }
+  }
+`;
 const Movie = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -543,6 +519,7 @@ const Movie = () => {
           name: star.name,
           profilePath: star.profile_path,
         }));
+        console.log(stars);
         return stars;
       } else {
         return null;
@@ -692,68 +669,6 @@ const Movie = () => {
       <Helmet>
         <title>{movieDetails.title} - Official trailer</title>
       </Helmet>
-      {/* <Sidebar>
-        <Logo>
-          <Link to="/">
-            <img src="/images/tv.png" alt="Movielogo" />
-          </Link>
-          <h4>MovieBox</h4>
-        </Logo>
-        <Navcontent>
-          {" "}
-          <img src="/images/Home.png" alt="home" />
-          <p>Home</p>
-        </Navcontent>
-        <Navcontent>
-          {" "}
-          <img src="/images/Movie Projector.png" alt="movie" />
-          <p>Movies</p>
-        </Navcontent>
-        <Navcontent>
-          <img src="/images/TV Show.png" alt="show" />
-          <p>TV Series</p>
-        </Navcontent>
-        <Navcontent>
-          <img src="/images/Calendar.png" alt="date" />
-          <p>Upcoming</p>
-        </Navcontent>
-        <Promotion>
-          <p
-            style={{
-              fontWeight: "600",
-              fontSize: "15px",
-              lineHeight: "22.5px",
-              paddingBottom: "10px",
-            }}
-          >
-            Play movie quizes and earn free tickets
-          </p>
-          <p
-            style={{
-              fontWeight: "500",
-              fontSize: "12px",
-              lineHeight: "18px",
-              color: "#666666",
-              paddingBottom: "10px",
-            }}
-          >
-            50k people are playing now
-          </p>
-          <Genrecard
-            style={{
-              background: "#be123c1a",
-              fontSize: "12px",
-              padding: "5px 20px",
-            }}
-          >
-            Start playing
-          </Genrecard>
-        </Promotion>
-        <Navcontent>
-          <img src="/images/Logout.png" alt="date" />
-          <p>Log out</p>
-        </Navcontent>
-      </Sidebar> */}
       {movieDetails ? (
         <Wrapper>
           <Navbar2 />
@@ -766,7 +681,7 @@ const Movie = () => {
               data-testid="movie-poster"
             />
             <Poster>
-              {trailerKey && (
+              {trailerKey ? (
                 <YouTube
                   videoId={trailerKey}
                   opts={{
@@ -778,12 +693,15 @@ const Movie = () => {
                   }}
                   style={{ width: "100%", height: "100%" }}
                 />
-              )}
+              ): <Spinner/>}
             </Poster>
             <Top4>
               <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
                 {movieDetails.title}
               </h3>
+              <p style={{ fontSize: "14px", fontWeight: "400" }}>
+                 {movieDetails.tagline}
+                </p>
               <Genrecard3>
                 {movieDetails.genres.map((genre) => (
                   <Genrecard key={genre.id}>{genre.name}</Genrecard>
@@ -793,7 +711,10 @@ const Movie = () => {
                 data-testid="movie-release-date"
                 style={{ marginRight: "20px" }}
               >
-                {releaseDate}
+                Release date:{" "}
+                <span style={{ fontSize: "14px", fontWeight: "400" }}>
+                 {releaseDate}
+                </span>
               </p>
               <p data-testid="movie-runtime">
                 Runtime:{" "}
@@ -808,6 +729,9 @@ const Movie = () => {
                   <h4 data-testid="movie-title" style={{ marginRight: "10px" }}>
                     {movieDetails.title}
                   </h4>
+                  <p style={{ fontSize: "14px", fontWeight: "400", paddingBottom:"5px" }}>
+                 {movieDetails.tagline}
+                </p>
                   <Genrecard2>
                     {movieDetails.genres.map((genre) => (
                       <Genrecard key={genre.id}>{genre.name}</Genrecard>
@@ -817,7 +741,8 @@ const Movie = () => {
                     data-testid="movie-release-date"
                     style={{ marginRight: "20px" }}
                   >
-                    {releaseDate}
+                    Release date:{" "}
+                    <span style={{ fontWeight: "normal" }}>{releaseDate}</span>
                   </p>
                   <p data-testid="movie-runtime">
                     Runtime:{" "}
@@ -840,7 +765,7 @@ const Movie = () => {
                     <p>Add to watchlist</p>
                   </div>
                 </div>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center",paddingBottom:"20px" }}>
                   {/* <img
                   style={{ width: "24px", height: "24px" }}
                   src="/images/save.png"
@@ -853,6 +778,18 @@ const Movie = () => {
                     Added by 8.5K users
                   </p>
                 </div>
+                <Genrecard2>
+                
+                {movieDetails.production_companies.map((company) => (
+                company.logo_path ? (
+                  <ProductionLogo
+                    src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
+                    alt={company.name}
+                    key={company.id}
+                  />
+                ) : null
+              ))}
+                </Genrecard2>
                 <h5 style={{ paddingTop: "5px" }}>Synopsis: </h5>
                 <p
                   style={{
@@ -1031,6 +968,18 @@ const Movie = () => {
                 ) : (
                   <span>No star information found for the movie.</span>
                 )}
+                <Genrecard3>
+                
+              {movieDetails.production_companies.map((company) => (
+              company.logo_path ? (
+                <ProductionLogo
+                  src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
+                  alt={company.name}
+                  key={company.id}
+                />
+              ) : null
+            ))}
+              </Genrecard3>
               </Description2>
               <Descbottom>
                 <p
@@ -1065,6 +1014,22 @@ const Movie = () => {
               </Descbottom>
             </Moviedetails>
           </Omega>
+          <Actors style={{background:"whitesmoke"}}>
+          <h2 style={{  color: "#be123c", borderLeft:"5px solid #be123c",padding:"10px" }}>Top cast</h2>
+            
+            <CastGrid>
+              {stars.map((actor) => (
+                <div key={actor.id} style={{display:"flex", alignItems:"center",gap:"10px"}}>
+                  <CastProfile
+                    src={`https://image.tmdb.org/t/p/w500${actor.profilePath}`}
+                    alt={actor.name}
+                  />
+                  <h6>{actor.name}</h6>
+                </div>
+              ))}
+            </CastGrid>
+          
+          </Actors>
           <Footer />
         </Wrapper>
       ) : (
