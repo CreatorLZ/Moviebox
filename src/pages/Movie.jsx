@@ -862,7 +862,37 @@ const Movie = () => {
                   }}
                   data-testid="movie-overview"
                 >
-                  {movieDetails.overview}
+                   {showFullOverview
+              ? movieDetails.overview
+              : `${movieDetails.overview
+                  .split(" ")
+                  .slice(0, overviewWordsLimit)
+                  .join(" ")}...`}
+            {!showFullOverview && (
+              <span
+                style={{
+                  color: "#be123c",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={() => setShowFullOverview(true)}
+              >
+                Show more
+              </span>
+            )}
+            {showFullOverview && (
+              <span
+                style={{
+                  color: "#be123c",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  zIndex:"10"
+                }}
+                onClick={() => setShowFullOverview(false)}
+              >
+                Show less
+              </span>
+            )}
                 </p>
               </Details>
               {/* <Button1>
