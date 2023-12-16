@@ -444,8 +444,10 @@ const Movie = () => {
   const [director, setDirector] = useState("");
   const [writers, setWriters] = useState([]);
   const [stars, setStars] = useState([]);
-  const [genres, setGenres] = useState([]);
-  const [genres2, setGenres2] = useState([]);
+  const [showFullOverview, setShowFullOverview] = useState(false);
+
+
+  const overviewWordsLimit = 20;
   // console.log(movieDetails)
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
@@ -909,7 +911,36 @@ const Movie = () => {
                   }}
                   data-testid="movie-overview"
                 >
-                  {movieDetails.overview}
+                  {showFullOverview
+              ? movieDetails.overview
+              : `${movieDetails.overview
+                  .split(" ")
+                  .slice(0, overviewWordsLimit)
+                  .join(" ")}...`}
+            {!showFullOverview && (
+              <span
+                style={{
+                  color: "#be123c",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={() => setShowFullOverview(true)}
+              >
+                Show more
+              </span>
+            )}
+            {showFullOverview && (
+              <span
+                style={{
+                  color: "#be123c",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={() => setShowFullOverview(false)}
+              >
+                Show less
+              </span>
+            )}
                 </p>
               </Description>
               <Description2>
