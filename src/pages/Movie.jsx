@@ -279,7 +279,7 @@ const Genrecard3 = styled.div`
     gap: 3px;
   }
 `;
-const Description = styled.p`
+const Description = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: 30px;
@@ -426,6 +426,12 @@ const MovieImg = styled.img`
   display: flex;
   @media only screen and (max-width: 420px) {
     display: none;
+  }
+`;
+const MovieImg2 = styled.img`
+  display: none;
+  @media only screen and (max-width: 420px) {
+    display: flex;
   }
 `;
 const Movie = () => {
@@ -678,6 +684,7 @@ const Movie = () => {
     // Render loading or error state while fetching data
     return <Spinner />;
   }
+  console.log(movieDetails);
   return (
     <Container>
       <Helmet>
@@ -884,20 +891,21 @@ const Movie = () => {
                   ))}
                 </Genrecard2>
               </Top>
-              <Description>
-                <p
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "700",
-                  }}
-                >
-                  Synopsis:
-                </p>
+              {/* moviedetails for mobile below */}
+              <Description> 
+              <MovieImg2
+              style={{ height: "40vh",paddingRight:"10px" }}
+              src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
+              alt={movieDetails.title}
+              data-testid="movie-poster"
+            />
+                
                 <p
                   style={{
                     fontSize: "16px",
                     fontWeight: "400",
                     lineHeight: "30px",
+                    width:"50%"
                   }}
                   data-testid="movie-overview"
                 >
