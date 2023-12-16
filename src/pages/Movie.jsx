@@ -447,7 +447,7 @@ const Movie = () => {
   const [showFullOverview, setShowFullOverview] = useState(false);
 
 
-  const overviewWordsLimit = 20;
+  const overviewWordsLimit = 40;
   // console.log(movieDetails)
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
