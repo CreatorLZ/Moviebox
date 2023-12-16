@@ -926,7 +926,7 @@ const Movie = () => {
               {/* moviedetails for mobile below */}
               <Description> 
               <MovieImg2
-              style={{ height: "40vh",paddingRight:"10px" }}
+              style={{ height: "40vh",paddingRight:"4px", width:"50%" }}
               src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
               alt={movieDetails.title}
               data-testid="movie-poster"
