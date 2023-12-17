@@ -155,11 +155,10 @@ const Div = styled.div`
 `;
 const Menu = styled.div`
   position: absolute;
-  top: ${({ isOpen }) => (isOpen ? "0%" : "-100%")};
+  top: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
   z-index: 20;
   left: 0;
-  transition: top 1s ease-in-out, transform 1s ease-in-out;
-  transform: translateY(${({ isOpen }) => (isOpen ? "0%" : "-100%")});
+  transition: 650ms;
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
@@ -170,13 +169,27 @@ const Menu = styled.div`
     height: 100vh;
     width: 70%;
     z-index: 20;
-    opacity: 20;
     overflow: scroll;
     right: ${({ isOpen }) => (isOpen ? "0" : "100%")}; 
     top: 0;
   }
 `;
-
+const Overlay = styled.div`
+position: fixed;
+top: 0;
+right: ${({isOpen}) => (isOpen ? '0' : '-100%')};
+width: 30%;
+height: 100%;
+z-index: 10;
+display: none;
+background-color: rgba(0, 0, 0, 0.1);
+transition: 650ms;
+backdrop-filter: blur(2px);
+@media only screen and (max-width: 420px) {
+   display: flex;
+   z-index: 10;
+  }
+`;
 const Menuwrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -649,6 +662,7 @@ const Navbar = () => {
             </Topbody>
           </Menubody>
         </Menuwrapper>
+        <Overlay isOpen={isMenuOpen} onClick={toggleMenu} />
       </Menu>
     </Container>
   );
