@@ -11,7 +11,7 @@ const Container = styled.div`
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  transition: all 0.5s ease-in-out;
+  transition: 650ms;
   z-index: 5;
   Link {
     text-decoration: none;
@@ -157,6 +157,7 @@ const Menu = styled.div`
   position: absolute;
   top: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
   z-index: 20;
+  box-sizing: border-box;
   left: 0;
   transition: 650ms;
   width: 100vw;
@@ -196,6 +197,7 @@ const Menuwrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 50px 170px;
+  transition: 650ms;
   @media only screen and (max-width: 420px) {
     padding: 10px;
   }
