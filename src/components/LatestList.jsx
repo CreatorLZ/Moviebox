@@ -253,7 +253,7 @@ const LatestList = () => {
         className={className}
         style={{
           ...style,
-          display: "flex",
+          display: "none",
           alignItems: "center",
           justifyContent: "center",
           background: "rgba(109, 107, 107, 0.2)",

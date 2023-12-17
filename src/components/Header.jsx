@@ -21,6 +21,7 @@ const Container = styled.div`
     background-size: 100% 100%;
     background-position: center;
     min-height: 60vh;
+    transition: all 0.5s ease-in-out;
   }
 `;
 
@@ -29,6 +30,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 90%;
   background: transparent;
+  transition: all 0.5s ease-in-out;
   float: left;
   @media only screen and (max-width: 420px) {
     height: 50%;
