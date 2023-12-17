@@ -316,7 +316,13 @@ const Topitem2 = styled.div`
   display: none;
   align-items: center;
   gap: 10px;
-  padding-bottom: 20px;
+  padding: 20px;
+  width: 100%;
+  transition: 150ms ease-in-out;
+  &:hover{
+    border-left:3px solid white;
+
+  }
   img {
     width: 20px;
     height: 20px;
