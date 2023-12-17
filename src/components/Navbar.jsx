@@ -154,11 +154,11 @@ const Div = styled.div`
   }
 `;
 const Menu = styled.div`
-  position: absolute;
+  position: fixed;
   top: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
-  z-index: 20;
+  z-index: 50;
   box-sizing: border-box;
-  left: 0;
+  right: 0;
   transition: 650ms;
   width: 100vw;
   height: 100vh;
@@ -178,7 +178,7 @@ const Menu = styled.div`
 const Overlay = styled.div`
 position: fixed;
 top: 0;
-right: ${({isOpen}) => (isOpen ? '0' : '-100%')};
+left: ${({isOpen}) => (isOpen ? '0' : '-100%')};
 width: 30%;
 height: 100%;
 z-index: 10;
@@ -455,6 +455,8 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    document.body.style.overflow = isMenuOpen ? 'visible' : 'hidden';
+
   };
 
   return (
