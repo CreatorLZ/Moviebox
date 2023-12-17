@@ -153,11 +153,11 @@ const Div = styled.div`
   }
 `;
 const Menu = styled.div`
-  position: fixed;
+  position: absolute;
   top: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
   z-index: 50;
   box-sizing: border-box;
-  /* right: ${({ isOpen }) => (isOpen ? "0%" : "100%")}; */
+  right: 0;
   transition: 350ms;
   width: 100vw;
   height: 100vh;
@@ -165,12 +165,13 @@ const Menu = styled.div`
   visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   background: #da2f2f;
   @media only screen and (max-width: 420px) {
-    position: fixed;
-    width: 70%;
+    position: absolute;
+    width: 100%;
     z-index: 20;
     overflow: scroll;
     right: ${({ isOpen }) => (isOpen ? "0" : "100%")}; 
-    transition: left 0s ease-in-out;
+    
+    transition: 650ms;
     top: 0;
   }
 `;
@@ -186,7 +187,7 @@ const Overlay = styled.div`
   transition: 650ms;
   backdrop-filter: blur(2px);
   @media only screen and (max-width: 420px) {
-    display: flex;
+    display: none;
     z-index: 10;
   }
 `;
@@ -486,8 +487,8 @@ const Navbar = () => {
       </Search>
       <Auth>
         <p>Sign in</p>
-        <Div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          <img src="/images/Menu.png" alt="menu" onClick={toggleMenu} />
+        <Div style={{ display: "flex", alignItems: "center", gap: "5px" }} onClick={toggleMenu} >
+          <img src="/images/Menu.png" alt="menu" />
           <p>Menu</p>
         </Div>
       </Auth>
