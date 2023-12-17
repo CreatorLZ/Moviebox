@@ -168,7 +168,7 @@ const Menu = styled.div`
   @media only screen and (max-width: 420px) {
     position: fixed;
     height: 100vh;
-    width: 52vh;
+    width: 70%;
     z-index: 20;
     opacity: 20;
     overflow: scroll;
