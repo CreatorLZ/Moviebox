@@ -11,7 +11,6 @@ const Container = styled.div`
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  transition: 650ms;
   z-index: 5;
   Link {
     text-decoration: none;
@@ -155,40 +154,40 @@ const Div = styled.div`
 `;
 const Menu = styled.div`
   position: fixed;
-  top: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
+  top: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
   z-index: 50;
   box-sizing: border-box;
-  right: 0;
-  transition: 650ms;
+  /* right: ${({ isOpen }) => (isOpen ? "0%" : "100%")}; */
+  transition: 350ms;
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   background: #da2f2f;
   @media only screen and (max-width: 420px) {
     position: fixed;
-    height: 100vh;
     width: 70%;
     z-index: 20;
     overflow: scroll;
     right: ${({ isOpen }) => (isOpen ? "0" : "100%")}; 
+    transition: left 0s ease-in-out;
     top: 0;
   }
 `;
 const Overlay = styled.div`
-position: fixed;
-top: 0;
-left: ${({isOpen}) => (isOpen ? '0' : '-100%')};
-width: 30%;
-height: 100%;
-z-index: 10;
-display: none;
-background-color: rgba(0, 0, 0, 0.1);
-transition: 650ms;
-backdrop-filter: blur(2px);
-@media only screen and (max-width: 420px) {
-   display: flex;
-   z-index: 10;
+  position: fixed;
+  top: 0;
+  left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+  width: 30%;
+  height: 100%;
+  z-index: 10;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: 650ms;
+  backdrop-filter: blur(2px);
+  @media only screen and (max-width: 420px) {
+    display: flex;
+    z-index: 10;
   }
 `;
 const Menuwrapper = styled.div`
@@ -296,7 +295,6 @@ const Top = styled.div`
   @media only screen and (max-width: 420px) {
     align-items: start;
     justify-content: flex-end;
-    
   }
 `;
 const Topitem = styled.div`
@@ -317,7 +315,7 @@ const Topitem2 = styled.div`
   display: none;
   align-items: center;
   gap: 10px;
-  padding-bottom: 20px ;
+  padding-bottom: 20px;
   img {
     width: 20px;
     height: 20px;
@@ -455,8 +453,7 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    document.body.style.overflow = isMenuOpen ? 'visible' : 'hidden';
-
+    document.body.style.overflow = isMenuOpen ? "visible" : "hidden";
   };
 
   return (
@@ -575,7 +572,9 @@ const Navbar = () => {
                 <img src="/images/celeb.png" alt="play" />
                 <h2>Calebs</h2>
               </Topitem>
-              <Topitem2 onClick={() => setIsCelebsDropdownOpen(!isCelebsDropdownOpen)}>
+              <Topitem2
+                onClick={() => setIsCelebsDropdownOpen(!isCelebsDropdownOpen)}
+              >
                 <img src="/images/celeb.png" alt="celeb" />
                 <h3>Celebs</h3>
               </Topitem2>
