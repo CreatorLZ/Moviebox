@@ -153,7 +153,7 @@ const Div = styled.div`
   }
 `;
 const Menu = styled.div`
-  position: absolute;
+  position: fixed;
   top: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
   z-index: 50;
   box-sizing: border-box;
@@ -165,8 +165,9 @@ const Menu = styled.div`
   visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   background: #da2f2f;
   @media only screen and (max-width: 420px) {
-    position: absolute;
+    position: fixed;
     width: 100%;
+    height: 100%;
     z-index: 20;
     overflow: scroll;
     right: ${({ isOpen }) => (isOpen ? "0" : "100%")}; 
