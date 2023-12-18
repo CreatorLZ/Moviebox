@@ -903,6 +903,7 @@ const Movie = () => {
     prevArrow: <SamplePrevArrow />,
     autoplay: true,
     autoplaySpeed: 5000,
+    pauseOnHover: true,
     cssEase: "linear",
     responsive: [
       {
@@ -1332,8 +1333,8 @@ const Movie = () => {
             >
               Similar Movies
             </h2>
-            <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-              <Slider {...settings}>
+            <SkeletonTheme  baseColor="#313131" highlightColor="#525252">
+              <Slider {...settings} >
                 {similarMovies.map((movie, index) => (
                   <Card data-testid="movie-card" key={movie.id}>
                     {similarMovies ? (
