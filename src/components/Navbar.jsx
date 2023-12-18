@@ -393,6 +393,7 @@ const Ul1 = styled.ul`
     flex-direction: column;
     transition: 350ms ease-in-out;
     border-bottom: 2px solid white;
+    margin-bottom: 15px;
     ${Topitem} {
       cursor: pointer;
     }
