@@ -919,7 +919,7 @@ const Movie = () => {
                       color: "black",
                     }}
                   >
-                    Directors:{" "}
+                    Director:{" "}
                   </span>{" "}
                   <span>{director ? director : "Not Found"}</span>{" "}
                 </p>
