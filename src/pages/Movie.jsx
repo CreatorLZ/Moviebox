@@ -388,13 +388,13 @@ const ProductionLogo = styled.img`
 `;
 
 const CastProfile = styled.img`
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
   @media only screen and (max-width: 420px) {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
 `;
 const CastGrid = styled.div`
