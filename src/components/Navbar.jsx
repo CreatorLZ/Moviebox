@@ -200,6 +200,7 @@ const Menuwrapper = styled.div`
   transition: 650ms;
   @media only screen and (max-width: 420px) {
     padding: 10px;
+    padding-left: 5px;
   }
 `;
 const Closemenu = styled.div`
@@ -220,6 +221,19 @@ const Closemenu = styled.div`
   img {
     width: 25px;
     height: 25px;
+  }
+  @media only screen and (max-width: 420px) {
+    background: transparent;
+    &:hover{
+      outline: none;
+      border: none;
+      background: transparent;
+      
+    }
+    img{
+      height: 30px;
+      width: 30px;
+    }
   }
 `;
 
@@ -317,8 +331,9 @@ const Topitem2 = styled.div`
   align-items: center;
   gap: 10px;
   padding: 20px;
+  padding-left: 5px;
   width: 100%;
-  transition: 150ms ease-in-out;
+  transition: 350ms ease-in-out;
   &:hover{
     border-left:3px solid white;
 
@@ -331,6 +346,7 @@ const Topitem2 = styled.div`
   @media only screen and (max-width: 420px) {
     cursor: pointer;
     display: flex;
+    transition: 350ms ease-in-out;
     img {
       width: 25px;
       height: 25px;
@@ -375,6 +391,8 @@ const Ul1 = styled.ul`
   @media only screen and (max-width: 420px) {
     display: flex;
     flex-direction: column;
+    transition: 350ms ease-in-out;
+    border-bottom: 2px solid white;
     ${Topitem} {
       cursor: pointer;
     }
@@ -560,6 +578,13 @@ const Navbar = () => {
               >
                 <img src="/images/movieswhite.png" alt="projector" />
                 <h3>Movies</h3>
+                {
+                  isMoviesDropdownOpen ? (
+                    <img style={{marginLeft:"80px"}} src="/images/up.png" alt="down" />
+                  ) :(
+                    <img style={{marginLeft:"80px"}} src="/images/down.png" alt="down" />
+                  )
+                }
               </Topitem2>
               <Ul2>
                 <li>Upcoming Movies</li>
@@ -584,6 +609,13 @@ const Navbar = () => {
               >
                 <img src="/images/celeb.png" alt="celeb" />
                 <h3>Celebs</h3>
+                {
+                  isCelebsDropdownOpen ? (
+                    <img style={{marginLeft:"80px"}} src="/images/up.png" alt="down" />
+                  ) :(
+                    <img style={{marginLeft:"80px"}} src="/images/down.png" alt="down" />
+                  )
+                }
               </Topitem2>
               <Ul1 style={{ display: isCelebsDropdownOpen ? "block" : "none" }}>
                 <li>Most Popular Actors</li>
@@ -606,6 +638,13 @@ const Navbar = () => {
               >
                 <img src="/images/tvhshow.png" alt="projector" />
                 <h3>TV Shows</h3>
+                {
+                  isTvShowsDropdownOpen ? (
+                    <img style={{marginLeft:"55px"}} src="/images/up.png" alt="down" />
+                  ) :(
+                    <img style={{marginLeft:"55px"}} src="/images/down.png" alt="down" />
+                  )
+                }
               </Topitem2>
               <Ul2>
                 <li>Whats Streaming</li>
@@ -634,6 +673,13 @@ const Navbar = () => {
               >
                 <img src="/images/play2.png" alt="projector" />
                 <h3>Watch</h3>
+                {
+                  isWatchDropdownOpen ? (
+                    <img style={{marginLeft:"85px"}} src="/images/up.png" alt="down" />
+                  ) :(
+                    <img style={{marginLeft:"85px"}} src="/images/down.png" alt="down" />
+                  )
+                }
               </Topitem2>
               <Ul2>
                 <li>What to Watch</li>
@@ -656,6 +702,13 @@ const Navbar = () => {
               >
                 <img src="/images/earth.png" alt="projector" />
                 <h3>Community</h3>
+                {
+                  isCommunityDropdownOpen ? (
+                    <img style={{marginLeft:"35px"}} src="/images/up.png" alt="down" />
+                  ) :(
+                    <img style={{marginLeft:"35px"}} src="/images/down.png" alt="down" />
+                  )
+                }
               </Topitem2>
               <Ul2>
                 <li>Help Center</li>
