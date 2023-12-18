@@ -580,9 +580,9 @@ const Navbar = () => {
                 <h3>Movies</h3>
                 {
                   isMoviesDropdownOpen ? (
-                    <img style={{marginLeft:"80px"}} src="/images/up.png" alt="down" />
+                    <img style={{marginLeft:"76px"}} src="/images/up.png" alt="down" />
                   ) :(
-                    <img style={{marginLeft:"80px"}} src="/images/down.png" alt="down" />
+                    <img style={{marginLeft:"76px"}} src="/images/down.png" alt="down" />
                   )
                 }
               </Topitem2>
