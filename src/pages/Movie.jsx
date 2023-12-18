@@ -8,6 +8,8 @@ import Footer from "../components/Footer";
 import YouTube from "react-youtube";
 import { Helmet } from "react-helmet";
 import Navbar from "../components/Navbar";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Slider from "react-slick";
 
 const LOCAL_STORAGE_KEY = "movieData";
 
@@ -76,7 +78,7 @@ const Moviedetailsright = styled.div`
   height: 80vh;
   display: flex;
   flex-direction: column;
-  padding-left:10px;
+  padding-left: 10px;
   @media only screen and (max-width: 420px) {
     width: 100%;
     display: none;
@@ -104,7 +106,7 @@ const Actors = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-padding: 40px;
+  padding: 40px;
   gap: 5px;
   font-weight: 700;
   font-size: 23px;
@@ -383,7 +385,7 @@ const ProductionLogo = styled.img`
   width: 50px;
   height: auto;
   object-fit: cover;
-`
+`;
 
 const CastProfile = styled.img`
   width: 90px;
@@ -398,18 +400,157 @@ const CastProfile = styled.img`
 const CastGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px; // gap between images 
-  overflow-x: auto; 
-  white-space: nowrap; 
+  gap: 16px; // gap between images
+  overflow-x: auto;
+  white-space: nowrap;
   @media only screen and (max-width: 420px) {
     display: flex;
-    flex-wrap: nowrap; 
-    overflow-x: auto; 
-    div{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    div {
       flex-direction: column;
     }
   }
 `;
+
+const Card = styled.div`
+  /* box-sizing: border-box; */
+  border: none;
+  outline: none;
+  width: 270px;
+  height: 200px;
+  text-align: left;
+  gap: 16px;
+  position: relative;
+  :focus {
+    outline: none;
+    border: none;
+  }
+  img {
+    width: 270px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  @media only screen and (max-width: 420px) {
+    width: 170px;
+    height: 200px;
+    img {
+      width: 170px;
+      height: 100%;
+      object-fit: cover;
+    }
+    :focus {
+      outline: none;
+    }
+  }
+  @media only screen and (max-width: 385px) {
+    width: 152px;
+    height: 200px;
+    img {
+      width: 152px;
+      height: 100%;
+      object-fit: cover;
+    }
+    :focus {
+      outline: none;
+    }
+  }
+  .skeleton-wrapper {
+    width: 270px;
+    height: 100%;
+    @media only screen and (max-width: 420px) {
+      width: 160px;
+    }
+  }
+`;
+const Card2 = styled.div`
+  display: flex;
+  width: 80%;
+
+  padding-top: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  @media only screen and (max-width: 420px) {
+    font-size: 12px;
+  }
+`;
+const Div1 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  padding-top: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  @media only screen and (max-width: 420px) {
+    width: 50%;
+  }
+`;
+const Dots = styled.div`
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  object-fit: cover;
+  top: 10px;
+  left: 220px;
+  cursor: pointer;
+  z-index: 10;
+  outline: none;
+  background-color: #ebdede;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: #da2f2f;
+  }
+  @media only screen and (max-width: 420px) {
+    left: 110px;
+  }
+  img {
+    object-fit: contain;
+    width: 25px;
+    height: 25px;
+  }
+`;
+const Options = styled.div`
+  width: 120px;
+  height: fit-content;
+  background-color: white;
+  position: absolute;
+  top: 50px;
+  left: 140px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 5px;
+  padding: 10px;
+  @media only screen and (max-width: 420px) {
+    left: 30px;
+  }
+  ul {
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    li {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      border-bottom: 1px solid black;
+      padding: 5px;
+      &:hover {
+        transform: scale(0.9);
+      }
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+`;
+
 const Movie = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -421,7 +562,21 @@ const Movie = () => {
   const [writers, setWriters] = useState([]);
   const [stars, setStars] = useState([]);
   const [showFullOverview, setShowFullOverview] = useState(false);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [optionsVisibility, setOptionsVisibility] = useState([]);
 
+  useEffect(() => {
+    // Initialize optionsVisibility array with false values for each card
+    setOptionsVisibility(Array(similarMovies.length).fill(false));
+  }, [similarMovies]);
+  const handleDotsClick = (index) => {
+    // Toggle the visibility of the Options div for the specific card
+    setOptionsVisibility((prevVisibility) => {
+      const updatedVisibility = [...prevVisibility];
+      updatedVisibility[index] = !updatedVisibility[index];
+      return updatedVisibility;
+    });
+  };
 
   const overviewWordsLimit = 40;
   // console.log(movieDetails)
@@ -502,7 +657,6 @@ const Movie = () => {
     return null;
   };
 
-
   // Function to fetch star information
   const getStarsInfo = async (movieId) => {
     try {
@@ -519,7 +673,7 @@ const Movie = () => {
           name: star.name,
           profilePath: star.profile_path,
         }));
-        console.log(stars);
+        // console.log(stars);
         return stars;
       } else {
         return null;
@@ -580,6 +734,33 @@ const Movie = () => {
     }
   };
 
+  // Async function to fetch similar movies
+  const fetchSimilarMovies = async (movieId) => {
+    try {
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar`;
+
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+          language: "en-US",
+          page: 1, // You can adjust the page if you want more results
+        },
+      });
+
+      if (response.status === 200) {
+        const similarMoviesData = response.data.results;
+        console.log(response.data.results);
+        setSimilarMovies(response.data.results);
+      } else {
+        setSimilarMovies([]);
+      }
+    } catch (error) {
+      console.error("Error fetching similar movies:", error);
+      setSimilarMovies([]);
+    }
+  };
+
   useEffect(() => {
     // Fetch movie details using the movie ID from the URL
     const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
@@ -587,7 +768,7 @@ const Movie = () => {
 
     // Check if the data is already in localStorage
     const cachedMovieData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    console.log(cachedMovieData);
+    // console.log(cachedMovieData);
 
     if (cachedMovieData) {
       // If data is found in storage, set it to state
@@ -605,7 +786,8 @@ const Movie = () => {
         .then(async (response) => {
           // Set the fetched movie details to the state
           setMovieDetails(response.data);
-        
+          await fetchSimilarMovies(id);
+          console.log(similarMovies);
 
           // Convert release_date to UTC format
           const releaseDate = new Date(response.data.release_date);
@@ -636,7 +818,7 @@ const Movie = () => {
           // Set the writers' information to state
           if (writersInfo) {
             setWriters(writersInfo);
-            console.log(writers);
+            // console.log(writers);
             //  additional properties later, such as profile picture path
           } else {
             setWriters("Writers information not found.");
@@ -663,7 +845,93 @@ const Movie = () => {
     // Render loading or error state while fetching data
     return <Spinner />;
   }
-  console.log(movieDetails);
+  // console.log(movieDetails);
+  // const getGenresForMovie = (genreIds) => {
+  //   return genreIds.map((genreId) => {
+  //     const genre = genres.find((g) => g.id === genreId);
+  //     return genre ? genre.name : "";
+  //   });
+  // };
+
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "rgba(109, 107, 107, 0.2)",
+          width: "50px",
+          height: "70px",
+          zIndex: "10",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "rgba(109, 107, 107, 0.2)",
+          width: "50px",
+          height: "70px",
+          zIndex: "10",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 200,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <Container>
       <Helmet>
@@ -693,15 +961,17 @@ const Movie = () => {
                   }}
                   style={{ width: "100%", height: "100%" }}
                 />
-              ): <Spinner/>}
+              ) : (
+                <Spinner />
+              )}
             </Poster>
             <Top4>
               <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
                 {movieDetails.title}
               </h3>
               <p style={{ fontSize: "14px", fontWeight: "400" }}>
-                 {movieDetails.tagline}
-                </p>
+                {movieDetails.tagline}
+              </p>
               <Genrecard3>
                 {movieDetails.genres.map((genre) => (
                   <Genrecard key={genre.id}>{genre.name}</Genrecard>
@@ -713,7 +983,7 @@ const Movie = () => {
               >
                 Release date:{" "}
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                 {releaseDate}
+                  {releaseDate}
                 </span>
               </p>
               <p data-testid="movie-runtime">
@@ -729,9 +999,15 @@ const Movie = () => {
                   <h4 data-testid="movie-title" style={{ marginRight: "10px" }}>
                     {movieDetails.title}
                   </h4>
-                  <p style={{ fontSize: "14px", fontWeight: "400", paddingBottom:"5px" }}>
-                 {movieDetails.tagline}
-                </p>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "400",
+                      paddingBottom: "5px",
+                    }}
+                  >
+                    {movieDetails.tagline}
+                  </p>
                   <Genrecard2>
                     {movieDetails.genres.map((genre) => (
                       <Genrecard key={genre.id}>{genre.name}</Genrecard>
@@ -765,7 +1041,13 @@ const Movie = () => {
                     <p>Add to watchlist</p>
                   </div>
                 </div>
-                <div style={{ display: "flex", alignItems: "center",paddingBottom:"20px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingBottom: "20px",
+                  }}
+                >
                   {/* <img
                   style={{ width: "24px", height: "24px" }}
                   src="/images/save.png"
@@ -779,16 +1061,15 @@ const Movie = () => {
                   </p>
                 </div>
                 <Genrecard2>
-                
-                {movieDetails.production_companies.map((company) => (
-                company.logo_path ? (
-                  <ProductionLogo
-                    src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
-                    alt={company.name}
-                    key={company.id}
-                  />
-                ) : null
-              ))}
+                  {movieDetails.production_companies.map((company) =>
+                    company.logo_path ? (
+                      <ProductionLogo
+                        src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
+                        alt={company.name}
+                        key={company.id}
+                      />
+                    ) : null
+                  )}
                 </Genrecard2>
                 <h5 style={{ paddingTop: "5px" }}>Synopsis: </h5>
                 <p
@@ -799,37 +1080,37 @@ const Movie = () => {
                   }}
                   data-testid="movie-overview"
                 >
-                   {showFullOverview
-              ? movieDetails.overview
-              : `${movieDetails.overview
-                  .split(" ")
-                  .slice(0, overviewWordsLimit)
-                  .join(" ")}...`}
-            {!showFullOverview && (
-              <span
-                style={{
-                  color: "#be123c",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-                onClick={() => setShowFullOverview(true)}
-              >
-                Show more
-              </span>
-            )}
-            {showFullOverview && (
-              <span
-                style={{
-                  color: "#be123c",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                  zIndex:"10"
-                }}
-                onClick={() => setShowFullOverview(false)}
-              >
-                Show less
-              </span>
-            )}
+                  {showFullOverview
+                    ? movieDetails.overview
+                    : `${movieDetails.overview
+                        .split(" ")
+                        .slice(0, overviewWordsLimit)
+                        .join(" ")}...`}
+                  {!showFullOverview && (
+                    <span
+                      style={{
+                        color: "#be123c",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                      onClick={() => setShowFullOverview(true)}
+                    >
+                      Show more
+                    </span>
+                  )}
+                  {showFullOverview && (
+                    <span
+                      style={{
+                        color: "#be123c",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        zIndex: "10",
+                      }}
+                      onClick={() => setShowFullOverview(false)}
+                    >
+                      Show less
+                    </span>
+                  )}
                 </p>
               </Details>
               {/* <Button1>
@@ -861,53 +1142,53 @@ const Movie = () => {
                 </Genrecard2>
               </Top>
               {/* moviedetails for mobile below */}
-              <Description> 
-              <MovieImg2
-              style={{ height: "40vh",paddingRight:"4px", width:"50%" }}
-              src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
-              alt={movieDetails.title}
-              data-testid="movie-poster"
-            />
-                
+              <Description>
+                <MovieImg2
+                  style={{ height: "40vh", paddingRight: "4px", width: "50%" }}
+                  src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
+                  alt={movieDetails.title}
+                  data-testid="movie-poster"
+                />
+
                 <p
                   style={{
                     fontSize: "16px",
                     fontWeight: "400",
                     lineHeight: "30px",
-                    width:"50%"
+                    width: "50%",
                   }}
                   data-testid="movie-overview"
                 >
                   {showFullOverview
-              ? movieDetails.overview
-              : `${movieDetails.overview
-                  .split(" ")
-                  .slice(0, overviewWordsLimit)
-                  .join(" ")}...`}
-            {!showFullOverview && (
-              <span
-                style={{
-                  color: "#be123c",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-                onClick={() => setShowFullOverview(true)}
-              >
-                Show more
-              </span>
-            )}
-            {showFullOverview && (
-              <span
-                style={{
-                  color: "#be123c",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-                onClick={() => setShowFullOverview(false)}
-              >
-                Show less
-              </span>
-            )}
+                    ? movieDetails.overview
+                    : `${movieDetails.overview
+                        .split(" ")
+                        .slice(0, overviewWordsLimit)
+                        .join(" ")}...`}
+                  {!showFullOverview && (
+                    <span
+                      style={{
+                        color: "#be123c",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                      onClick={() => setShowFullOverview(true)}
+                    >
+                      Show more
+                    </span>
+                  )}
+                  {showFullOverview && (
+                    <span
+                      style={{
+                        color: "#be123c",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                      onClick={() => setShowFullOverview(false)}
+                    >
+                      Show less
+                    </span>
+                  )}
                 </p>
               </Description>
               <Description2>
@@ -953,7 +1234,7 @@ const Movie = () => {
                           color: "black",
                         }}
                       >
-                        Stars: {" "}
+                        Stars:{" "}
                       </span>
                       <span>
                         {stars
@@ -969,17 +1250,16 @@ const Movie = () => {
                   <span>No star information found for the movie.</span>
                 )}
                 <Genrecard3>
-                
-              {movieDetails.production_companies.map((company) => (
-              company.logo_path ? (
-                <ProductionLogo
-                  src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
-                  alt={company.name}
-                  key={company.id}
-                />
-              ) : null
-            ))}
-              </Genrecard3>
+                  {movieDetails.production_companies.map((company) =>
+                    company.logo_path ? (
+                      <ProductionLogo
+                        src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
+                        alt={company.name}
+                        key={company.id}
+                      />
+                    ) : null
+                  )}
+                </Genrecard3>
               </Description2>
               <Descbottom>
                 <p
@@ -1014,12 +1294,23 @@ const Movie = () => {
               </Descbottom>
             </Moviedetails>
           </Omega>
-          <Actors style={{background:"whitesmoke"}}>
-          <h2 style={{  color: "#be123c", borderLeft:"5px solid #be123c",padding:"10px" }}>Top cast</h2>
-            
+          <Actors style={{ background: "whitesmoke" }}>
+            <h2
+              style={{
+                color: "#be123c",
+                borderLeft: "5px solid #be123c",
+                padding: "10px",
+              }}
+            >
+              Top cast
+            </h2>
+
             <CastGrid>
               {stars.map((actor) => (
-                <div key={actor.id} style={{display:"flex", alignItems:"center",gap:"10px"}}>
+                <div
+                  key={actor.id}
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
                   <CastProfile
                     src={`https://image.tmdb.org/t/p/w500${actor.profilePath}`}
                     alt={actor.name}
@@ -1028,8 +1319,159 @@ const Movie = () => {
                 </div>
               ))}
             </CastGrid>
-          
           </Actors>
+          <div style={{ padding: "20px" }}>
+            <SkeletonTheme baseColor="#313131" highlightColor="#525252">
+              <Slider {...settings}>
+                {similarMovies.map((movie, index) => (
+                  <Card data-testid="movie-card" key={movie.id}>
+                    {similarMovies ? (
+                      <>
+                        <Link to={`/movies/${movie.id}`}>
+                          <img
+                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
+                            alt={movie.title}
+                            data-testid="movie-poster"
+                          />
+                        </Link>
+                        {/* <Like
+              style={{
+                width: "50px",
+                height: "50px",
+                position: "absolute",
+                top: "10px",
+                left: "100px",
+                cursor: "pointer",
+                zIndex: "10",
+                outline: "none",
+                "@media only screen and (maxWidth: 420px)": {
+                  left: "100px",
+                  opacity: "0",
+                },
+              }}
+              src={
+                likedMovies[index]
+                  ? "images/liked.png"
+                  : "./images/Favorite.svg"
+              }
+              alt={movie.title}
+              onClick={(event) => handleLikeClick(index, event)}
+            /> */}
+                        <Dots onClick={() => handleDotsClick(index)}>
+                          <img src="/images/dots.png" alt="dots" />
+                        </Dots>
+                        {/* Display the Options div only if isOptionsVisible is true */}
+                        {optionsVisibility[index] && (
+                          <Options>
+                            <ul>
+                              <li>
+                                <img src="/images/Favorite.svg" alt="add" />
+                                <p> Favourite</p>
+                              </li>
+                              <li>
+                                <img src="/images/List.png" alt="list" />
+                                <p> Watchlist</p>
+                              </li>
+                              <li>
+                                <img src="/images/Star (1).png" alt="love" />
+                                <p> Your rating</p>
+                              </li>
+                            </ul>
+                          </Options>
+                        )}
+
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "6px",
+                            paddingTop: "5px",
+                          }}
+                        >
+                          <p
+                            data-testid="movie-release-date"
+                            style={{
+                              fontSize: "12px",
+                              fontWeight: "700",
+                              color: "gray",
+                            }}
+                          >
+                            {movie.release_date}
+                          </p>
+                        </div>
+
+                        <Card2>
+                          <p data-testid="movie-title">{movie.title}</p>
+                        </Card2>
+                        <Div1>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img
+                              src="/images/imdb.png"
+                              alt="imdb"
+                              style={{
+                                marginRight: "10px",
+                                width: "35px",
+                                height: "17px",
+                              }}
+                            />
+                            <p style={{ marginRight: "30px" }}>
+                              {movie.vote_average}
+                            </p>
+                          </div>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img
+                              src="/images/tomato.png"
+                              alt="tomato"
+                              style={{
+                                marginRight: "10px",
+                                width: "16px",
+                                height: "17px",
+                                objectFit: "cover",
+                              }}
+                            />
+                            <p>97%</p>
+                          </div>
+                        </Div1>
+                        {/* <p
+              style={{
+                paddingTop: "10px",
+                fontSize: "12px",
+                fontWeight: "400",
+                color: "gray",
+              }}
+            >
+              {getGenresForMovie(movie.genre_ids).join(", ")}
+            </p>  */}
+            <div style={{display:"flex", gap:"3px"}}>
+
+                        
+                          <p
+                            style={{
+                              paddingTop: "10px",
+                              fontSize: "12px",
+                              fontWeight: "400",
+                              color: "gray",
+                            }}
+                           
+                          >
+                           {movieDetails.genres.map((genre) => genre.name).join(", ")}
+                          </p>
+                        
+            </div>
+                      </>
+                    ) : (
+                      <div className="skeleton-wrapper">
+                        <Skeleton height={200} count={1} />
+                      </div>
+                    )}
+                  </Card>
+                ))}
+              </Slider>
+            </SkeletonTheme>
+          </div>
           <Footer />
         </Wrapper>
       ) : (
