@@ -1321,6 +1321,17 @@ const Movie = () => {
             </CastGrid>
           </Actors>
           <div style={{ padding: "20px" }}>
+          <h2
+              style={{
+                color: "#be123c",
+                borderLeft: "5px solid #be123c",
+                padding: "10px",
+                marginBottom:"20px"
+                
+              }}
+            >
+              Similar Movies
+            </h2>
             <SkeletonTheme baseColor="#313131" highlightColor="#525252">
               <Slider {...settings}>
                 {similarMovies.map((movie, index) => (
@@ -1445,9 +1456,7 @@ const Movie = () => {
             >
               {getGenresForMovie(movie.genre_ids).join(", ")}
             </p>  */}
-            <div style={{display:"flex", gap:"3px"}}>
-
-                        
+                        <div style={{ display: "flex", gap: "3px" }}>
                           <p
                             style={{
                               paddingTop: "10px",
@@ -1455,12 +1464,12 @@ const Movie = () => {
                               fontWeight: "400",
                               color: "gray",
                             }}
-                           
                           >
-                           {movieDetails.genres.map((genre) => genre.name).join(", ")}
+                            {movieDetails.genres
+                              .map((genre) => genre.name)
+                              .join(", ")}
                           </p>
-                        
-            </div>
+                        </div>
                       </>
                     ) : (
                       <div className="skeleton-wrapper">
