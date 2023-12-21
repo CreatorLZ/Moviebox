@@ -770,7 +770,9 @@ const Movie = () => {
             >
               Similar Movies
             </h2>
-            <SkeletonTheme baseColor="#313131" highlightColor="#525252">
+            {
+              similarMovies? (
+                <SkeletonTheme baseColor="#313131" highlightColor="#525252">
               <Slider {...settings}>
                 {similarMovies.map((movie, index) => (
                   <Card data-testid="movie-card" key={movie.id}>
@@ -884,6 +886,12 @@ const Movie = () => {
                 ))}
               </Slider>
             </SkeletonTheme>
+              )
+              :(
+                <Spinner/>
+              )
+            }
+            
           </div>
           <Footer />
         </Wrapper>

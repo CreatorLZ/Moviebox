@@ -300,8 +300,8 @@ const Searchresults = styled.div`
 
   @media only screen and (max-width: 420px) {
     top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
-    left: 81px;
-    width: 211px;
+    left: 85px;
+    width: 222px;
   }
 `;
 const Top = styled.div`

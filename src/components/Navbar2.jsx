@@ -354,9 +354,9 @@ const Searchresults = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
-  left: 400px;
-  width: 550px;
+  top: ${({ searchInput }) => (searchInput ? "80px" : "-200px")};
+  left: 395px;
+  width: 560px;
   min-height: 50px;
   max-height: 200px;
   background-color: whitesmoke;
@@ -389,7 +389,7 @@ const Searchresults = styled.div`
   li {
     padding: 10px;
     background: #f8e7eb;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     cursor: pointer;
     text-decoration: none !important;
     display: flex;
@@ -404,8 +404,8 @@ const Searchresults = styled.div`
 
   @media only screen and (max-width: 420px) {
     top: ${({ searchInput }) => (searchInput ? "68px" : "-200px")};
-    left: 81px;
-    width: 211px;
+    left: 20px;
+    width: 333px;
   }
 `;
 Menu.shouldForwardProp = (prop) => prop !== "isOpen";
