@@ -6,7 +6,6 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 20%;
 `
 const Spinner = () => {
   return (

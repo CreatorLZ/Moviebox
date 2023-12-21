@@ -1,163 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
-const GridContainer = styled.div`
-  display: flex;
-`;
-const Card = styled.div`
-  box-sizing: border-box;
-  border: none;
-  outline:none;
-  width: 270px;
-  height: 200px;
-  text-align: left;
-  gap: 16px;
-  position: relative;
-  :focus {
-    outline: none;
-    border: none;
-  }
-  img {
-    width: 270px;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  @media only screen and (max-width: 420px) {
-    width: 170px;
-    height: 200px;
-    img {
-      width: 170px;
-      height: 100%;
-      object-fit: cover;
-    }
-    :focus {
-      outline: none;
-    }
-  }
-  @media only screen and (max-width: 385px) {
-    width: 152px;
-    height: 200px;
-    img {
-      width: 152px;
-      height: 100%;
-      object-fit: cover;
-    }
-    :focus {
-      outline: none;
-    }
-  }
-  .skeleton-wrapper {
-    width: 100%;
-    height: 100%;
-  }
-`;
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { Card, Card2, Div1, Dots, Options } from "./Moviestyles";
 
-const Like = styled.img`
-  @media only screen and (max-width: 420px) {
-    left: 100px;
-  }
-`;
-const Card2 = styled.div`
-  display: flex;
-  width: 80%;
-
-  padding-top: 8px;
-  font-size: 18px;
-  font-weight: 700;
-  @media only screen and (max-width: 420px) {
-    font-size: 12px;
-  }
-`;
-
-export const Ratings = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-const Div1 = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 80%;
-  padding-top: 8px;
-  font-size: 12px;
-  font-weight: 400;
-  @media only screen and (max-width: 420px) {
-    width: 50%;
-  }
-`;
-const Dots = styled.div`
-    width: 35px;
-    height: 35px;
-    position: absolute;
-    object-fit: cover;
-    top: 10px;
-    left: 220px;
-    cursor: pointer;
-    z-index: 10;
-    outline: none;
-    background-color:#ebdede ;
-    border-radius: 50%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:hover{
-      background-color:#da2f2f;
-    }
-    @media only screen and (max-width: 420px) {
-    left: 110px;
-  }
-    img{
-      object-fit: contain;
-      width: 25px;
-      height: 25px;
-      
-    }
-
-`
-const Options = styled.div`
-  width: 120px;
-  height: fit-content;
-  background-color: white;
-  position: absolute;
-  top: 50px;
-  left: 140px;
-  cursor: pointer;
-  z-index: 10;
-  border-radius:5px;
-  padding: 10px;
-  @media only screen and (max-width: 420px) {
-    left: 30px;
-  }
-ul{
-  font-size: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  li{
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    border-bottom:1px solid black;
-    padding: 5px;
-    &:hover{
-      transform: scale(0.9);
-    }
-    img{
-      width: 20px;
-      height: 20px;
-    }
-  }
-}
-`
 const MovieList = () => {
   const apiUrl = "https://api.themoviedb.org/3/trending/movie/week";
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
@@ -167,7 +17,6 @@ const MovieList = () => {
   const [goToMovie, setGoToMovie] = useState(false);
   const [optionsVisibility, setOptionsVisibility] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     // Initialize optionsVisibility array with false values for each card
@@ -316,25 +165,25 @@ const MovieList = () => {
       },
     ],
   };
-  console.log(movies.length)
-  console.log(isLoading)
+  // console.log(movies.length)
+  // console.log(isLoading)
   return (
     <>
-    <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-      <Slider {...settings}>
-        {movies.map((movie, index) => (
-          <Card data-testid="movie-card" key={movie.id}>
-            {movies.length > 0 && isLoading === false?  (
-              <>
-            <Link to={`/movies/${movie.id}`}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
-                alt={movie.title}
-                data-testid="movie-poster"
-              />
-            </Link>
-            
-            {/* <Like
+      <SkeletonTheme baseColor="#313131" highlightColor="#525252">
+        <Slider {...settings}>
+          {movies.map((movie, index) => (
+            <Card data-testid="movie-card" key={movie.id}>
+              {movies.length > 0 && isLoading === false ? (
+                <>
+                  <Link to={`/movies/${movie.id}`}>
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
+                      alt={movie.title}
+                      data-testid="movie-poster"
+                    />
+                  </Link>
+
+                  {/* <Like
               style={{
                 width: "50px",
                 display:"none",
@@ -358,72 +207,95 @@ const MovieList = () => {
               alt={movie.title}
               onClick={(event) => handleLikeClick(index, event)}
             /> */}
-            <Dots  onClick={() => handleDotsClick(index)}><img src="./images/dots.png" alt="dots" /></Dots>
-             {/* Display the Options div only if isOptionsVisible is true */}
-             {optionsVisibility[index] &&  (
-              <Options>
-               <ul>
-                <li><img src="./images/Favorite.svg" alt="add" /><p> Favourite</p></li>
-                <li><img src="./images/List.png" alt="list" /><p> Watchlist</p></li>
-                <li><img src="./images/Star (1).png" alt="love" /><p> Your rating</p></li>
-               </ul>
-              </Options>
-            )}
+                  <Dots onClick={() => handleDotsClick(index)}>
+                    <img src="./images/dots.png" alt="dots" />
+                  </Dots>
+                  {/* Display the Options div only if isOptionsVisible is true */}
+                  {optionsVisibility[index] && (
+                    <Options>
+                      <ul>
+                        <li>
+                          <img src="./images/Favorite.svg" alt="add" />
+                          <p> Favourite</p>
+                        </li>
+                        <li>
+                          <img src="./images/List.png" alt="list" />
+                          <p> Watchlist</p>
+                        </li>
+                        <li>
+                          <img src="./images/Star (1).png" alt="love" />
+                          <p> Your rating</p>
+                        </li>
+                      </ul>
+                    </Options>
+                  )}
 
-            <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
-              
-              <p
-                data-testid="movie-release-date"
-                style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}
-              >
-                {movie.release_date}
-              </p>
-            </div>
+                  <div
+                    style={{ display: "flex", gap: "6px", paddingTop: "5px" }}
+                  >
+                    <p
+                      data-testid="movie-release-date"
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: "700",
+                        color: "gray",
+                      }}
+                    >
+                      {movie.release_date}
+                    </p>
+                  </div>
 
-            <Card2>
-              <p data-testid="movie-title">{movie.title}</p>
-            </Card2>
-            <Div1>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src="./images/imdb.png"
-                  alt="imdb"
-                  style={{ marginRight: "10px", width: "35px", height: "17px" }}
-                />
-                <p style={{ marginRight: "30px" }}>{movie.vote_average}</p>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src="./images/tomato.png"
-                  alt="tomato"
-                  style={{
-                    marginRight: "10px",
-                    width: "16px",
-                    height: "17px",
-                    objectFit: "cover",
-                  }}
-                />
-                <p>97%</p>
-              </div>
-            </Div1>
-            <p
-              style={{
-                paddingTop: "10px",
-                fontSize: "12px",
-                fontWeight: "400",
-                color: "gray",
-              }}
-            >
-              {getGenresForMovie(movie.genre_ids).join(", ")}
-            </p>
-            </>)  : (
-              <div className="skeleton-wrapper">
-                <Skeleton height={200} count={1} />
-              </div>
-            )}
-          </Card>
-        )) }
-      </Slider>
+                  <Card2>
+                    <p data-testid="movie-title">{movie.title}</p>
+                  </Card2>
+                  <Div1>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <img
+                        src="./images/imdb.png"
+                        alt="imdb"
+                        style={{
+                          marginRight: "10px",
+                          width: "35px",
+                          height: "17px",
+                        }}
+                      />
+                      <p style={{ marginRight: "30px" }}>
+                        {movie.vote_average}
+                      </p>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <img
+                        src="./images/tomato.png"
+                        alt="tomato"
+                        style={{
+                          marginRight: "10px",
+                          width: "16px",
+                          height: "17px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <p>97%</p>
+                    </div>
+                  </Div1>
+                  <p
+                    style={{
+                      paddingTop: "10px",
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      color: "gray",
+                    }}
+                  >
+                    {getGenresForMovie(movie.genre_ids).join(", ")}
+                  </p>
+                </>
+              ) : (
+                <div className="skeleton-wrapper">
+                  <Skeleton height={200} count={1} />
+                </div>
+              )}
+            </Card>
+          ))}
+        </Slider>
       </SkeletonTheme>
     </>
   );

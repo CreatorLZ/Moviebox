@@ -405,6 +405,7 @@ const Searchresults = styled.div`
     width: 211px;
   }
 `;
+Menu.shouldForwardProp = (prop) => prop !== "isOpen";
 
 const Navbar2 = () => {
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";

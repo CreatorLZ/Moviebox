@@ -1,151 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-const GridContainer = styled.div`
-  display: flex;
-`;
-const Card = styled.div`
-  box-sizing: border-box;
-  border: none;
-  outline: none;
-  width: 370px;
-  height: 200px;
-  text-align: left;
-  gap: 16px;
-  position: relative;
-  :focus {
-    outline: none;
-    border: none;
-  }
-  img {
-    width: 370px;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  @media only screen and (max-width: 420px) {
-    width: 270px;
-    height: 200px;
-    img {
-      width: 270px;
-      height: 100%;
-      object-fit: cover;
-    }
-    :focus {
-      outline: none;
-    }
-  }
-  .skeleton-wrapper {
-    width: 100%;
-    height: 100%;
-  }
-`;
+import { Card, Card2, Div1, Dots, Options } from "./LatestListstyles";
 
-const Like = styled.img`
-  @media only screen and (max-width: 420px) {
-    left: 100px;
-  }
-`;
-const Card2 = styled.div`
-  display: flex;
-  width: 100%;
-
-  padding-top: 8px;
-  font-size: 18px;
-  font-weight: 700;
-  @media only screen and (max-width: 420px) {
-    font-size: 12px;
-  }
-`;
-
-export const Ratings = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-const Div1 = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 80%;
-  padding-top: 8px;
-  font-size: 12px;
-  font-weight: 400;
-  @media only screen and (max-width: 420px) {
-    width: 50%;
-  }
-`;
-const Dots = styled.div`
-    width: 35px;
-    height: 35px;
-    position: absolute;
-    object-fit: cover;
-    top: 10px;
-    left: 310px;
-    cursor: pointer;
-    z-index: 10;
-    outline: none;
-    background-color:#ebdede ;
-    border-radius: 50%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:hover{
-      background-color:#da2f2f;
-    }
-    @media only screen and (max-width: 420px) {
-    left: 220px;
-  }
-    img{
-      object-fit: contain;
-      width: 25px;
-      height: 25px;
-      
-    }
-
-`
-const Options = styled.div`
-  width: 120px;
-  height: fit-content;
-  background-color: white;
-  position: absolute;
-  top: 50px;
-  left: 230px;
-  cursor: pointer;
-  z-index: 10;
-  border-radius:5px;
-  padding: 10px;
-  @media only screen and (max-width: 420px) {
-    left: 140px;
-  }
-ul{
-  font-size: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  li{
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    border-bottom:1px solid black;
-    padding: 5px;
-    &:hover{
-      transform: scale(0.9);
-    }
-    img{
-      width: 20px;
-      height: 20px;
-    }
-  }
-}
-`
 const LatestList = () => {
   const apiUrl = "https://api.themoviedb.org/3/movie/now_playing";
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
@@ -168,15 +30,15 @@ const LatestList = () => {
       return updatedVisibility;
     });
   };
-  const handleLikeClick = (index) => {
-    // Prevent the click event from propagating to the parent link
-    event.stopPropagation();
-    setLikedMovies((prevLikedMovies) => {
-      const updatedLikedMovies = [...prevLikedMovies];
-      updatedLikedMovies[index] = !updatedLikedMovies[index];
-      return updatedLikedMovies;
-    });
-  };
+  // const handleLikeClick = (index) => {
+  //   // Prevent the click event from propagating to the parent link
+  //   event.stopPropagation();
+  //   setLikedMovies((prevLikedMovies) => {
+  //     const updatedLikedMovies = [...prevLikedMovies];
+  //     updatedLikedMovies[index] = !updatedLikedMovies[index];
+  //     return updatedLikedMovies;
+  //   });
+  // };
 
   useEffect(() => {
     // The Fetch top movies
@@ -304,8 +166,8 @@ const LatestList = () => {
       },
     ],
   };
-  console.log(movies.length)
-  console.log(isLoading)
+  // console.log(movies.length)
+  // console.log(isLoading)
   return (
     <>
         <SkeletonTheme baseColor="#313131" highlightColor="#525252">
