@@ -374,8 +374,28 @@ export const ProductionLogo = styled.img`
   object-fit: cover;
 `;
 
-export const CastProfile = styled.img`
+export const CastProfileDiv = styled.div`
   width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-position: center center;
+  background-size: contain;
+
+  /* object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden; */
+  @media only screen and (max-width: 420px) {
+    width: 120px;
+    height: 120px;
+  }
+`;
+export const CastProfile = styled.img`
+  width: 100%;
+  height: 100%;
+  /* width: 100px;
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
@@ -384,7 +404,7 @@ export const CastProfile = styled.img`
   @media only screen and (max-width: 420px) {
     width: 120px;
     height: 120px;
-  }
+  } */
 `;
 export const CastGrid = styled.div`
   display: grid;

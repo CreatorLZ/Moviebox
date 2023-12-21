@@ -314,6 +314,7 @@ const Ul1 = styled.ul`
     cursor: pointer;
     &:hover {
       transform: scale(0.98);
+      border: 3px dotted white;
     }
   }
   @media only screen and (max-width: 420px) {
@@ -338,6 +339,7 @@ const Ul2 = styled.ul`
     cursor: pointer;
     &:hover {
       transform: scale(0.98);
+      border: 3px dotted white;
     }
   }
   @media only screen and (max-width: 420px) {

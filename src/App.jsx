@@ -7,15 +7,38 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import GlobalStyles from "./GlobalStyles";
-import Landing from "./pages/Landing";
-import Movie from "./pages/Movie";
+import { lazy, Suspense } from "react";
+import Spinner from "./components/Spinner";
+const Landing = lazy(() => import("./pages/Landing"));
+const Movie = lazy(() => import("./pages/Movie"));
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Root />}>
-        <Route index element={<Landing />} />
-        <Route path="/movies/:id" element={<Movie />} />
+      <Route
+        path="/"
+        element={
+          <Suspense fallback={<Spinner />}>
+            <Root />
+          </Suspense>
+        }
+      >
+        <Route
+          index
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Landing />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/movies/:id"
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Movie />
+            </Suspense>
+          }
+        />
       </Route>
     )
   );

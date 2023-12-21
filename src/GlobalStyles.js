@@ -6,10 +6,14 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-family: 'DM Sans', sans-serif;
+    scroll-behavior: smooth;
     ::placeholder {
   color: #FFFFFF;
   opacity: 1; /* Firefox */
 }
+}
+body {
+  scroll-behavior: smooth;
 }
 `;
 

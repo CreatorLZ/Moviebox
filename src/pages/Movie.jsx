@@ -14,6 +14,7 @@ import {
   Card2,
   CastGrid,
   CastProfile,
+  CastProfileDiv,
   Container,
   Descbottom,
   Description,
@@ -58,7 +59,6 @@ const Movie = () => {
     // Initialize optionsVisibility array with false values for each card
     setOptionsVisibility(Array(similarMovies.length).fill(false));
   }, [similarMovies]);
-
 
   // Toggle the visibility of the Options div for the specific card
   const handleDotsClick = (index) => {
@@ -197,7 +197,7 @@ const Movie = () => {
       return null; // Handle the error gracefully
     }
   };
-  
+
   // Async function to fetch similar movies
   const fetchSimilarMovies = async (movieId) => {
     try {
@@ -233,7 +233,6 @@ const Movie = () => {
 
     // Check if the data is already in localStorage
     const cachedMovieData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-   
 
     if (cachedMovieData) {
       // If data is found in storage, set it to state
@@ -253,7 +252,6 @@ const Movie = () => {
           // Set the fetched movie details to the statez
           setMovieDetails(response.data);
           await fetchSimilarMovies(id);
-  
 
           // Convert release_date to UTC format
           const releaseDate = new Date(response.data.release_date);
@@ -267,7 +265,7 @@ const Movie = () => {
           // Fetch trailer data for the movie using the getTrailerDataForMovie function
           const trailerKey = await getTrailerDataForMovie(id);
           setTrailerKey(trailerKey);
-        
+
           // Fetch director's information
           const directorInfo = await getDirectorInfo(id);
           // Set the director's information to state
@@ -311,7 +309,6 @@ const Movie = () => {
     // Render loading or error state while fetching data
     return <Spinner />;
   }
- 
 
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
@@ -508,7 +505,6 @@ const Movie = () => {
                     paddingBottom: "20px",
                   }}
                 >
-              
                   <p style={{ fontSize: "14px", fontWeight: "normal" }}>
                     {" "}
                     Added by 8.5K users
@@ -583,7 +579,7 @@ const Movie = () => {
               <Description>
                 <MovieImg2
                   style={{ height: "40vh", paddingRight: "4px", width: "50%" }}
-                  src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} 
+                  src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
                   alt={movieDetails.title}
                   data-testid="movie-poster"
                 />
@@ -748,10 +744,16 @@ const Movie = () => {
                   key={actor.name}
                   style={{ display: "flex", alignItems: "center", gap: "10px" }}
                 >
-                  <CastProfile
-                    src={`https://image.tmdb.org/t/p/w500${actor.profilePath}`}
-                    alt={actor.name}
-                  />
+                  <CastProfileDiv
+                    style={{
+                      backgroundImage: `url(https://image.tmdb.org/t/p/w500${actor.profilePath})`,
+                    }}
+                  >
+                    {/* <CastProfile
+                     src={`https://image.tmdb.org/t/p/w500${actor.profilePath}`}
+                   alt={actor.name}
+                  /> */}
+                  </CastProfileDiv>
                   <h6>{actor.name}</h6>
                 </div>
               ))}
@@ -774,7 +776,7 @@ const Movie = () => {
                   <Card data-testid="movie-card" key={movie.id}>
                     {similarMovies ? (
                       <>
-                        <Link to={`/movies/${movie.id}`}>
+                        <Link to={`/movies/${movie.id}`} onClick={() => window.scrollTo(0, 0)}>
                           <img
                             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                             alt={movie.title}
