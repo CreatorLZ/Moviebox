@@ -878,9 +878,7 @@ const Movie = () => {
                         </div>
                       </>
                     ) : (
-                      <div className="skeleton-wrapper">
-                        <Skeleton height={200} count={1} />
-                      </div>
+                      <Spinner/>
                     )}
                   </Card>
                 ))}
