@@ -54,7 +54,6 @@ const LatestList = () => {
         const topMovies = response.data.results.slice(0, 10);
         setMovies(topMovies);
         setIsLoading(false);
-        console.log(topMovies[0]);
         // Initialize likedMovies with all values set to false
         setLikedMovies(Array(topMovies.length).fill(false));
 

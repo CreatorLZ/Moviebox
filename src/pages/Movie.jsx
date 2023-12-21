@@ -253,7 +253,7 @@ const Movie = () => {
           // Set the fetched movie details to the statez
           setMovieDetails(response.data);
           await fetchSimilarMovies(id);
-          console.log(similarMovies);
+  
 
           // Convert release_date to UTC format
           const releaseDate = new Date(response.data.release_date);
@@ -291,7 +291,6 @@ const Movie = () => {
           // Fetch stars' information
           const starsInfo = await getStarsInfo(id);
           // const starsInfo = movieDetails.credits.cast;
-          console.log(starsInfo);
           if (starsInfo) {
             setStars(starsInfo);
           } else {
