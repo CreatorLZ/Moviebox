@@ -380,16 +380,9 @@ export const CastProfileDiv = styled.div`
   border-radius: 50%;
   background-position: center center;
   background-size: contain;
-
-  /* object-fit: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  overflow: hidden; */
   @media only screen and (max-width: 420px) {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
 `;
 export const CastProfile = styled.img`
