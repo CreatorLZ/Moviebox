@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Spinner2 from "./Spinner2";
+import Spinner from "./Spinner";
+
 
 const Container = styled.div`
   display: flex;
@@ -505,7 +506,7 @@ const Navbar2 = () => {
       {searchInput && (
         <Searchresults style={{ top: searchInput ? "85px" : "-200px" }}>
           {isLoading ? (
-            <Spinner2 />
+            <Spinner />
           ) : (
             <ul>
               {searchResults.map((movie) => (

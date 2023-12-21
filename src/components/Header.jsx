@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import axios from "axios";
-import Spinner2 from "./Spinner2";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
 
 const Container = styled.div`
@@ -281,7 +281,7 @@ const Header = () => {
           </Description>
         ) : (
           // loading message while data is being fetched
-          <Spinner2 />
+          <Spinner />
         )}
       </Wrapper>
     </Container>

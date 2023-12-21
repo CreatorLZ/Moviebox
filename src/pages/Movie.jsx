@@ -58,8 +58,10 @@ const Movie = () => {
     // Initialize optionsVisibility array with false values for each card
     setOptionsVisibility(Array(similarMovies.length).fill(false));
   }, [similarMovies]);
+
+
+  // Toggle the visibility of the Options div for the specific card
   const handleDotsClick = (index) => {
-    // Toggle the visibility of the Options div for the specific card
     setOptionsVisibility((prevVisibility) => {
       const updatedVisibility = [...prevVisibility];
       updatedVisibility[index] = !updatedVisibility[index];
@@ -68,12 +70,11 @@ const Movie = () => {
   };
 
   const overviewWordsLimit = 40;
-  // console.log(movieDetails)
+
   //function to convert runtime to hours and minutes
   function convertRuntimeToHoursAndMinutes(runtime) {
     const hours = Math.floor(runtime / 60);
     const minutes = runtime % 60;
-
     if (hours > 0) {
       if (minutes > 0) {
         return `${hours}h ${minutes}min`;
@@ -196,33 +197,7 @@ const Movie = () => {
       return null; // Handle the error gracefully
     }
   };
-  //fetch movie credits
-  const fetchMovieCredits = async (movieId) => {
-    try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
-
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-        },
-      });
-
-      if (response.status === 200) {
-        // Set the fetched movie credits to the state
-        // console.log(response.data);
-        setMovieCredits(response.data);
-      } else {
-        // Handle error or return null if no credits are available
-        setMovieCredits(null);
-      }
-    } catch (error) {
-      console.error("Error fetching movie credits:", error);
-      // Handle the error gracefully
-      setMovieCredits(null);
-    }
-  };
-
+  
   // Async function to fetch similar movies
   const fetchSimilarMovies = async (movieId) => {
     try {
@@ -258,7 +233,7 @@ const Movie = () => {
 
     // Check if the data is already in localStorage
     const cachedMovieData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    // console.log(cachedMovieData);
+   
 
     if (cachedMovieData) {
       // If data is found in storage, set it to state
@@ -292,14 +267,13 @@ const Movie = () => {
           // Fetch trailer data for the movie using the getTrailerDataForMovie function
           const trailerKey = await getTrailerDataForMovie(id);
           setTrailerKey(trailerKey);
-          // Fetch movie credits using the fetchMovieCredits function
-          await fetchMovieCredits(id);
+        
           // Fetch director's information
           const directorInfo = await getDirectorInfo(id);
           // Set the director's information to state
           if (directorInfo) {
             setDirector(directorInfo.name);
-            // You can set additional properties if needed, such as profile picture path
+            // I can set additional properties if needed, such as profile picture path
           } else {
             setDirector("Director information not found.");
           }
@@ -338,13 +312,7 @@ const Movie = () => {
     // Render loading or error state while fetching data
     return <Spinner />;
   }
-  // console.log(movieDetails.credits.cast);
-  // const getGenresForMovie = (genreIds) => {
-  //   return genreIds.map((genreId) => {
-  //     const genre = genres.find((g) => g.id === genreId);
-  //     return genre ? genre.name : "";
-  //   });
-  // };
+ 
 
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
@@ -541,13 +509,7 @@ const Movie = () => {
                     paddingBottom: "20px",
                   }}
                 >
-                  {/* <img
-                  style={{ width: "24px", height: "24px" }}
-                  src="/images/save.png"
-                  alt="heart"
-                />
-                <img src="/images/share2.png" alt="share" />
-                <img src="/images/bookmark2.png" alt="save" /> */}
+              
                   <p style={{ fontSize: "14px", fontWeight: "normal" }}>
                     {" "}
                     Added by 8.5K users
@@ -606,22 +568,6 @@ const Movie = () => {
                   )}
                 </p>
               </Details>
-              {/* <Button1>
-                {" "}
-                <img src="/images/Two Tickets.png" alt="ticket" /> See Showtimes
-              </Button1>
-              <Button2>
-                {" "}
-                <img src="/images/List.png" alt="list" /> More watch options
-              </Button2>
-              <Ads>
-                {" "}
-                <img src="/images/Rectangle 37.png" alt="ad" />
-                <Adbottom>
-                  <img src="/images/List.png" alt="list2" />
-                  <p>The Best Movies and Shows in September</p>
-                </Adbottom>
-              </Ads> */}
             </Moviedetailsright>
           </Top2>
 
@@ -638,7 +584,7 @@ const Movie = () => {
               <Description>
                 <MovieImg2
                   style={{ height: "40vh", paddingRight: "4px", width: "50%" }}
-                  src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
+                  src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} 
                   alt={movieDetails.title}
                   data-testid="movie-poster"
                 />
@@ -736,7 +682,6 @@ const Movie = () => {
                           .join(", ")}
                       </span>
                       {stars.length > 4 && " + more"}{" "}
-                      {/* Add this line to indicate more stars */}
                     </p>
                   </div>
                 ) : (
@@ -832,7 +777,7 @@ const Movie = () => {
                       <>
                         <Link to={`/movies/${movie.id}`}>
                           <img
-                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} // Set the src attribute with the poster_path
+                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                             alt={movie.title}
                             data-testid="movie-poster"
                           />
