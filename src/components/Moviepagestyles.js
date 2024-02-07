@@ -381,8 +381,8 @@ export const CastProfileDiv = styled.div`
   background-position: center center;
   background-size: contain;
   @media only screen and (max-width: 420px) {
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
   }
 `;
 export const CastProfile = styled.img`
