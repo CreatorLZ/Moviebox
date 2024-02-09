@@ -50,15 +50,9 @@ const Footer = () => {
         <p>Privacy & Policy</p>
         <p>Press Room</p>
       </Navdiv>
-      <Credits>© 2023 MovieBox </Credits>
-      <Credits>
-        With{" "}
-        <img
-          src="/images/icons8-heart.gif"
-          alt="love"
-          style={{ width: "25px", height: "25px" }}
-        />{" "}
-        <strong>isaac C Anyim</strong>{" "}
+      <Credits>© 2024 MovieBox </Credits>
+      <Credits style={{fontWeight:"bold"}}>
+       <p> With ❤️, Isaac C Anyim</p>
       </Credits>
     </Container>
   );
