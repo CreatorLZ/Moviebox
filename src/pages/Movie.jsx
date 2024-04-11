@@ -407,17 +407,20 @@ const Movie = () => {
             />
                <Suspense fallback={<Spinner style={{width:"100%", height:"100%"}} />}>
             {trailerKey && (
-              <YouTube
-                videoId={trailerKey}
-                opts={{
-                  width: "100%",
-                  height: "100%",
-                  playerVars: {
-                    autoplay: 1,
-                  },
-                }}
-                style={{ width: "100%", height: "100%" }}
-              />
+              <Poster>
+
+                <YouTube
+                  videoId={trailerKey}
+                  opts={{
+                    width: "100%",
+                    height: "100%",
+                    playerVars: {
+                      autoplay: 1,
+                    },
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </Poster>
             )}
           </Suspense>
             <Top4>
