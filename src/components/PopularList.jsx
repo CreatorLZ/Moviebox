@@ -10,7 +10,7 @@ import { Card, Card2, Div1, Dots, Options } from "./Moviestyles";
 
 const PopularList = () => {
   const apiUrl = "https://api.themoviedb.org/3/movie/popular";
-  const apiKey = process.env.API_KEY;
+  const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);
