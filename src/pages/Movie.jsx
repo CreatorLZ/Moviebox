@@ -4,10 +4,10 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
-import YouTube from "react-youtube";
 import { Helmet } from "react-helmet";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import Slider from "react-slick";
+const YouTube = lazy(() => import("react-youtube"))
 import {
   Actors,
   Card,
@@ -40,6 +40,7 @@ import {
 } from "../components/Moviepagestyles";
 
 const LOCAL_STORAGE_KEY = "movieData";
+
 
 const Movie = () => {
   const { id } = useParams();
@@ -87,7 +88,7 @@ const Movie = () => {
   }
   // Async function to fetch director's information
   const getDirectorInfo = async (movieId) => {
-    const apiKey = process.env.API_KEY;
+    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
     try {
@@ -118,7 +119,7 @@ const Movie = () => {
 
   // Async function to fetch writers' information
   const getWriterInfo = async (movieId) => {
-        const apiKey = process.env.API_KEY;
+    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
     try {
@@ -150,7 +151,7 @@ const Movie = () => {
   // Function to fetch star information
   const getStarsInfo = async (movieId) => {
     try {
-          const apiKey = process.env.API_KEY;
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
       const response = await axios.get(apiUrl, {
@@ -176,7 +177,7 @@ const Movie = () => {
   // Define a function to fetch trailer data for a movie by its ID
   const getTrailerDataForMovie = async (movieId) => {
     try {
-          const apiKey = process.env.API_KEY;
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
 
       const response = await axios.get(apiUrl, {
@@ -201,7 +202,7 @@ const Movie = () => {
   // Async function to fetch similar movies
   const fetchSimilarMovies = async (movieId) => {
     try {
-          const apiKey = process.env.API_KEY;
+      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar`;
 
       const response = await axios.get(apiUrl, {
@@ -228,7 +229,7 @@ const Movie = () => {
 
   useEffect(() => {
     // Fetch movie details using the movie ID from the URL
-        const apiKey = process.env.API_KEY;
+    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
     const apiUrl = `https://api.themoviedb.org/3/movie/${id}`;
 
     // Check if the data is already in localStorage
