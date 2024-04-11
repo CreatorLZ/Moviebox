@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
@@ -405,23 +405,21 @@ const Movie = () => {
               alt={movieDetails.title}
               data-testid="movie-poster"
             />
-            {trailerKey ? (
-              <Poster>
-                <YouTube
-                  videoId={trailerKey}
-                  opts={{
-                    width: "100%",
-                    height: "100%",
-                    playerVars: {
-                      autoplay: 1,
-                    },
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </Poster>
-            ) : (
-              <Spinner />
+               <Suspense fallback={<Spinner style={{width:"100%", height:"100%"}} />}>
+            {trailerKey && (
+              <YouTube
+                videoId={trailerKey}
+                opts={{
+                  width: "100%",
+                  height: "100%",
+                  playerVars: {
+                    autoplay: 1,
+                  },
+                }}
+                style={{ width: "100%", height: "100%" }}
+              />
             )}
+          </Suspense>
             <Top4>
               <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
                 {movieDetails.title}
