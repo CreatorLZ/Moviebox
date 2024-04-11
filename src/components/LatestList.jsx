@@ -10,7 +10,7 @@ import { Card, Card2, Div1, Dots, Options } from "./LatestListstyles";
 
 const LatestList = () => {
   const apiUrl = "https://api.themoviedb.org/3/movie/now_playing";
-  const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+  const apiKey = process.env.API_KEY;
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);

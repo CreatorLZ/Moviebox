@@ -87,7 +87,7 @@ const Movie = () => {
   }
   // Async function to fetch director's information
   const getDirectorInfo = async (movieId) => {
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+    const apiKey = process.env.API_KEY;
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
     try {
@@ -118,7 +118,7 @@ const Movie = () => {
 
   // Async function to fetch writers' information
   const getWriterInfo = async (movieId) => {
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+        const apiKey = process.env.API_KEY;
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
     try {
@@ -150,7 +150,7 @@ const Movie = () => {
   // Function to fetch star information
   const getStarsInfo = async (movieId) => {
     try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+          const apiKey = process.env.API_KEY;
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
       const response = await axios.get(apiUrl, {
@@ -176,7 +176,7 @@ const Movie = () => {
   // Define a function to fetch trailer data for a movie by its ID
   const getTrailerDataForMovie = async (movieId) => {
     try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+          const apiKey = process.env.API_KEY;
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
 
       const response = await axios.get(apiUrl, {
@@ -201,7 +201,7 @@ const Movie = () => {
   // Async function to fetch similar movies
   const fetchSimilarMovies = async (movieId) => {
     try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+          const apiKey = process.env.API_KEY;
       const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar`;
 
       const response = await axios.get(apiUrl, {
@@ -228,7 +228,7 @@ const Movie = () => {
 
   useEffect(() => {
     // Fetch movie details using the movie ID from the URL
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+        const apiKey = process.env.API_KEY;
     const apiUrl = `https://api.themoviedb.org/3/movie/${id}`;
 
     // Check if the data is already in localStorage
@@ -408,7 +408,6 @@ const Movie = () => {
                <Suspense fallback={<Spinner style={{width:"100%", height:"100%"}} />}>
             {trailerKey && (
               <Poster>
-
                 <YouTube
                   videoId={trailerKey}
                   opts={{
