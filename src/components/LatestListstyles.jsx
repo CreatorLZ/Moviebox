@@ -7,7 +7,7 @@ export const Card = styled.div`
   box-sizing: border-box;
   border: none;
   outline: none;
-  width: 370px;
+  width: 350px;
   height: 200px;
   text-align: left;
   gap: 16px;
@@ -17,7 +17,7 @@ export const Card = styled.div`
     border: none;
   }
   img {
-    width: 370px;
+    width: 350px;
     height: 100%;
     object-fit: cover;
     border-radius: 10px;

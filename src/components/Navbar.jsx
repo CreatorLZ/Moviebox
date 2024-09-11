@@ -128,6 +128,7 @@ const Auth = styled.div`
 
   p:first-child {
     cursor: pointer;
+    flex-wrap:none;
     &:hover {
       padding: 5px 0px;
       border-radius: 5px;
@@ -143,7 +144,7 @@ const Auth = styled.div`
   }
 `;
 const Div = styled.div`
-  width: fit-content;
+  width: 50%;
   padding: 3px;
   border-radius: 5px;
   font-weight: 700;
