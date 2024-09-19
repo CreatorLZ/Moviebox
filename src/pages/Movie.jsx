@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import { Helmet } from "react-helmet";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import Slider from "react-slick";
-const YouTube = lazy(() => import("react-youtube"))
+const YouTube = lazy(() => import("react-youtube"));
 import {
   Actors,
   Card,
@@ -41,7 +41,6 @@ import {
 
 const LOCAL_STORAGE_KEY = "movieData";
 
-
 const Movie = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
@@ -55,6 +54,7 @@ const Movie = () => {
   const [showFullOverview, setShowFullOverview] = useState(false);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [optionsVisibility, setOptionsVisibility] = useState([]);
+  const [videoLoading, setVideoLoading] = useState(true);
 
   useEffect(() => {
     // Initialize optionsVisibility array with false values for each card
@@ -406,23 +406,40 @@ const Movie = () => {
               alt={movieDetails.title}
               data-testid="movie-poster"
             />
-               <Suspense fallback={<Spinner style={{width:"100%", height:"100%"}} />}>
-            {trailerKey && (
-              <Poster>
-                <YouTube
-                  videoId={trailerKey}
-                  opts={{
-                    width: "100%",
-                    height: "100%",
-                    playerVars: {
-                      autoplay: 1,
-                    },
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </Poster>
-            )}
-          </Suspense>
+            <Suspense
+              fallback={<Spinner style={{ width: "100%", height: "100%" }} />}
+            >
+              {trailerKey && (
+                <Poster>
+                  {videoLoading && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 1,
+                      }}
+                    >
+                      <Spinner />
+                    </div>
+                  )}
+                  <YouTube
+                    videoId={trailerKey}
+                    opts={{
+                      width: "100%",
+                      height: "100%",
+                      playerVars: {
+                        autoplay: 1,
+                      },
+                    }}
+                    onReady={() => setVideoLoading(false)}
+                    onError={() => setVideoLoading(false)}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </Poster>
+              )}
+            </Suspense>
             <Top4>
               <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
                 {movieDetails.title}
@@ -771,128 +788,127 @@ const Movie = () => {
             >
               Similar Movies
             </h2>
-            {
-              similarMovies? (
-                <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-              <Slider {...settings}>
-                {similarMovies.map((movie, index) => (
-                  <Card data-testid="movie-card" key={movie.id}>
-                    {similarMovies ? (
-                      <>
-                        <Link to={`/movies/${movie.id}`} onClick={() => window.scrollTo(0, 0)}>
-                          <img
-                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                            alt={movie.title}
-                            data-testid="movie-poster"
-                          />
-                        </Link>
-                        <Dots onClick={() => handleDotsClick(index)}>
-                          <img src="/images/dots.png" alt="dots" />
-                        </Dots>
-                        {/* Display the Options div only if isOptionsVisible is true */}
-                        {optionsVisibility[index] && (
-                          <Options>
-                            <ul>
-                              <li>
-                                <img src="/images/Favorite.svg" alt="add" />
-                                <p> Favourite</p>
-                              </li>
-                              <li>
-                                <img src="/images/List.png" alt="list" />
-                                <p> Watchlist</p>
-                              </li>
-                              <li>
-                                <img src="/images/Star (1).png" alt="love" />
-                                <p> Your rating</p>
-                              </li>
-                            </ul>
-                          </Options>
-                        )}
-
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "6px",
-                            paddingTop: "5px",
-                          }}
-                        >
-                          <p
-                            data-testid="movie-release-date"
-                            style={{
-                              fontSize: "12px",
-                              fontWeight: "700",
-                              color: "gray",
-                            }}
-                          >
-                            {movie.release_date}
-                          </p>
-                        </div>
-
-                        <Card2>
-                          <p data-testid="movie-title">{movie.title}</p>
-                        </Card2>
-                        <Div1>
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
+            {similarMovies ? (
+              <SkeletonTheme baseColor="#313131" highlightColor="#525252">
+                <Slider {...settings}>
+                  {similarMovies.map((movie, index) => (
+                    <Card data-testid="movie-card" key={movie.id}>
+                      {similarMovies ? (
+                        <>
+                          <Link
+                            to={`/movies/${movie.id}`}
+                            onClick={() => window.scrollTo(0, 0)}
                           >
                             <img
-                              src="/images/imdb.png"
-                              alt="imdb"
-                              style={{
-                                marginRight: "10px",
-                                width: "35px",
-                                height: "17px",
-                              }}
+                              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                              alt={movie.title}
+                              data-testid="movie-poster"
                             />
-                            <p style={{ marginRight: "30px" }}>
-                              {movie.vote_average}
+                          </Link>
+                          <Dots onClick={() => handleDotsClick(index)}>
+                            <img src="/images/dots.png" alt="dots" />
+                          </Dots>
+                          {/* Display the Options div only if isOptionsVisible is true */}
+                          {optionsVisibility[index] && (
+                            <Options>
+                              <ul>
+                                <li>
+                                  <img src="/images/Favorite.svg" alt="add" />
+                                  <p> Favourite</p>
+                                </li>
+                                <li>
+                                  <img src="/images/List.png" alt="list" />
+                                  <p> Watchlist</p>
+                                </li>
+                                <li>
+                                  <img src="/images/Star (1).png" alt="love" />
+                                  <p> Your rating</p>
+                                </li>
+                              </ul>
+                            </Options>
+                          )}
+
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "6px",
+                              paddingTop: "5px",
+                            }}
+                          >
+                            <p
+                              data-testid="movie-release-date"
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "700",
+                                color: "gray",
+                              }}
+                            >
+                              {movie.release_date}
                             </p>
                           </div>
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <img
-                              src="/images/tomato.png"
-                              alt="tomato"
-                              style={{
-                                marginRight: "10px",
-                                width: "16px",
-                                height: "17px",
-                                objectFit: "cover",
-                              }}
-                            />
-                            <p>97%</p>
-                          </div>
-                        </Div1>
 
-                        <div style={{ display: "flex", gap: "3px" }}>
-                          <p
-                            style={{
-                              paddingTop: "10px",
-                              fontSize: "12px",
-                              fontWeight: "400",
-                              color: "gray",
-                            }}
-                          >
-                            {movieDetails.genres
-                              .map((genre) => genre.name)
-                              .join(", ")}
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <Spinner/>
-                    )}
-                  </Card>
-                ))}
-              </Slider>
-            </SkeletonTheme>
-              )
-              :(
-                <Spinner/>
-              )
-            }
-            
+                          <Card2>
+                            <p data-testid="movie-title">{movie.title}</p>
+                          </Card2>
+                          <Div1>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <img
+                                src="/images/imdb.png"
+                                alt="imdb"
+                                style={{
+                                  marginRight: "10px",
+                                  width: "35px",
+                                  height: "17px",
+                                }}
+                              />
+                              <p style={{ marginRight: "30px" }}>
+                                {movie.vote_average}
+                              </p>
+                            </div>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <img
+                                src="/images/tomato.png"
+                                alt="tomato"
+                                style={{
+                                  marginRight: "10px",
+                                  width: "16px",
+                                  height: "17px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                              <p>97%</p>
+                            </div>
+                          </Div1>
+
+                          <div style={{ display: "flex", gap: "3px" }}>
+                            <p
+                              style={{
+                                paddingTop: "10px",
+                                fontSize: "12px",
+                                fontWeight: "400",
+                                color: "gray",
+                              }}
+                            >
+                              {movieDetails.genres
+                                .map((genre) => genre.name)
+                                .join(", ")}
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <Spinner />
+                      )}
+                    </Card>
+                  ))}
+                </Slider>
+              </SkeletonTheme>
+            ) : (
+              <Spinner />
+            )}
           </div>
           <Footer />
         </Wrapper>

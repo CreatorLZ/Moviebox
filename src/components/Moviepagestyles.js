@@ -40,8 +40,8 @@ export const Promotion = styled.div`
   }
 `;
 export const Poster = styled.div`
-  width: 70%;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
