@@ -198,9 +198,17 @@ export const Genrecard2 = styled.div`
   width: fit-content;
   flex-wrap: wrap;
   gap: 3px;
+  padding: 5px;
+  border-radius: 15px;
+  color: #be123c;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 23px;
+  cursor: pointer;
   @media only screen and (max-width: 420px) {
-    display: none;
-    gap: 3px;
+    font-size: 12px;
+    flex-wrap: wrap;
+    padding: 3px;
   }
 `;
 export const Genrecard3 = styled.div`
@@ -550,5 +558,131 @@ export const Options = styled.div`
         height: 20px;
       }
     }
+  }
+`;
+
+// New Styled Components for the redesigned movie page
+
+export const HeroContainer = styled.div`
+  width: 100%;
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: white;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  @media only screen and (max-width: 768px) {
+    height: auto;
+    padding: 40px 20px;
+  }
+`;
+
+export const HeroContent = styled.div`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 40px;
+  width: 90%;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+`;
+
+export const MoviePoster = styled.img`
+  width: 250px;
+  height: 375px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  @media only screen and (max-width: 768px) {
+    width: 200px;
+    height: 300px;
+  }
+`;
+
+export const MovieDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+
+  h1 {
+    font-size: 48px;
+    font-weight: bold;
+  }
+
+  @media only screen and (max-width: 768px) {
+    h1 {
+      font-size: 36px;
+    }
+  }
+`;
+
+export const PurchaseButton = styled.button`
+  background-color: #00b8d4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: fit-content;
+
+  &:hover {
+    background-color: #0097a7;
+  }
+
+  @media only screen and (max-width: 768px) {
+    margin: 0 auto;
+  }
+`;
+
+export const ActionIcons = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+
+  img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  @media only screen and (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+
+export const Storyline = styled.div`
+  p:first-child {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+`;
+
+export const WorthWatching = styled.div`
+  p:first-child {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
   }
 `;

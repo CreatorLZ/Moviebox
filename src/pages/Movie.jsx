@@ -1,921 +1,817 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import { Link, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import Spinner from "../components/Spinner";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
-import { Helmet } from "react-helmet";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import Slider from "react-slick";
 const YouTube = lazy(() => import("react-youtube"));
-import {
-  Actors,
-  Card,
-  Card2,
-  CastGrid,
-  CastProfile,
-  CastProfileDiv,
-  Container,
-  Descbottom,
-  Description,
-  Description2,
-  Details,
-  Div1,
-  Dots,
-  Genrecard,
-  Genrecard2,
-  Genrecard3,
-  MovieImg,
-  MovieImg2,
-  Moviedetails,
-  Moviedetailsright,
-  Omega,
-  Options,
-  Poster,
-  ProductionLogo,
-  Top,
-  Top2,
-  Top4,
-  Wrapper,
-} from "../components/Moviepagestyles";
 
-const LOCAL_STORAGE_KEY = "movieData";
+const Container = styled.div`
+  min-height: 100vh;
+  color: white;
+  /* background-color: #000; */
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
 
-const Movie = () => {
-  const { id } = useParams();
-  const [movieDetails, setMovieDetails] = useState(null);
-  const [trailerKey, setTrailerKey] = useState(null);
-  const [movieCredits, setMovieCredits] = useState(null);
-  const [runtime, setRunTime] = useState(null);
-  const [releaseDate, setReleaseDate] = useState("");
-  const [director, setDirector] = useState("");
-  const [writers, setWriters] = useState([]);
-  const [stars, setStars] = useState([]);
-  const [showFullOverview, setShowFullOverview] = useState(false);
-  const [similarMovies, setSimilarMovies] = useState([]);
-  const [optionsVisibility, setOptionsVisibility] = useState([]);
-  const [videoLoading, setVideoLoading] = useState(true);
-  useEffect(() => {
-    // Initialize optionsVisibility array with false values for each card
-    setOptionsVisibility(Array(similarMovies.length).fill(false));
-  }, [similarMovies]);
-
-  // Toggle the visibility of the Options div for the specific card
-  const handleDotsClick = (index) => {
-    setOptionsVisibility((prevVisibility) => {
-      const updatedVisibility = [...prevVisibility];
-      updatedVisibility[index] = !updatedVisibility[index];
-      return updatedVisibility;
-    });
-  };
-
-  const overviewWordsLimit = 40;
-
-  //function to convert runtime to hours and minutes
-  function convertRuntimeToHoursAndMinutes(runtime) {
-    const hours = Math.floor(runtime / 60);
-    const minutes = runtime % 60;
-    if (hours > 0) {
-      if (minutes > 0) {
-        return `${hours}h ${minutes}min`;
-      } else {
-        return `${hours}h`;
-      }
-    } else {
-      return `${minutes}min`;
-    }
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: ${(props) =>
+      props.bgImage ? `url(${props.bgImage})` : "none"};
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: brightness(0.7);
+    z-index: 0;
   }
-  // Async function to fetch director's information
-  const getDirectorInfo = async (movieId) => {
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
-    try {
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-        },
-      });
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+`;
 
-      if (response.status === 200) {
-        const directors = response.data.crew.filter(
-          (member) => member.job === "Director"
-        );
-        if (directors.length > 0) {
-          const director = directors[0];
-          return {
-            name: director.name,
-            profilePath: director.profile_path,
-          };
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching director's information:", error);
-    }
+const HeroSection = styled.div`
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+  padding-top: 100px;
 
-    return null;
-  };
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    height: 80vh;
+  }
+`;
 
-  // Async function to fetch writers' information
-  const getWriterInfo = async (movieId) => {
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+const HeroContent = styled.div`
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  width: 100%;
 
-    try {
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-        },
-      });
-      if (response.status === 200) {
-        const writers = response.data.crew.filter(
-          (member) => member.department === "Writing"
-        );
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+`;
 
-        if (writers.length > 0) {
-          const writerInfo = writers.map((writer) => ({
-            name: writer.name,
-            profilePath: writer.profile_path,
-          }));
-          return writerInfo;
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching writers' information:", error);
-    }
+const PosterImage = styled.img`
+  width: 250px;
+  height: 320px;
+  border-radius: 8px;
+  border: white 5px solid;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 
-    return null;
-  };
+  @media (max-width: 768px) {
+    width: 250px;
+    height: 375px;
+  }
+`;
 
-  // Function to fetch star information
-  const getStarsInfo = async (movieId) => {
-    try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+const MovieInfo = styled.div`
+  display: flex;
+  /* flex: 1; */
+  width: 100vw;
+  flex-direction: row;
+`;
 
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-        },
-      });
-      if (response.status === 200) {
-        const stars = response.data.cast.map((star) => ({
-          name: star.name,
-          profilePath: star.profile_path,
-        }));
-        // console.log(stars);
-        return stars;
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching stars data:", error);
-      return null;
-    }
-  };
-  // Define a function to fetch trailer data for a movie by its ID
-  const getTrailerDataForMovie = async (movieId) => {
-    try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
+const MovieInfoRow = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-        },
-      });
+const MovieInfoRowInner1 = styled.div`
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+`;
 
-      if (response.status === 200) {
-        const trailerKey = response.data.results[0].key;
-        return trailerKey;
-      } else {
-        //  return null if no trailer is available
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching trailer data:", error);
-      return null; // Handle the error gracefully
-    }
-  };
+const MovieInfoRowInner2 = styled.div`
+  margin-top: 200px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
 
-  // Async function to fetch similar movies
-  const fetchSimilarMovies = async (movieId) => {
-    try {
-      const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-      const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar`;
+const Title = styled.h1`
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+  line-height: 1.1;
 
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-          language: "en-US",
-          page: 1, // You can adjust the page if you want more results
-        },
-      });
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+`;
 
-      if (response.status === 200) {
-        const similarMoviesData = response.data.results;
-        // console.log(response.data.results);
-        const similarMovies = response.data.results.slice(0, 10);
-        setSimilarMovies(similarMovies);
-      } else {
-        setSimilarMovies([]);
-      }
-    } catch (error) {
-      console.error("Error fetching similar movies:", error);
-      setSimilarMovies([]);
-    }
-  };
+const MetaInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #ccc;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+`;
+
+const GenreList = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+`;
+
+const GenreTag = styled.span`
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const Director = styled.p`
+  margin: 10px 0;
+  font-size: 16px;
+  color: #f5f5f5;
+
+  span {
+    color: #ccc;
+    font-weight: 500;
+  }
+`;
+const Writer = styled.p`
+  margin: 10px 0;
+  font-size: 16px;
+  color: #ccc;
+
+  span {
+    color: white;
+    font-weight: 500;
+  }
+`;
+
+const Languages = styled.p`
+  margin: 10px 0;
+  font-size: 16px;
+  color: #f5f5f5;
+
+  span {
+    color: #ccc;
+  }
+`;
+
+const Subtitles = styled.p`
+  margin: 10px 0;
+  font-size: 16px;
+  color: #ccc;
+
+  a {
+    color: #da2f2f;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`;
+
+const WatchButton = styled.button`
+  background: #da2f2f;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 25px;
+  font-size: 10px;
+  width: fit-content;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 20px 0;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #00b894;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 300px;
+  }
+`;
+
+const ActionButtons = styled.div`
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+
+const ActionButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 16px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    color: #da2f2f;
+  }
+`;
+
+const WorthWatching = styled.div`
+  margin: 30px 0;
+
+  h3 {
+    color: #da2f2f;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  p {
+    color: #ccc;
+    line-height: 1.6;
+  }
+`;
+
+const Section = styled.section`
+  padding: 60px;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+  }
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: white;
+`;
+
+const StorylineSection = styled(Section)`
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+
+const Storyline = styled.div`
+  max-width: 1200px;
+
+  h3 {
+    color: #da2f2f;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #ccc;
+  }
+`;
+
+const MediaGrid = styled.div`
+  display: flex; /* Changed from grid to flex */
+  justify-content: center; /* Center the single trailer container */
+  align-items: center;
+  margin-top: 30px;
+`;
+
+const MediaCard = styled.div`
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const PosterGrid = styled.div`
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  margin-top: 30px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+  /* --- CUSTOM SCROLLBAR --- */
+
+  /* Works on Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+
+  /* Works on Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    height: 8px; /* Height of the horizontal scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Makes the track invisible */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #555; /* A sleek dark grey */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Creates a "padding" effect */
+    background-clip: content-box; /* Ensures border is not covered by the background */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #777; /* Slightly lighter on hover for better UX */
+  }
+`;
+
+const PosterCard = styled.img`
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const CastGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+`;
+
+const CastCard = styled.div`
+  text-align: center;
+`;
+
+const CastImage = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+`;
+
+const CastName = styled.h4`
+  font-size: 16px;
+  margin-bottom: 5px;
+`;
+
+const CastRole = styled.p`
+  font-size: 14px;
+  color: #ccc;
+`;
+
+const TrailerContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 1000px; /* Limits the maximum width of the trailer */
+  margin: 20px auto; /* Centers the container and adds vertical margin */
+  aspect-ratio: 16/9; /* A more standard video aspect ratio */
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* Slightly more rounded corners */
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Adds some depth */
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02); /* Subtle zoom effect on hover */
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.4),
+      transparent
+    ); /* Gradient overlay */
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  &.playing::before {
+    display: none;
+  }
+`;
+
+const PlayButton = styled.div`
+  position: absolute;
+  z-index: 2;
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 212, 170, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(0, 212, 170, 1);
+    transform: scale(1.1);
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+    color: white;
+    margin-left: 4px;
+  }
+`;
+
+const TrailerTitle = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+const Duration = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 2;
+`;
+
+const HeartIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+);
+
+const ThumbsUpIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M7 10v12" />
+    <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z" />
+  </svg>
+);
+
+const PlayIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M8 5v14l11-7z" />
+  </svg>
+);
+
+const MoviePage = () => {
+  const { id } = useParams();
+  const [movieData, setMovieData] = useState(null);
+  const [cast, setCast] = useState([]);
+  const [director, setDirector] = useState("");
+  const [writer, setWriter] = useState("");
+  const [videos, setVideos] = useState([]);
+  const [backdrops, setBackdrops] = useState([]);
+  const [posters, setPosters] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
+
+  const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+  const baseUrl = "https://api.themoviedb.org/3";
 
   useEffect(() => {
-    // Fetch movie details using the movie ID from the URL
-    const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
-    const apiUrl = `https://api.themoviedb.org/3/movie/${id}`;
-
-    // Check if the data is already in localStorage
-    const cachedMovieData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-
-    if (cachedMovieData) {
-      // If data is found in storage, set it to state
-      setIsLoading(false); // Set loading to false since data is already available
-    } else {
-      // If data is not found in localstorage
-
-      axios
-        .get(apiUrl, {
+    const fetchMovieData = async () => {
+      setLoading(true);
+      try {
+        // Fetch movie details, credits, and videos in one call
+        const movieResponse = await axios.get(`${baseUrl}/movie/${id}`, {
           params: {
             api_key: apiKey,
-            language: "en-US",
-            append_to_response: "credits",
+            append_to_response: "credits,videos",
           },
-        })
-        .then(async (response) => {
-          // Set the fetched movie details to the statez
-          setMovieDetails(response.data);
-          await fetchSimilarMovies(id);
-
-          // Convert release_date to UTC format
-          const releaseDate = new Date(response.data.release_date);
-
-          // Convert releaseDate back to UTC string without GMT time
-          const releaseDateUTC = releaseDate.toISOString().split("T")[0];
-
-          // Set the formatted release date to the state
-          setReleaseDate(releaseDateUTC);
-
-          // Fetch trailer data for the movie using the getTrailerDataForMovie function
-          const trailerKey = await getTrailerDataForMovie(id);
-          setTrailerKey(trailerKey);
-
-          // Fetch director's information
-          const directorInfo = await getDirectorInfo(id);
-          // Set the director's information to state
-          if (directorInfo) {
-            setDirector(directorInfo.name);
-            // I can set additional properties if needed, such as profile picture path
-          } else {
-            setDirector("Director information not found.");
-          }
-
-          // Fetch writers' information
-          const writersInfo = await getWriterInfo(id);
-          // Set the writers' information to state
-          if (writersInfo) {
-            setWriters(writersInfo);
-            // console.log(writers);
-            //  additional properties later, such as profile picture path
-          } else {
-            setWriters("Writers information not found.");
-          }
-          // Fetch stars' information
-          const starsInfo = await getStarsInfo(id);
-          // const starsInfo = movieDetails.credits.cast;
-          if (starsInfo) {
-            setStars(starsInfo);
-          } else {
-            setStars("Stars information not found.");
-          }
-          const runtimeInMinutes = response.data.runtime;
-          const formattedRuntime =
-            convertRuntimeToHoursAndMinutes(runtimeInMinutes);
-          setRunTime(formattedRuntime);
-        })
-        .catch((error) => {
-          console.error("Error fetching movie details:", error);
         });
-    }
+        setMovieData(movieResponse.data);
+
+        const directors = movieResponse.data.credits.crew.filter(
+          (member) => member.job === "Director"
+        );
+        setDirector(directors.map((d) => d.name).join(", "));
+        // const writers = response.data.crew.filter(
+        //   (member) => member.department === "Writing"
+        // );
+        // setWriter(writers.map((w) => w.name).join(", "));
+
+        setCast(movieResponse.data.credits.cast);
+        setVideos(
+          movieResponse.data.videos.results.filter((v) => v.type === "Trailer")
+        );
+
+        // Fetch images
+        const imagesResponse = await axios.get(
+          `${baseUrl}/movie/${id}/images`,
+          {
+            params: { api_key: apiKey },
+          }
+        );
+        setBackdrops(imagesResponse.data.backdrops);
+        setPosters(imagesResponse.data.posters);
+
+        // Fetch similar movies
+        const similarResponse = await axios.get(
+          `${baseUrl}/movie/${id}/similar`,
+          {
+            params: { api_key: apiKey },
+          }
+        );
+        setSimilarMovies(similarResponse.data.results);
+      } catch (error) {
+        console.error("Error fetching movie data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovieData();
   }, [id]);
 
-  if (!movieDetails) {
-    // Render loading or error state while fetching data
-    return <Spinner />;
-  }
-
-  function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{
-          ...style,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "rgba(109, 107, 107, 0.2)",
-          width: "50px",
-          height: "70px",
-          zIndex: "10",
-        }}
-        onClick={onClick}
-      />
-    );
-  }
-
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{
-          ...style,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "rgba(109, 107, 107, 0.2)",
-          width: "50px",
-          height: "70px",
-          zIndex: "10",
-        }}
-        onClick={onClick}
-      />
-    );
-  }
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 200,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    cssEase: "linear",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+  const formatRuntime = (minutes) => {
+    if (!minutes) return "";
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}min`;
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).getFullYear();
+  };
+
+  if (loading || !movieData) {
+    return (
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>Loading...</div>
+      </Container>
+    );
+  }
+
+  const mainTrailer = videos.length > 0 ? videos[0] : null;
+
   return (
-    <Container>
-      <Helmet>
-        <title>{movieDetails.title} - Official trailer</title>
-      </Helmet>
-      {movieDetails ? (
-        <Wrapper>
-          <Navbar2 />
-          <Top2>
-            <MovieImg
-              style={{ height: "80vh" }}
-              src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} // Set the src attribute with the poster_path
-              alt={movieDetails.title}
-              data-testid="movie-poster"
-            />
-            <Suspense
-              fallback={<Spinner style={{ width: "100%", height: "100%" }} />}
-            >
-              {trailerKey && (
-                <Poster>
-                  {videoLoading && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        zIndex: 1,
-                      }}
-                    >
-                      <Spinner />
-                    </div>
-                  )}
+    <Container
+      bgImage={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
+    >
+      <HeroSection
+      // bgImage={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
+      >
+        <HeroContent>
+          <PosterImage
+            src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`}
+            alt={movieData.title}
+          />
+          <MovieInfo>
+            <MovieInfoRowInner1>
+              <Title>{movieData.title}</Title>
+
+              <MetaInfo>
+                <span>{formatDate(movieData.release_date)}</span>
+                <span>•</span>
+                <span>{formatRuntime(movieData.runtime)}</span>
+              </MetaInfo>
+
+              <GenreList>
+                {movieData.genres.map((genre) => (
+                  <GenreTag key={genre.id}>{genre.name}</GenreTag>
+                ))}
+              </GenreList>
+
+              <Director>
+                <strong>Director(s):</strong> <span>{director}</span>
+              </Director>
+
+              {/* <Writer>
+                <strong>Writer(s):</strong> <span>{writer}</span>
+              </Writer> */}
+
+              <Languages>
+                <strong>Language(s):</strong>{" "}
+                <span>
+                  {movieData.spoken_languages
+                    .map((l) => l.english_name)
+                    .join(", ")}
+                </span>
+              </Languages>
+
+              {/* <Subtitles>
+                <strong>Subtitles:</strong> <a>Show all</a>
+              </Subtitles> */}
+              {movieData.tagline ? (
+                <WorthWatching>
+                  <h3>Worth watching because</h3>
+                  <p>{movieData.tagline}</p>
+                </WorthWatching>
+              ) : (
+                ""
+              )}
+              <WatchButton>Watch Trailer</WatchButton>
+            </MovieInfoRowInner1>
+
+            <MovieInfoRowInner2>
+              {/* <ActionButtons>
+                <ActionButton>
+                  <ThumbsUpIcon />
+                </ActionButton>
+                <ActionButton>
+                  <HeartIcon />
+                </ActionButton>
+              </ActionButtons> */}
+              <WatchButton>Watch Trailer</WatchButton>
+            </MovieInfoRowInner2>
+          </MovieInfo>
+        </HeroContent>
+      </HeroSection>
+
+      <StorylineSection>
+        <Storyline>
+          <h3>Storyline</h3>
+          <p>{movieData.overview}</p>
+        </Storyline>
+      </StorylineSection>
+
+      {mainTrailer && (
+        <Section>
+          <SectionTitle>Trailers and video extras</SectionTitle>
+          <MediaGrid>
+            <TrailerContainer className={isTrailerPlaying ? "playing" : ""}>
+              {!isTrailerPlaying ? (
+                <>
+                  <img
+                    src={`https://img.youtube.com/vi/${mainTrailer.key}/maxresdefault.jpg`}
+                    alt="Trailer thumbnail"
+                  />
+                  <PlayButton onClick={() => setIsTrailerPlaying(true)}>
+                    <PlayIcon />
+                  </PlayButton>
+                  <TrailerTitle>{mainTrailer.name}</TrailerTitle>
+                </>
+              ) : (
+                <Suspense fallback={<div>Loading player...</div>}>
                   <YouTube
-                    videoId={trailerKey}
+                    videoId={mainTrailer.key}
                     opts={{
                       width: "100%",
                       height: "100%",
                       playerVars: {
                         autoplay: 1,
+                        modestbranding: 1,
+                        rel: 0,
+                        controls: 1,
+                        enablejsapi: 1,
+                        origin: window.location.origin,
+                        showinfo: 1,
                       },
                     }}
-                    onReady={() => setVideoLoading(false)}
-                    onError={() => setVideoLoading(false)}
-                    style={{ width: "100%", height: "100%" }}
+                    onReady={(event) => {
+                      // The player is ready
+                      event.target.playVideo();
+                    }}
+                    onError={(error) => {
+                      console.error("YouTube Player Error:", error);
+                      setIsTrailerPlaying(false);
+                    }}
                   />
-                </Poster>
+                </Suspense>
               )}
-            </Suspense>
-            <Top4>
-              <h3 data-testid="movie-title" style={{ marginRight: "10px" }}>
-                {movieDetails.title}
-              </h3>
-              <p style={{ fontSize: "14px", fontWeight: "400" }}>
-                {movieDetails.tagline}
-              </p>
-              <Genrecard3>
-                {movieDetails.genres.map((genre) => (
-                  <Genrecard key={genre.id}>{genre.name}</Genrecard>
-                ))}
-              </Genrecard3>
-              <p
-                data-testid="movie-release-date"
-                style={{ marginRight: "20px" }}
-              >
-                Release date:{" "}
-                <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                  {releaseDate}
-                </span>
-              </p>
-              <p data-testid="movie-runtime">
-                Runtime:{" "}
-                <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                  {runtime}
-                </span>
-              </p>
-            </Top4>
-            <Moviedetailsright>
-              <Details>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <h4 data-testid="movie-title" style={{ marginRight: "10px" }}>
-                    {movieDetails.title}
-                  </h4>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: "400",
-                      paddingBottom: "5px",
-                    }}
-                  >
-                    {movieDetails.tagline}
-                  </p>
-                  <Genrecard2>
-                    {movieDetails.genres.map((genre) => (
-                      <Genrecard key={genre.id}>{genre.name}</Genrecard>
-                    ))}
-                  </Genrecard2>
-                  <p
-                    data-testid="movie-release-date"
-                    style={{ marginRight: "20px" }}
-                  >
-                    Release date:{" "}
-                    <span style={{ fontWeight: "normal" }}>{releaseDate}</span>
-                  </p>
-                  <p data-testid="movie-runtime">
-                    Runtime:{" "}
-                    <span style={{ fontWeight: "normal" }}>{runtime}</span>
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "10px 0px",
-                      cursor: "pointer",
-                      backgroundColor: "#be123c1a",
-                    }}
-                  >
-                    <img
-                      style={{ width: "24px", height: "24px" }}
-                      src="/images/add.png"
-                      alt="add"
-                    />
-                    <p>Add to watchlist</p>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    paddingBottom: "20px",
-                  }}
-                >
-                  <p style={{ fontSize: "14px", fontWeight: "normal" }}>
-                    {" "}
-                    Added by 8.5K users
-                  </p>
-                </div>
-                <Genrecard2>
-                  {movieDetails.production_companies.map((company) =>
-                    company.logo_path ? (
-                      <ProductionLogo
-                        src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
-                        alt={company.name}
-                        key={company.id}
-                      />
-                    ) : null
-                  )}
-                </Genrecard2>
-                <h5 style={{ paddingTop: "5px" }}>Synopsis: </h5>
-                <p
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "500",
-                    lineHeight: "30px",
-                  }}
-                  data-testid="movie-overview"
-                >
-                  {showFullOverview
-                    ? movieDetails.overview
-                    : `${movieDetails.overview
-                        .split(" ")
-                        .slice(0, overviewWordsLimit)
-                        .join(" ")}...`}
-                  {!showFullOverview && (
-                    <span
-                      style={{
-                        color: "#be123c",
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      }}
-                      onClick={() => setShowFullOverview(true)}
-                    >
-                      Show more
-                    </span>
-                  )}
-                  {showFullOverview && (
-                    <span
-                      style={{
-                        color: "#be123c",
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                        zIndex: "10",
-                      }}
-                      onClick={() => setShowFullOverview(false)}
-                    >
-                      Show less
-                    </span>
-                  )}
-                </p>
-              </Details>
-            </Moviedetailsright>
-          </Top2>
-
-          <Omega style={{ display: "flex", width: "100%" }}>
-            <Moviedetails>
-              <Top>
-                <Genrecard2>
-                  {movieDetails.genres.map((genre) => (
-                    <Genrecard key={genre.id}>{genre.name}</Genrecard>
-                  ))}
-                </Genrecard2>
-              </Top>
-              {/* moviedetails for mobile below */}
-              <Description>
-                <MovieImg2
-                  style={{ height: "40vh", paddingRight: "4px", width: "50%" }}
-                  src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
-                  alt={movieDetails.title}
-                  data-testid="movie-poster"
-                />
-
-                <p
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "400",
-                    lineHeight: "30px",
-                    width: "50%",
-                  }}
-                  data-testid="movie-overview"
-                >
-                  {showFullOverview
-                    ? movieDetails.overview
-                    : `${movieDetails.overview
-                        .split(" ")
-                        .slice(0, overviewWordsLimit)
-                        .join(" ")}...`}
-                  {!showFullOverview && (
-                    <span
-                      style={{
-                        color: "#be123c",
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      }}
-                      onClick={() => setShowFullOverview(true)}
-                    >
-                      Show more
-                    </span>
-                  )}
-                  {showFullOverview && (
-                    <span
-                      style={{
-                        color: "#be123c",
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      }}
-                      onClick={() => setShowFullOverview(false)}
-                    >
-                      Show less
-                    </span>
-                  )}
-                </p>
-              </Description>
-              <Description2>
-                <p>
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "black",
-                    }}
-                  >
-                    Director:{" "}
-                  </span>{" "}
-                  <span>{director ? director : "Not Found"}</span>{" "}
-                </p>
-                {Array.isArray(writers) ? (
-                  <div>
-                    <p>
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "700",
-                          color: "black",
-                        }}
-                      >
-                        Writers:{" "}
-                      </span>
-                      <span>
-                        {writers.map((writer) => writer.name).join(", ")}
-                      </span>
-                    </p>
-                  </div>
-                ) : (
-                  <p>{writers}</p>
-                )}
-                {Array.isArray(stars) ? (
-                  <div>
-                    <p>
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "700",
-                          color: "black",
-                        }}
-                      >
-                        Stars:{" "}
-                      </span>
-                      <span>
-                        {stars
-                          .slice(0, 4)
-                          .map((star) => star.name)
-                          .join(", ")}
-                      </span>
-                      {stars.length > 4 && " + more"}{" "}
-                    </p>
-                  </div>
-                ) : (
-                  <span>No star information found for the movie.</span>
-                )}
-                <Genrecard3>
-                  {movieDetails.production_companies.map((company) =>
-                    company.logo_path ? (
-                      <ProductionLogo
-                        src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
-                        alt={company.name}
-                        key={company.id}
-                      />
-                    ) : null
-                  )}
-                </Genrecard3>
-              </Description2>
-              <Descbottom>
-                <p
-                  style={{
-                    padding: "10px",
-                    background: "#BE123C",
-                    color: "#FFFFFF",
-                    fontSize: "15px",
-                    borderRadius: "10px",
-                    fontWeight: "normal",
-                    textAlign: "center",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "30%",
-                    marginRight: "20px",
-                  }}
-                >
-                  Top rated movie #65
-                </p>
-                <p
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  Awards 9 nominations
-                </p>
-              </Descbottom>
-            </Moviedetails>
-          </Omega>
-          <Actors style={{ background: "whitesmoke" }}>
-            <h2
-              style={{
-                color: "#be123c",
-                borderLeft: "5px solid #be123c",
-                padding: "10px",
-              }}
-            >
-              Top cast
-            </h2>
-
-            <CastGrid>
-              {stars.map((actor) => (
-                <div
-                  key={actor.name}
-                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                >
-                  <CastProfileDiv
-                    style={{
-                      backgroundImage: `url(https://image.tmdb.org/t/p/w500${actor.profilePath})`,
-                    }}
-                  >
-                    {/* <CastProfile
-                     src={`https://image.tmdb.org/t/p/w500${actor.profilePath}`}
-                   alt={actor.name}
-                  /> */}
-                  </CastProfileDiv>
-                  <h6>{actor.name}</h6>
-                </div>
-              ))}
-            </CastGrid>
-          </Actors>
-          <div style={{ padding: "20px" }}>
-            <h2
-              style={{
-                color: "#be123c",
-                borderLeft: "5px solid #be123c",
-                padding: "10px",
-                marginBottom: "20px",
-              }}
-            >
-              Similar Movies
-            </h2>
-            {similarMovies ? (
-              <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-                <Slider {...settings}>
-                  {similarMovies.map((movie, index) => (
-                    <Card data-testid="movie-card" key={movie.id}>
-                      {similarMovies ? (
-                        <>
-                          <Link
-                            to={`/movies/${movie.id}`}
-                            onClick={() => window.scrollTo(0, 0)}
-                          >
-                            <img
-                              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                              alt={movie.title}
-                              data-testid="movie-poster"
-                            />
-                          </Link>
-                          <Dots onClick={() => handleDotsClick(index)}>
-                            <img src="/images/dots.png" alt="dots" />
-                          </Dots>
-                          {/* Display the Options div only if isOptionsVisible is true */}
-                          {optionsVisibility[index] && (
-                            <Options>
-                              <ul>
-                                <li>
-                                  <img src="/images/Favorite.svg" alt="add" />
-                                  <p> Favourite</p>
-                                </li>
-                                <li>
-                                  <img src="/images/List.png" alt="list" />
-                                  <p> Watchlist</p>
-                                </li>
-                                <li>
-                                  <img src="/images/Star (1).png" alt="love" />
-                                  <p> Your rating</p>
-                                </li>
-                              </ul>
-                            </Options>
-                          )}
-
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "6px",
-                              paddingTop: "5px",
-                            }}
-                          >
-                            <p
-                              data-testid="movie-release-date"
-                              style={{
-                                fontSize: "12px",
-                                fontWeight: "700",
-                                color: "gray",
-                              }}
-                            >
-                              {movie.release_date}
-                            </p>
-                          </div>
-
-                          <Card2>
-                            <p data-testid="movie-title">{movie.title}</p>
-                          </Card2>
-                          <Div1>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <img
-                                src="/images/imdb.png"
-                                alt="imdb"
-                                style={{
-                                  marginRight: "10px",
-                                  width: "35px",
-                                  height: "17px",
-                                }}
-                              />
-                              <p style={{ marginRight: "30px" }}>
-                                {movie.vote_average}
-                              </p>
-                            </div>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <img
-                                src="/images/tomato.png"
-                                alt="tomato"
-                                style={{
-                                  marginRight: "10px",
-                                  width: "16px",
-                                  height: "17px",
-                                  objectFit: "cover",
-                                }}
-                              />
-                              <p>97%</p>
-                            </div>
-                          </Div1>
-
-                          <div style={{ display: "flex", gap: "3px" }}>
-                            <p
-                              style={{
-                                paddingTop: "10px",
-                                fontSize: "12px",
-                                fontWeight: "400",
-                                color: "gray",
-                              }}
-                            >
-                              {movieDetails.genres
-                                .map((genre) => genre.name)
-                                .join(", ")}
-                            </p>
-                          </div>
-                        </>
-                      ) : (
-                        <Spinner />
-                      )}
-                    </Card>
-                  ))}
-                </Slider>
-              </SkeletonTheme>
-            ) : (
-              <Spinner />
-            )}
-          </div>
-          <Footer />
-        </Wrapper>
-      ) : (
-        <Spinner />
+            </TrailerContainer>
+          </MediaGrid>
+        </Section>
       )}
+
+      <Section>
+        <SectionTitle>Cast</SectionTitle>
+        <CastGrid>
+          {cast.slice(0, 12).map((person, index) => (
+            <CastCard key={person.id}>
+              <CastImage
+                src={
+                  person.profile_path
+                    ? `https://image.tmdb.org/t/p/w200${person.profile_path}`
+                    : "https://via.placeholder.com/120"
+                }
+                alt={person.name}
+              />
+              <CastName>{person.name}</CastName>
+              <CastRole>{person.character}</CastRole>
+            </CastCard>
+          ))}
+        </CastGrid>
+      </Section>
+
+      {similarMovies.length > 0 && (
+        <Section>
+          <SectionTitle>Similar Movies</SectionTitle>
+          <PosterGrid>
+            {similarMovies.slice(0, 10).map((movie, index) => (
+              <PosterCard
+                key={movie.id}
+                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                alt={movie.title}
+                onClick={() => (window.location.href = `/movies/${movie.id}`)}
+              />
+            ))}
+          </PosterGrid>
+        </Section>
+      )}
+
+      {backdrops.length > 0 && (
+        <Section>
+          <SectionTitle>Backdrops</SectionTitle>
+          <PosterGrid>
+            {backdrops.slice(0, 6).map((image, index) => (
+              <PosterCard
+                key={index}
+                src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+                alt={`Backdrop ${index + 1}`}
+                style={{ height: "200px" }}
+              />
+            ))}
+          </PosterGrid>
+        </Section>
+      )}
+
+      {posters.length > 0 && (
+        <Section>
+          <SectionTitle>Posters</SectionTitle>
+          <PosterGrid>
+            {posters.slice(0, 8).map((image, index) => (
+              <PosterCard
+                key={index}
+                src={`https://image.tmdb.org/t/p/w300${image.file_path}`}
+                alt={`Poster ${index + 1}`}
+              />
+            ))}
+          </PosterGrid>
+        </Section>
+      )}
+      <Footer />
     </Container>
   );
 };
 
-export default Movie;
+export default MoviePage;

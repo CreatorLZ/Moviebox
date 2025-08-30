@@ -5,7 +5,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
 
-
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
@@ -16,7 +15,22 @@ const Container = styled.div`
   background-image: url(${(props) => props.backgroundImage});
   background-repeat: no-repeat;
   background-size: cover;
+
   position: relative;
+
+  &::before {
+    content: ""; /* Required for a pseudo-element to show up */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.6)
+    ); /* The dark, transparent gradient */
+    z-index: 0; /* Puts the overlay above the background image */
+  }
   @media only screen and (max-width: 420px) {
     background-size: 100% 100%;
     background-position: center;
@@ -48,13 +62,19 @@ const Description = styled.div`
   height: fit-content;
   padding: 30px 40px;
   margin-left: 60px;
-  color: #f5f5f5;
+  color: white;
+  z-index: 1;
 
   h1 {
     font-weight: 700;
     font-size: 48px;
     line-height: 56px;
-    
+    color: white;
+    z-index: 1;
+  }
+  h5 {
+    color: #f5f5f5;
+    z-index: 1;
   }
   p {
     font-size: 14px;
@@ -65,13 +85,13 @@ const Description = styled.div`
     margin-left: 0px;
     height: fit-content;
     padding: 5px 20px;
-    h1{
+    h1 {
       font-size: 24px;
     }
     p {
-    font-size: 14px;
-    font-weight: 700;
-  }
+      font-size: 14px;
+      font-weight: 700;
+    }
   }
 `;
 
@@ -86,6 +106,7 @@ const Button1 = styled.div`
   padding: 15px 10px;
   border: 1px solid white;
   border-radius: 5px;
+  z-index: 1;
   &&:hover {
     background-color: rgba(192, 192, 192, 0.2);
   }
@@ -96,12 +117,10 @@ const Button1 = styled.div`
   @media only screen and (max-width: 420px) {
     top: 90%;
     left: 225px;
-    img{
+    img {
       width: 20px;
       height: 20px;
- 
     }
-
   }
 `;
 
@@ -116,7 +135,7 @@ const Button2 = styled.div`
   padding: 15px 10px;
   border: 1px solid white;
   border-radius: 5px;
-
+  z-index: 1;
   &&:hover {
     background-color: rgba(192, 192, 192, 0.2);
   }
@@ -126,17 +145,18 @@ const Button2 = styled.div`
   }
   @media only screen and (max-width: 420px) {
     top: 90%;
-    img{
+    img {
       width: 20px;
       height: 20px;
     }
-
   }
 `;
 export const Ratings = styled.div`
   display: flex;
   align-items: center;
   width: 90%;
+  color: white;
+  z-index: 1;
 `;
 
 const Button = styled.div`
@@ -147,6 +167,7 @@ const Button = styled.div`
   width: fit-content;
   gap: 8px;
   border-radius: 8px;
+  z-index: 1;
   :hover {
     color: #ebe1e1;
     cursor: pointer;
@@ -251,11 +272,11 @@ const Header = () => {
             <h5>
               {(() => {
                 const overview = movies[currentMovieIndex].overview;
-                const words = overview.split(' ');
+                const words = overview.split(" ");
                 const maxWords = 55;
 
                 if (words.length > maxWords) {
-                  const truncatedOverview = words.slice(0, maxWords).join(' ');
+                  const truncatedOverview = words.slice(0, maxWords).join(" ");
                   return `${truncatedOverview} ...`;
                 } else {
                   return overview;
@@ -263,7 +284,7 @@ const Header = () => {
               })()}
             </h5>
             <Link
-              style={{ textDecoration: "none", color: "white" }}
+              style={{ textDecoration: "none", color: "white", zIndex: 1 }}
               to={`/movies/${movies[currentMovieIndex].id}`}
             >
               <Button>
