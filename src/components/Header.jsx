@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
+import Navbar2 from "./Navbar2";
 
 const Container = styled.div`
   width: 100vw;
@@ -60,7 +61,7 @@ const Description = styled.div`
   min-width: 30vw;
   max-width: 50vw;
   height: fit-content;
-  padding: 30px 40px;
+  padding: 180px 60px;
   margin-left: 60px;
   color: white;
   z-index: 1;
@@ -248,7 +249,7 @@ const Header = () => {
 
   return (
     <Container style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <Navbar />
+      <Navbar2 />
       <Wrapper>
         {movies.length > 0 ? (
           <Description>

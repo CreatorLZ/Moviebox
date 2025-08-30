@@ -4,14 +4,20 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "./Spinner";
 
-
 const Container = styled.div`
   display: flex;
-  background: #be123c1a;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px 30px;
+  color: #ffffff;
+  height: 80px;
+  width: 100vw;
+  z-index: 150 !important;
+  position: fixed !important;
+  top: 0;
+  backdrop-filter: blur(5px);
   @media only screen and (max-width: 420px) {
     padding: 5px;
     width: 100%;
-
     color: #ffffff;
     display: flex;
     justify-content: space-between;
@@ -30,6 +36,7 @@ const Logo = styled.div`
   display: flex;
   align-items: center;
   font-weight: normal;
+  z-index: 1;
   img {
     margin: 20px;
     border: 50%;
@@ -50,6 +57,7 @@ const Logo2 = styled.div`
   align-items: center;
   font-weight: normal;
   margin: 5px;
+  z-index: 1;
   img {
     border-radius: 50%;
     object-fit: cover;
@@ -74,6 +82,7 @@ const Search = styled.div`
   color: #ffffff;
   background: transparent;
   border-radius: 10px;
+  z-index: 1;
   input {
     border: none;
     background: transparent;
@@ -109,11 +118,14 @@ const Searchbox = styled.div`
   padding: 10px;
   font-size: 30px;
   width: 60%;
-  border: 1px solid #ffffff;
+  /* border: 1px solid #ffffff; */
   border-radius: 10px;
-  background: rgba(128, 128, 128, 0.5);
+  z-index: 1;
+  background: ${({ isFocused }) =>
+    isFocused ? "rgba(128, 128, 128, 0.5)" : "rgba(128, 128, 128, 0.1)"};
   color: #ffffff;
-  
+  z-index: 10;
+  transition: background 0.3s ease;
   img {
     object-fit: contain;
   }
@@ -126,7 +138,7 @@ const Auth = styled.div`
   align-items: center;
   gap: 20px;
   float: right;
-
+  z-index: 1;
   p:first-child {
     cursor: pointer;
     &:hover {
@@ -153,25 +165,30 @@ const Div = styled.div`
 `;
 const Menu = styled.div`
   position: fixed;
-  top: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
-  z-index: 50;
+  top: 0;
+  z-index: 150 !important;
   box-sizing: border-box;
   right: 0;
-  transition: 350ms;
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
-  visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   background: #da2f2f;
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+  transform: ${({ isOpen }) =>
+    isOpen ? "translateY(0)" : "translateY(-100%)"};
+  opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
+  pointer-events: ${({ isOpen }) => (isOpen ? "auto" : "none")};
+  overflow-y: scroll;
+
   @media only screen and (max-width: 420px) {
     position: fixed;
     width: 100%;
     height: 100%;
     z-index: 20;
     overflow: scroll;
-    right: ${({ isOpen }) => (isOpen ? "0" : "100%")}; 
-    
-    transition: 650ms;
+    transform: ${({ isOpen }) =>
+      isOpen ? "translateY(0)" : "translateY(-100%)"};
+    transition: transform 0.6s ease-in-out;
     top: 0;
   }
 `;
@@ -180,7 +197,7 @@ const Menuwrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 50px 170px;
+  padding: 50px 50px;
   transition: 650ms;
   color: white;
   @media only screen and (max-width: 420px) {
@@ -209,13 +226,12 @@ const Closemenu = styled.div`
   }
   @media only screen and (max-width: 420px) {
     background: transparent;
-    &:hover{
+    &:hover {
       outline: none;
       border: none;
       background: transparent;
-      
     }
-    img{
+    img {
       height: 30px;
       width: 30px;
     }
@@ -262,9 +278,8 @@ const Topitem2 = styled.div`
   padding-left: 5px;
   width: 100%;
   transition: 350ms ease-in-out;
-  &:hover{
-    border-left:3px solid white;
-
+  &:hover {
+    border-left: 3px solid white;
   }
   img {
     width: 20px;
@@ -364,7 +379,7 @@ const Searchresults = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   transition: top 0.3s ease-in-out;
-  z-index: 10;
+  z-index: 50;
   /* Customize scrollbar */
   &::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
@@ -385,6 +400,7 @@ const Searchresults = styled.div`
     list-style: none;
     color: black;
     text-decoration: none !important;
+    z-index: 50;
   }
   li {
     padding: 10px;
@@ -396,6 +412,7 @@ const Searchresults = styled.div`
     align-items: center;
     gap: 10px;
     font-weight: 400;
+    z-index: 50;
     img {
       width: 100px;
       height: 100px;
@@ -409,15 +426,16 @@ const Searchresults = styled.div`
   }
 `;
 Menu.shouldForwardProp = (prop) => prop !== "isOpen";
+Searchbox.shouldForwardProp = (prop) => prop !== "isFocused";
 
 const Navbar2 = () => {
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
   const apiUrl = "https://api.themoviedb.org/3/movie/popular";
   const imageBaseUrl = "https://image.tmdb.org/t/p/w1280";
 
-  const [searchInput, setSearchInput] = useState(""); // State variable for user input
-  const [searchResults, setSearchResults] = useState([]); // State variable for search results
-  const [isLoading, setIsLoading] = useState(false); // State variable for loading state
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSearchEmpty, setIsSearchEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoviesDropdownOpen, setIsMoviesDropdownOpen] = useState(false);
@@ -425,6 +443,8 @@ const Navbar2 = () => {
   const [isTvShowsDropdownOpen, setIsTvShowsDropdownOpen] = useState(false);
   const [isWatchDropdownOpen, setIsWatchDropdownOpen] = useState(false);
   const [isCommunityDropdownOpen, setIsCommunityDropdownOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
   const searchMovies = () => {
     if (searchInput) {
       setIsLoading(true);
@@ -433,12 +453,11 @@ const Navbar2 = () => {
           params: {
             api_key: apiKey,
             language: "en-US",
-            query: searchInput, // Use the user's search input as the query
+            query: searchInput,
             page: 1,
           },
         })
         .then((response) => {
-          // Set the search results
           setSearchResults(response.data.results);
           setIsLoading(false);
           console.log(response.data.results);
@@ -447,14 +466,13 @@ const Navbar2 = () => {
           console.error("Error searching for movies:", error);
         });
     } else {
-      // Clear the search results if the search input is empty
       setSearchResults([]);
     }
   };
-  // Use useEffect to trigger the movie search when the searchInput changes
   useEffect(() => {
     searchMovies();
   }, [searchInput]);
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setSearchInput(inputValue);
@@ -469,6 +487,7 @@ const Navbar2 = () => {
     setIsMenuOpen(!isMenuOpen);
     document.body.style.overflow = isMenuOpen ? "visible" : "hidden";
   };
+
   return (
     <Container>
       <Logo>
@@ -478,12 +497,14 @@ const Navbar2 = () => {
         <h4>MovieBox</h4>
       </Logo>
       <Search>
-        <Searchbox>
+        <Searchbox isFocused={isFocused}>
           <input
             type="text"
             placeholder="Search Moviebox"
             value={searchInput}
             onChange={handleInputChange}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           />
           {isSearchEmpty ? (
             <img src="/images/Search.png" alt="search" />
@@ -498,8 +519,11 @@ const Navbar2 = () => {
         </Searchbox>
       </Search>
       <Auth>
-      <p>Sign in</p>
-        <Div style={{ display: "flex", alignItems: "center", gap: "5px" }} onClick={toggleMenu}>
+        <p>Sign in</p>
+        <Div
+          style={{ display: "flex", alignItems: "center", gap: "5px" }}
+          onClick={toggleMenu}
+        >
           <img src="/images/Menu.png" alt="menu" />
           <p>Menu</p>
         </Div>
@@ -566,13 +590,19 @@ const Navbar2 = () => {
               >
                 <img src="/images/movieswhite.png" alt="projector" />
                 <h3>Movies</h3>
-                {
-                  isMoviesDropdownOpen ? (
-                    <img style={{marginLeft:"76px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"76px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isMoviesDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "76px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "76px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>Upcoming Movies</li>
@@ -597,13 +627,19 @@ const Navbar2 = () => {
               >
                 <img src="/images/celeb.png" alt="celeb" />
                 <h3>Celebs</h3>
-                {
-                  isCelebsDropdownOpen ? (
-                    <img style={{marginLeft:"80px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"80px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isCelebsDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "80px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "80px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul1 style={{ display: isCelebsDropdownOpen ? "block" : "none" }}>
                 <li>Most Popular Actors</li>
@@ -626,13 +662,19 @@ const Navbar2 = () => {
               >
                 <img src="/images/tvhshow.png" alt="projector" />
                 <h3>TV Shows</h3>
-                {
-                  isTvShowsDropdownOpen ? (
-                    <img style={{marginLeft:"55px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"55px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isTvShowsDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "55px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "55px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>Whats Streaming</li>
@@ -661,13 +703,19 @@ const Navbar2 = () => {
               >
                 <img src="/images/play2.png" alt="projector" />
                 <h3>Watch</h3>
-                {
-                  isWatchDropdownOpen ? (
-                    <img style={{marginLeft:"85px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"85px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isWatchDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "85px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "85px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>What to Watch</li>
@@ -690,13 +738,19 @@ const Navbar2 = () => {
               >
                 <img src="/images/earth.png" alt="projector" />
                 <h3>Community</h3>
-                {
-                  isCommunityDropdownOpen ? (
-                    <img style={{marginLeft:"35px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"35px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isCommunityDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "35px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "35px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>Help Center</li>

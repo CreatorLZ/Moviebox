@@ -12,7 +12,7 @@ const Container = styled.div`
   /* background-color: #000; */
   background-color: rgba(0, 0, 0, 0.5);
   position: relative;
-
+  overflow-x: hidden;
   &::before {
     content: "";
     position: fixed;
@@ -154,17 +154,7 @@ const Director = styled.p`
   color: #f5f5f5;
 
   span {
-    color: #ccc;
-    font-weight: 500;
-  }
-`;
-const Writer = styled.p`
-  margin: 10px 0;
-  font-size: 16px;
-  color: #ccc;
-
-  span {
-    color: white;
+    color: #f5f5f5;
     font-weight: 500;
   }
 `;
@@ -175,19 +165,7 @@ const Languages = styled.p`
   color: #f5f5f5;
 
   span {
-    color: #ccc;
-  }
-`;
-
-const Subtitles = styled.p`
-  margin: 10px 0;
-  font-size: 16px;
-  color: #ccc;
-
-  a {
-    color: #da2f2f;
-    text-decoration: underline;
-    cursor: pointer;
+    color: #f5f5f5;
   }
 `;
 
@@ -205,7 +183,7 @@ const WatchButton = styled.button`
   transition: background 0.3s;
 
   &:hover {
-    background: #00b894;
+    background: #a92424;
   }
 
   @media (max-width: 768px) {
@@ -214,47 +192,17 @@ const WatchButton = styled.button`
   }
 `;
 
-const ActionButtons = styled.div`
-  display: flex;
-  gap: 20px;
-  margin: 20px 0;
-
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`;
-
-const ActionButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  font-size: 16px;
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  &:hover {
-    color: #da2f2f;
-  }
-`;
-
 const WorthWatching = styled.div`
-  margin: 30px 0;
+  margin: 10px 0;
 
   h3 {
-    color: #da2f2f;
+    color: #f5f5f5;
     margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   p {
-    color: #ccc;
+    color: #f5f5f5;
     line-height: 1.6;
   }
 `;
@@ -269,8 +217,8 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 30px;
+  font-size: 24px;
+  margin-bottom: 20px;
   color: white;
 `;
 
@@ -282,7 +230,7 @@ const Storyline = styled.div`
   max-width: 1200px;
 
   h3 {
-    color: #da2f2f;
+    color: #f5f5f5;
     margin-bottom: 20px;
     font-size: 24px;
   }
@@ -290,13 +238,13 @@ const Storyline = styled.div`
   p {
     font-size: 18px;
     line-height: 1.8;
-    color: #ccc;
+    color: #f5f5f5;
   }
 `;
 
 const MediaGrid = styled.div`
   display: flex; /* Changed from grid to flex */
-  justify-content: center; /* Center the single trailer container */
+  justify-content: flex-start;
   align-items: center;
   margin-top: 30px;
 `;
@@ -397,8 +345,8 @@ const CastRole = styled.p`
 const TrailerContainer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 1000px; /* Limits the maximum width of the trailer */
-  margin: 20px auto; /* Centers the container and adds vertical margin */
+  max-width: 800px; /* Limits the maximum width of the trailer */
+  margin: 20px 0 20px 0; /* Centers the container and adds vertical margin */
   aspect-ratio: 16/9; /* A more standard video aspect ratio */
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 12px; /* Slightly more rounded corners */
@@ -452,7 +400,7 @@ const PlayButton = styled.div`
   z-index: 2;
   width: 80px;
   height: 80px;
-  background: rgba(0, 212, 170, 0.9);
+  background: #da2f2f;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -461,7 +409,7 @@ const PlayButton = styled.div`
   transition: all 0.3s;
 
   &:hover {
-    background: rgba(0, 212, 170, 1);
+    background: #a92424;
     transform: scale(1.1);
   }
 
@@ -542,6 +490,7 @@ const MoviePage = () => {
           },
         });
         setMovieData(movieResponse.data);
+        console.log(movieResponse.data);
 
         const directors = movieResponse.data.credits.crew.filter(
           (member) => member.job === "Director"
@@ -617,6 +566,7 @@ const MoviePage = () => {
     <Container
       bgImage={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
     >
+      <Navbar2 />
       <HeroSection
       // bgImage={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
       >
@@ -658,6 +608,10 @@ const MoviePage = () => {
                 </span>
               </Languages>
 
+              <Languages>
+                <strong>Status:</strong> <span>{movieData.status}</span>
+              </Languages>
+
               {/* <Subtitles>
                 <strong>Subtitles:</strong> <a>Show all</a>
               </Subtitles> */}
@@ -672,17 +626,10 @@ const MoviePage = () => {
               <WatchButton>Watch Trailer</WatchButton>
             </MovieInfoRowInner1>
 
-            <MovieInfoRowInner2>
-              {/* <ActionButtons>
-                <ActionButton>
-                  <ThumbsUpIcon />
-                </ActionButton>
-                <ActionButton>
-                  <HeartIcon />
-                </ActionButton>
-              </ActionButtons> */}
+            {/* <MovieInfoRowInner2>
+           
               <WatchButton>Watch Trailer</WatchButton>
-            </MovieInfoRowInner2>
+            </MovieInfoRowInner2> */}
           </MovieInfo>
         </HeroContent>
       </HeroSection>

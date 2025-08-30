@@ -11,6 +11,8 @@ const FooterContainer = styled.footer`
   flex-direction: column;
   gap: 40px;
   font-size: 14px;
+  max-width: 100vw;
+  overflow-x: hidden;
 `;
 
 const TopSection = styled.div`
@@ -137,11 +139,12 @@ const Footer = () => {
           <h4>HELP</h4>
           <ul>
             <li>
-              <a href="#">FAQ(no faq just kidding 💀)</a>
-            </li>
-            <li>
               <a href="#">Uno reverse. help us😌</a>
             </li>
+            <li>
+              <a href="#">FAQ(none. Thank d gods👌)</a>
+            </li>
+
             <li>
               <a href="#">Do you want a feature?</a>
             </li>

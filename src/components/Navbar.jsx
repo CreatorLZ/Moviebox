@@ -11,7 +11,7 @@ const Container = styled.div`
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  z-index: 5;
+  z-index: 50;
   Link {
     text-decoration: none;
     p {
@@ -128,7 +128,7 @@ const Auth = styled.div`
 
   p:first-child {
     cursor: pointer;
-    flex-wrap:none;
+    flex-wrap: none;
     &:hover {
       padding: 5px 0px;
       border-radius: 5px;
@@ -171,8 +171,8 @@ const Menu = styled.div`
     height: 100%;
     z-index: 20;
     overflow: scroll;
-    right: ${({ isOpen }) => (isOpen ? "0" : "100%")}; 
-    
+    right: ${({ isOpen }) => (isOpen ? "0" : "100%")};
+
     transition: 650ms;
     top: 0;
   }
@@ -226,13 +226,12 @@ const Closemenu = styled.div`
   }
   @media only screen and (max-width: 420px) {
     background: transparent;
-    &:hover{
+    &:hover {
       outline: none;
       border: none;
       background: transparent;
-      
     }
-    img{
+    img {
       height: 30px;
       width: 30px;
     }
@@ -336,9 +335,8 @@ const Topitem2 = styled.div`
   padding-left: 5px;
   width: 100%;
   transition: 350ms ease-in-out;
-  &:hover{
-    border-left:3px solid white;
-
+  &:hover {
+    border-left: 3px solid white;
   }
   img {
     width: 20px;
@@ -516,7 +514,10 @@ const Navbar = () => {
       </Search>
       <Auth>
         <p>Sign in</p>
-        <Div style={{ display: "flex", alignItems: "center", gap: "5px" }} onClick={toggleMenu} >
+        <Div
+          style={{ display: "flex", alignItems: "center", gap: "5px" }}
+          onClick={toggleMenu}
+        >
           <img src="/images/Menu.png" alt="menu" />
           <p>Menu</p>
         </Div>
@@ -525,7 +526,7 @@ const Navbar = () => {
       {searchInput && (
         <Searchresults searchInput={searchInput}>
           {isLoading ? (
-            <Spinner/>
+            <Spinner />
           ) : (
             <ul>
               {searchResults.map((movie) => (
@@ -583,13 +584,19 @@ const Navbar = () => {
               >
                 <img src="/images/movieswhite.png" alt="projector" />
                 <h3>Movies</h3>
-                {
-                  isMoviesDropdownOpen ? (
-                    <img style={{marginLeft:"76px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"76px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isMoviesDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "76px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "76px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>Upcoming Movies</li>
@@ -614,13 +621,19 @@ const Navbar = () => {
               >
                 <img src="/images/celeb.png" alt="celeb" />
                 <h3>Celebs</h3>
-                {
-                  isCelebsDropdownOpen ? (
-                    <img style={{marginLeft:"80px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"80px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isCelebsDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "80px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "80px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul1 style={{ display: isCelebsDropdownOpen ? "block" : "none" }}>
                 <li>Most Popular Actors</li>
@@ -643,13 +656,19 @@ const Navbar = () => {
               >
                 <img src="/images/tvhshow.png" alt="projector" />
                 <h3>TV Shows</h3>
-                {
-                  isTvShowsDropdownOpen ? (
-                    <img style={{marginLeft:"55px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"55px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isTvShowsDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "55px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "55px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>Whats Streaming</li>
@@ -678,13 +697,19 @@ const Navbar = () => {
               >
                 <img src="/images/play2.png" alt="projector" />
                 <h3>Watch</h3>
-                {
-                  isWatchDropdownOpen ? (
-                    <img style={{marginLeft:"85px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"85px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isWatchDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "85px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "85px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>What to Watch</li>
@@ -707,13 +732,19 @@ const Navbar = () => {
               >
                 <img src="/images/earth.png" alt="projector" />
                 <h3>Community</h3>
-                {
-                  isCommunityDropdownOpen ? (
-                    <img style={{marginLeft:"35px"}} src="/images/up.png" alt="down" />
-                  ) :(
-                    <img style={{marginLeft:"35px"}} src="/images/down.png" alt="down" />
-                  )
-                }
+                {isCommunityDropdownOpen ? (
+                  <img
+                    style={{ marginLeft: "35px" }}
+                    src="/images/up.png"
+                    alt="down"
+                  />
+                ) : (
+                  <img
+                    style={{ marginLeft: "35px" }}
+                    src="/images/down.png"
+                    alt="down"
+                  />
+                )}
               </Topitem2>
               <Ul2>
                 <li>Help Center</li>
