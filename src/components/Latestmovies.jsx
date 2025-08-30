@@ -21,6 +21,7 @@ const Top = styled.div`
   padding: 40px 0px;
   h2 {
     border-left: 4px solid #be123c;
+    padding-left: 12px;
   }
   p {
     font-size: 20px;
@@ -34,6 +35,7 @@ const Top = styled.div`
     h2 {
       font-size: 20px;
       border-left: 4px solid #be123c;
+      padding-left: 12px;
     }
   }
 `;

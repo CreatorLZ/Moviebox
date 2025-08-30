@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+"use client";
+
+import { useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -21,11 +23,11 @@ const MovieList = () => {
     try {
       const [moviesResponse, genresResponse] = await Promise.all([
         axios.get(`${API_BASE_URL}/trending/movie/week`, {
-          params: { api_key: API_KEY, language: "en-US", page: 1 }
+          params: { api_key: API_KEY, language: "en-US", page: 1 },
         }),
         axios.get(`${API_BASE_URL}/genre/movie/list`, {
-          params: { api_key: API_KEY, language: "en-US" }
-        })
+          params: { api_key: API_KEY, language: "en-US" },
+        }),
       ]);
 
       const topMovies = moviesResponse.data.results.slice(0, 10);
@@ -43,103 +45,190 @@ const MovieList = () => {
     fetchMoviesAndGenres();
   }, [fetchMoviesAndGenres]);
 
-  const handleDotsClick = useCallback((index) => {
-    setOptionsVisibility(prev => {
+  const handleDotsClick = useCallback((index, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOptionsVisibility((prev) => {
       const updated = [...prev];
       updated[index] = !updated[index];
       return updated;
     });
   }, []);
 
-  const getGenresForMovie = useCallback((genreIds) => {
-    return genreIds.map(id => genres.find(g => g.id === id)?.name).filter(Boolean).join(", ");
-  }, [genres]);
+  const getGenresForMovie = useCallback(
+    (genreIds) => {
+      return genreIds
+        .map((id) => genres.find((g) => g.id === id)?.name)
+        .filter(Boolean)
+        .slice(0, 2) // Limit to 2 genres for cleaner look
+        .join(", ");
+    },
+    [genres]
+  );
 
-  const sliderSettings = useMemo(() => ({
-    dots: true,
-    infinite: true,
-    speed: 200,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    cssEase: "linear",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 3, slidesToScroll: 3 }
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 2, slidesToScroll: 2 }
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 2, slidesToScroll: 1 }
-      }
-    ]
-  }), []);
+  const sliderSettings = useMemo(
+    () => ({
+      dots: true,
+      infinite: true,
+      speed: 400,
+      slidesToShow: 6,
+      slidesToScroll: 1,
+      nextArrow: <SampleNextArrow />,
+      prevArrow: <SamplePrevArrow />,
+      autoplay: true,
+      autoplaySpeed: 6000,
+      cssEase: "ease-in-out",
+      centerMode: false,
+      variableWidth: false,
+      responsive: [
+        {
+          breakpoint: 1400,
+          settings: { slidesToShow: 5, slidesToScroll: 1 },
+        },
+        {
+          breakpoint: 1200,
+          settings: { slidesToShow: 4, slidesToScroll: 1 },
+        },
+        {
+          breakpoint: 1024,
+          settings: { slidesToShow: 3, slidesToScroll: 1 },
+        },
+        {
+          breakpoint: 768,
+          settings: { slidesToShow: 3, slidesToScroll: 1 },
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 2.5,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+    }),
+    []
+  );
 
-  const renderMovieCard = useCallback((movie, index) => (
-    <Card data-testid="movie-card" key={movie.id}>
-      {!isLoading ? (
-        <>
-          <Link to={`/movies/${movie.id}`}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt={movie.title}
-              data-testid="movie-poster"
+  const renderMovieCard = useCallback(
+    (movie, index) => (
+      <Card data-testid="movie-card" key={movie.id}>
+        {!isLoading ? (
+          <>
+            <Link
+              to={`/movies/${movie.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <div className="poster-container">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  alt={movie.title}
+                  data-testid="movie-poster"
+                />
+                <div className="hover-overlay">
+                  <div className="play-button"></div>
+                </div>
+              </div>
+            </Link>
+
+            <Dots onClick={(e) => handleDotsClick(index, e)}>
+              <img src="./images/dots.png" alt="options" />
+            </Dots>
+
+            {optionsVisibility[index] && (
+              <Options>
+                <ul>
+                  <li>
+                    <img src="./images/Favorite.svg" alt="favorite" />
+                    <p>Add to Favorites</p>
+                  </li>
+                  <li>
+                    <img src="./images/List.png" alt="watchlist" />
+                    <p>Add to Watchlist</p>
+                  </li>
+                  <li>
+                    <img src="./images/Star (1).png" alt="rate" />
+                    <p>Rate Movie</p>
+                  </li>
+                </ul>
+              </Options>
+            )}
+
+            <div
+              style={{
+                paddingTop: "12px",
+                fontSize: "11px",
+                color: "#9ca3af",
+                fontWeight: "500",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+              }}
+            >
+              {new Date(movie.release_date).getFullYear()}
+            </div>
+
+            <Card2>
+              <p data-testid="movie-title">{movie.title}</p>
+            </Card2>
+
+            <Div1>
+              <div>
+                <img
+                  src="./images/imdb.png"
+                  alt="imdb"
+                  style={{ width: "28px", height: "14px" }}
+                />
+                <p>{movie.vote_average.toFixed(1)}</p>
+              </div>
+              <div>
+                <img
+                  src="./images/tomato.png"
+                  alt="rotten tomatoes"
+                  style={{ width: "14px", height: "14px", objectFit: "cover" }}
+                />
+                <p>97%</p>
+              </div>
+            </Div1>
+
+            <div
+              style={{
+                paddingTop: "6px",
+                fontSize: "11px",
+                color: "#6b7280",
+                fontWeight: "500",
+                width: "100%",
+                lineHeight: "1.3",
+              }}
+            >
+              {getGenresForMovie(movie.genre_ids)}
+            </div>
+          </>
+        ) : (
+          <div className="skeleton-wrapper">
+            <Skeleton
+              height="100%"
+              style={{ borderRadius: "12px 12px 0 0", aspectRatio: "2/3" }}
             />
-          </Link>
-          <Dots onClick={() => handleDotsClick(index)}>
-            <img src="./images/dots.png" alt="dots" />
-          </Dots>
-          {optionsVisibility[index] && (
-            <Options>
-              <ul>
-                <li><img src="./images/Favorite.svg" alt="add" /><p>Favourite</p></li>
-                <li><img src="./images/List.png" alt="list" /><p>Watchlist</p></li>
-                <li><img src="./images/Star (1).png" alt="love" /><p>Your rating</p></li>
-              </ul>
-            </Options>
-          )}
-          <div style={{ display: "flex", gap: "6px", paddingTop: "5px" }}>
-            <p data-testid="movie-release-date" style={{ fontSize: "12px", fontWeight: "700", color: "gray" }}>
-              {movie.release_date}
-            </p>
+            <div style={{ padding: "12px 0" }}>
+              <Skeleton height={18} style={{ marginBottom: "8px" }} />
+              <Skeleton
+                height={14}
+                width="70%"
+                style={{ marginBottom: "6px" }}
+              />
+              <Skeleton height={12} width="85%" />
+            </div>
           </div>
-          <Card2>
-            <p data-testid="movie-title">{movie.title}</p>
-          </Card2>
-          <Div1>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <img src="./images/imdb.png" alt="imdb" style={{ marginRight: "10px", width: "35px", height: "17px" }} />
-              <p style={{ marginRight: "30px" }}>{movie.vote_average}</p>
-            </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <img src="./images/tomato.png" alt="tomato" style={{ marginRight: "10px", width: "16px", height: "17px", objectFit: "cover" }} />
-              <p>97%</p>
-            </div>
-          </Div1>
-          <p style={{ paddingTop: "10px", fontSize: "12px", fontWeight: "400", color: "gray" }}>
-            {getGenresForMovie(movie.genre_ids)}
-          </p>
-        </>
-      ) : (
-        <div className="skeleton-wrapper">
-          <Skeleton height={200} count={1} />
-        </div>
-      )}
-    </Card>
-  ), [isLoading, optionsVisibility, handleDotsClick, getGenresForMovie]);
+        )}
+      </Card>
+    ),
+    [isLoading, optionsVisibility, handleDotsClick, getGenresForMovie]
+  );
 
   return (
-    <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-      <Slider {...sliderSettings}>
-        {movies.map(renderMovieCard)}
-      </Slider>
+    <SkeletonTheme baseColor="#f3f4f6" highlightColor="#e5e7eb">
+      <div style={{ padding: "0 10px" }}>
+        <Slider {...sliderSettings}>{movies.map(renderMovieCard)}</Slider>
+      </div>
     </SkeletonTheme>
   );
 };
@@ -154,11 +243,23 @@ function SampleNextArrow({ className, style, onClick }) {
         alignItems: "center",
         justifyContent: "center",
         background: "rgba(109, 107, 107, 0.2)",
-        width: "50px",
-        height: "70px",
+        width: "48px",
+        height: "48px",
+        borderRadius: "50%",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
         zIndex: "10",
+        right: "-24px",
+        transition: "all 0.2s ease",
       }}
       onClick={onClick}
+      onMouseEnter={(e) => {
+        e.target.style.transform = "scale(1.1)";
+        e.target.style.boxShadow = "0 6px 16px rgba(0, 0, 0, 0.2)";
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.transform = "scale(1)";
+        e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
+      }}
     />
   );
 }
@@ -169,15 +270,27 @@ function SamplePrevArrow({ className, style, onClick }) {
       className={className}
       style={{
         ...style,
-        display: "none",
+        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         background: "rgba(109, 107, 107, 0.2)",
-        width: "50px",
-        height: "70px",
+        width: "48px",
+        height: "48px",
+        borderRadius: "50%",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
         zIndex: "10",
+        left: "-24px",
+        transition: "all 0.2s ease",
       }}
       onClick={onClick}
+      onMouseEnter={(e) => {
+        e.target.style.transform = "scale(1.1)";
+        e.target.style.boxShadow = "0 6px 16px rgba(0, 0, 0, 0.2)";
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.transform = "scale(1)";
+        e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
+      }}
     />
   );
 }

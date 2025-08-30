@@ -55,7 +55,6 @@ const Movie = () => {
   const [similarMovies, setSimilarMovies] = useState([]);
   const [optionsVisibility, setOptionsVisibility] = useState([]);
   const [videoLoading, setVideoLoading] = useState(true);
-
   useEffect(() => {
     // Initialize optionsVisibility array with false values for each card
     setOptionsVisibility(Array(similarMovies.length).fill(false));
