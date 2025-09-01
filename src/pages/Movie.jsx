@@ -386,6 +386,75 @@ const PosterGrid = styled.div`
     background-color: #777; /* Slightly lighter on hover for better UX */
   }
 `;
+// REPLACE the old PosterCard styled.img with these new components
+
+const SimilarMoviePoster = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+`;
+
+const HoverOverlay = styled.div`
+  position: absolute;
+  inset: 0; /* A shorthand for top, right, bottom, left: 0 */
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px; /* Match the card's border-radius */
+`;
+
+const PlayButtonIcon = styled.div`
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.8);
+  transition: transform 0.2s ease;
+
+  /* This pseudo-element creates the triangle "play" shape */
+  &::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 18px solid #333;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    margin-left: 4px;
+  }
+`;
+
+const PosterCard2 = styled.div`
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden; /* Clips the image during the zoom effect */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  flex: 0 0 180px;
+  height: 280px;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  /* When hovering the card, show the overlay */
+  &:hover ${HoverOverlay} {
+    opacity: 1;
+  }
+
+  /* When hovering the card, scale up the play button */
+  &:hover ${PlayButtonIcon} {
+    transform: scale(1);
+  }
+`;
 
 const PosterCard = styled.img`
   width: 100%;
@@ -635,7 +704,7 @@ const MoviePage = () => {
             {movieData.overview}
           </StorylineText>
           {/* Only show button if text is long enough to be clamped */}
-          {movieData.overview.length > 550 && (
+          {movieData.overview.length > 250 && (
             <SeeMoreButton onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? "See less" : "See more"}
             </SeeMoreButton>
@@ -710,12 +779,18 @@ const MoviePage = () => {
           <SectionTitle>Similar Movies</SectionTitle>
           <PosterGrid>
             {similarMovies.slice(0, 10).map((movie, index) => (
-              <PosterCard
+              <PosterCard2
                 key={movie.id}
-                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                alt={movie.title}
                 onClick={() => (window.location.href = `/movies/${movie.id}`)}
-              />
+              >
+                <SimilarMoviePoster
+                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                  alt={movie.title}
+                />
+                <HoverOverlay>
+                  <PlayButtonIcon />
+                </HoverOverlay>
+              </PosterCard2>
             ))}
           </PosterGrid>
         </Section>
