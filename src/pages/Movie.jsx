@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
+import { Spinner } from "../components/Header";
 const YouTube = lazy(() => import("react-youtube"));
 
 const GlobalStyle = createGlobalStyle`
@@ -376,17 +377,16 @@ const PosterGrid = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #555; /* A sleek dark grey */
+    background-color: #555;
     border-radius: 10px;
-    border: 2px solid transparent; /* Creates a "padding" effect */
-    background-clip: content-box; /* Ensures border is not covered by the background */
+    border: 2px solid transparent;
+    background-clip: content-box;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: #777; /* Slightly lighter on hover for better UX */
+    background-color: #777;
   }
 `;
-// REPLACE the old PosterCard styled.img with these new components
 
 const SimilarMoviePoster = styled.img`
   display: block;
@@ -632,17 +632,7 @@ const MoviePage = () => {
   };
 
   if (loading || !movieData) {
-    return (
-      <Container
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div>Loading...</div>
-      </Container>
-    );
+    return <Spinner />;
   }
 
   const mainTrailer = videos.length > 0 ? videos[0] : null;

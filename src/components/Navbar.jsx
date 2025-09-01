@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "animate.css/animate.min.css";
-import Spinner from "./Spinner";
+import { Spinner } from "./Header";
 
 const Container = styled.div`
   width: 100%;

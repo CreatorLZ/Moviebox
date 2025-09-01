@@ -8,7 +8,7 @@ import {
 import "./App.css";
 import GlobalStyles from "./GlobalStyles";
 import { lazy, Suspense } from "react";
-import Spinner from "./components/Spinner";
+import { Spinner } from "./components/Header";
 const Landing = lazy(() => import("./pages/Landing"));
 const Movie = lazy(() => import("./pages/Movie"));
 
