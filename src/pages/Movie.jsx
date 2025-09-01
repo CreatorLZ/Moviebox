@@ -1,15 +1,20 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import styled from "styled-components";
+import styled, { css, createGlobalStyle } from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../components/Navbar2";
 import Footer from "../components/Footer";
 const YouTube = lazy(() => import("react-youtube"));
 
+const GlobalStyle = createGlobalStyle`
+  html {
+    scroll-behavior: smooth;
+  }
+`;
+
 const Container = styled.div`
   min-height: 100vh;
   color: white;
-  /* background-color: #000; */
   background-color: rgba(0, 0, 0, 0.5);
   position: relative;
   overflow-x: hidden;
@@ -45,8 +50,10 @@ const HeroSection = styled.div`
   padding-top: 100px;
 
   @media (max-width: 768px) {
-    padding: 0 20px;
-    height: 80vh;
+    /* MOBILE: Adjust height to be content-driven */
+    min-height: auto;
+    height: auto;
+    padding: 120px 20px 40px 20px;
   }
 `;
 
@@ -57,60 +64,50 @@ const HeroContent = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
+    /* MOBILE: Stack poster and info vertically */
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 20px;
+    gap: 30px;
   }
 `;
 
 const PosterImage = styled.img`
   width: 250px;
-  height: 320px;
+  height: 375px; /* Maintain a good aspect ratio */
   border-radius: 8px;
-  border: white 5px solid;
+  border: 4px solid white;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  object-fit: cover;
 
   @media (max-width: 768px) {
-    width: 250px;
-    height: 375px;
+    /* MOBILE: Make poster fluid but not too big */
+    width: 65%;
+    max-width: 250px;
+    height: auto;
   }
 `;
 
 const MovieInfo = styled.div`
   display: flex;
-  /* flex: 1; */
-  width: 100vw;
-  flex-direction: row;
-`;
-
-const MovieInfoRow = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const MovieInfoRowInner1 = styled.div`
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-`;
-
-const MovieInfoRowInner2 = styled.div`
-  margin-top: 200px;
   flex: 1;
-  display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    /* MOBILE: Center align all text content */
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 1.8rem;
+  font-size: 2.8rem;
   font-weight: bold;
   margin: 0 0 20px 0;
   line-height: 1.1;
 
   @media (max-width: 768px) {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 `;
 
@@ -118,12 +115,11 @@ const MetaInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 10px;
-  font-size: 18px;
+  margin-bottom: 20px;
+  font-size: 16px;
   color: #ccc;
 
   @media (max-width: 768px) {
-    flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
   }
@@ -133,10 +129,10 @@ const GenreList = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 
   @media (max-width: 768px) {
     justify-content: center;
-    flex-wrap: wrap;
   }
 `;
 
@@ -148,24 +144,28 @@ const GenreTag = styled.span`
   border: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
-const Director = styled.p`
-  margin: 10px 0;
+const InfoText = styled.p`
+  margin: 5px 0;
   font-size: 16px;
   color: #f5f5f5;
 
+  strong {
+    color: #fff;
+  }
+
   span {
-    color: #f5f5f5;
-    font-weight: 500;
+    color: #ccc;
   }
 `;
 
-const Languages = styled.p`
-  margin: 10px 0;
-  font-size: 16px;
-  color: #f5f5f5;
+const Tagline = styled.p`
+  margin: 20px 0;
+  font-style: italic;
+  color: #ccc;
+  max-width: 500px;
 
-  span {
-    color: #f5f5f5;
+  @media (max-width: 768px) {
+    font-size: 15px;
   }
 `;
 
@@ -175,11 +175,11 @@ const WatchButton = styled.button`
   border: none;
   padding: 15px 40px;
   border-radius: 25px;
-  font-size: 10px;
+  font-size: 16px;
   width: fit-content;
   font-weight: 600;
   cursor: pointer;
-  margin: 20px 0;
+  margin-top: 20px;
   transition: background 0.3s;
 
   &:hover {
@@ -189,21 +189,6 @@ const WatchButton = styled.button`
   @media (max-width: 768px) {
     width: 100%;
     max-width: 300px;
-  }
-`;
-
-const WorthWatching = styled.div`
-  margin: 10px 0;
-
-  h3 {
-    color: #f5f5f5;
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-
-  p {
-    color: #f5f5f5;
-    line-height: 1.6;
   }
 `;
 
@@ -222,124 +207,53 @@ const SectionTitle = styled.h2`
   color: white;
 `;
 
-const StorylineSection = styled(Section)`
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
 const Storyline = styled.div`
-  max-width: 1200px;
-
+  max-width: 1000px;
   h3 {
     color: #f5f5f5;
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-
-  p {
-    font-size: 18px;
-    line-height: 1.8;
-    color: #f5f5f5;
+    margin-bottom: 15px;
+    font-size: 22px;
   }
 `;
+
+// MOBILE: New component for truncating text
+const StorylineText = styled.p`
+  font-size: 16px;
+  line-height: 1.8;
+  color: #ddd;
+  transition: all 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: ${(props) => (props.isExpanded ? "999" : "4")};
+  }
+`;
+
+// MOBILE: New component for "See more" button
+const SeeMoreButton = styled.button`
+  display: none; /* Hidden by default on desktop */
+  @media (max-width: 768px) {
+    display: inline-block;
+    background: none;
+    border: none;
+    color: #da2f2f;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+    padding: 5px 0;
+  }
+`;
+
+/* --- All other styled components (MediaGrid, CastGrid, etc.) remain the same --- */
 
 const MediaGrid = styled.div`
   display: flex; /* Changed from grid to flex */
   justify-content: flex-start;
   align-items: center;
   margin-top: 30px;
-`;
-
-const MediaCard = styled.div`
-  background: #222;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const PosterGrid = styled.div`
-  display: flex;
-  overflow-x: auto;
-  gap: 20px;
-  margin-top: 30px;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.1);
-  padding: 20px;
-
-  /* --- CUSTOM SCROLLBAR --- */
-
-  /* Works on Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #555 transparent;
-
-  /* Works on Chrome, Edge, and Safari */
-  &::-webkit-scrollbar {
-    height: 8px; /* Height of the horizontal scrollbar */
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent; /* Makes the track invisible */
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #555; /* A sleek dark grey */
-    border-radius: 10px;
-    border: 2px solid transparent; /* Creates a "padding" effect */
-    background-clip: content-box; /* Ensures border is not covered by the background */
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #777; /* Slightly lighter on hover for better UX */
-  }
-`;
-
-const PosterCard = styled.img`
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const CastGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.1);
-`;
-
-const CastCard = styled.div`
-  text-align: center;
-`;
-
-const CastImage = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-`;
-
-const CastName = styled.h4`
-  font-size: 16px;
-  margin-bottom: 5px;
-`;
-
-const CastRole = styled.p`
-  font-size: 14px;
-  color: #ccc;
 `;
 
 const TrailerContainer = styled.div`
@@ -431,52 +345,158 @@ const TrailerTitle = styled.div`
   font-weight: 600;
 `;
 
-const Duration = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  z-index: 2;
-`;
-
-const HeartIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
-
-const ThumbsUpIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M7 10v12" />
-    <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z" />
-  </svg>
-);
-
 const PlayIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor">
     <path d="M8 5v14l11-7z" />
   </svg>
 );
 
+const PosterGrid = styled.div`
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  margin-top: 30px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+  /* --- CUSTOM SCROLLBAR --- */
+
+  /* Works on Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+
+  /* Works on Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    height: 8px; /* Height of the horizontal scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Makes the track invisible */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #555; /* A sleek dark grey */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Creates a "padding" effect */
+    background-clip: content-box; /* Ensures border is not covered by the background */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #777; /* Slightly lighter on hover for better UX */
+  }
+`;
+
+const PosterCard = styled.img`
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s;
+
+  /* Added a base width for flex items */
+  flex: 0 0 180px;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const CastGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+
+  /* --- Mobile-Specific Styles --- */
+  @media (max-width: 768px) {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px 0 20px 0; // Add padding for aesthetics and scrollbar space
+
+    /* --- CUSTOM SCROLLBAR (for mobile) --- */
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #555;
+      border-radius: 10px;
+    }
+  }
+`;
+
+const CastCard = styled.div`
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  background-color: #222; /* Fallback color */
+  aspect-ratio: 2 / 3; /* Gives cards a consistent portrait shape */
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  /* Set a fixed width for mobile flexbox layout */
+  @media (max-width: 768px) {
+    flex: 0 0 140px; /* Do not grow, do not shrink, fixed width of 140px */
+  }
+`;
+
+const CastImage = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const CastInfo = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, transparent);
+`;
+
+const CastName = styled.h4`
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+  color: #fff;
+`;
+
+const CastRole = styled.p`
+  font-size: 13px;
+  color: #ccc;
+  margin: 0;
+`;
+
 const MoviePage = () => {
   const { id } = useParams();
   const [movieData, setMovieData] = useState(null);
   const [cast, setCast] = useState([]);
   const [director, setDirector] = useState("");
-  const [writer, setWriter] = useState("");
   const [videos, setVideos] = useState([]);
   const [backdrops, setBackdrops] = useState([]);
   const [posters, setPosters] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false); // State for "See more"
 
   const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
   const baseUrl = "https://api.themoviedb.org/3";
+
+  // ... (useEffect fetching logic remains the same) ...
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -496,10 +516,6 @@ const MoviePage = () => {
           (member) => member.job === "Director"
         );
         setDirector(directors.map((d) => d.name).join(", "));
-        // const writers = response.data.crew.filter(
-        //   (member) => member.department === "Writing"
-        // );
-        // setWriter(writers.map((w) => w.name).join(", "));
 
         setCast(movieResponse.data.credits.cast);
         setVideos(
@@ -538,7 +554,7 @@ const MoviePage = () => {
     if (!minutes) return "";
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
-    return `${hours}h ${mins}min`;
+    return `${hours}h ${mins}m`;
   };
 
   const formatDate = (dateString) => {
@@ -566,83 +582,69 @@ const MoviePage = () => {
     <Container
       bgImage={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
     >
+      <GlobalStyle />
       <Navbar2 />
-      <HeroSection
-      // bgImage={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
-      >
+      <HeroSection>
         <HeroContent>
           <PosterImage
             src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`}
             alt={movieData.title}
           />
           <MovieInfo>
-            <MovieInfoRowInner1>
-              <Title>{movieData.title}</Title>
+            <Title>{movieData.title}</Title>
+            <MetaInfo>
+              <span>{formatDate(movieData.release_date)}</span>
+              <span>•</span>
+              <span>{formatRuntime(movieData.runtime)}</span>
+            </MetaInfo>
 
-              <MetaInfo>
-                <span>{formatDate(movieData.release_date)}</span>
-                <span>•</span>
-                <span>{formatRuntime(movieData.runtime)}</span>
-              </MetaInfo>
+            <GenreList>
+              {movieData.genres.map((genre) => (
+                <GenreTag key={genre.id}>{genre.name}</GenreTag>
+              ))}
+            </GenreList>
 
-              <GenreList>
-                {movieData.genres.map((genre) => (
-                  <GenreTag key={genre.id}>{genre.name}</GenreTag>
-                ))}
-              </GenreList>
+            <InfoText>
+              <strong>Director(s):</strong> <span>{director}</span>
+            </InfoText>
+            <InfoText>
+              <strong>Language(s):</strong>{" "}
+              <span>
+                {movieData.spoken_languages
+                  .map((l) => l.english_name)
+                  .join(", ")}
+              </span>
+            </InfoText>
+            <InfoText>
+              <strong>Status:</strong> <span>{movieData.status}</span>
+            </InfoText>
 
-              <Director>
-                <strong>Director(s):</strong> <span>{director}</span>
-              </Director>
+            {movieData.tagline && <Tagline>"{movieData.tagline}"</Tagline>}
 
-              {/* <Writer>
-                <strong>Writer(s):</strong> <span>{writer}</span>
-              </Writer> */}
-
-              <Languages>
-                <strong>Language(s):</strong>{" "}
-                <span>
-                  {movieData.spoken_languages
-                    .map((l) => l.english_name)
-                    .join(", ")}
-                </span>
-              </Languages>
-
-              <Languages>
-                <strong>Status:</strong> <span>{movieData.status}</span>
-              </Languages>
-
-              {/* <Subtitles>
-                <strong>Subtitles:</strong> <a>Show all</a>
-              </Subtitles> */}
-              {movieData.tagline ? (
-                <WorthWatching>
-                  <h3>Worth watching because</h3>
-                  <p>{movieData.tagline}</p>
-                </WorthWatching>
-              ) : (
-                ""
-              )}
+            <a href="#trailer-section" style={{ textDecoration: "none" }}>
               <WatchButton>Watch Trailer</WatchButton>
-            </MovieInfoRowInner1>
-
-            {/* <MovieInfoRowInner2>
-           
-              <WatchButton>Watch Trailer</WatchButton>
-            </MovieInfoRowInner2> */}
+            </a>
           </MovieInfo>
         </HeroContent>
       </HeroSection>
 
-      <StorylineSection>
+      <Section>
         <Storyline>
           <h3>Storyline</h3>
-          <p>{movieData.overview}</p>
+          <StorylineText isExpanded={isExpanded}>
+            {movieData.overview}
+          </StorylineText>
+          {/* Only show button if text is long enough to be clamped */}
+          {movieData.overview.length > 550 && (
+            <SeeMoreButton onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? "See less" : "See more"}
+            </SeeMoreButton>
+          )}
         </Storyline>
-      </StorylineSection>
+      </Section>
 
       {mainTrailer && (
-        <Section>
+        <Section id="trailer-section">
           <SectionTitle>Trailers and video extras</SectionTitle>
           <MediaGrid>
             <TrailerContainer className={isTrailerPlaying ? "playing" : ""}>
@@ -668,20 +670,10 @@ const MoviePage = () => {
                         autoplay: 1,
                         modestbranding: 1,
                         rel: 0,
-                        controls: 1,
-                        enablejsapi: 1,
-                        origin: window.location.origin,
-                        showinfo: 1,
                       },
                     }}
-                    onReady={(event) => {
-                      // The player is ready
-                      event.target.playVideo();
-                    }}
-                    onError={(error) => {
-                      console.error("YouTube Player Error:", error);
-                      setIsTrailerPlaying(false);
-                    }}
+                    onReady={(event) => event.target.playVideo()}
+                    onError={() => setIsTrailerPlaying(false)}
                   />
                 </Suspense>
               )}
@@ -690,6 +682,7 @@ const MoviePage = () => {
         </Section>
       )}
 
+      {/* --- Other sections (Cast, Similar, etc.) --- */}
       <Section>
         <SectionTitle>Cast</SectionTitle>
         <CastGrid>
@@ -698,13 +691,15 @@ const MoviePage = () => {
               <CastImage
                 src={
                   person.profile_path
-                    ? `https://image.tmdb.org/t/p/w200${person.profile_path}`
-                    : "https://via.placeholder.com/120"
+                    ? `https://image.tmdb.org/t/p/w300${person.profile_path}`
+                    : "https://via.placeholder.com/150x225"
                 }
                 alt={person.name}
               />
-              <CastName>{person.name}</CastName>
-              <CastRole>{person.character}</CastRole>
+              <CastInfo>
+                <CastName>{person.name}</CastName>
+                <CastRole>{person.character}</CastRole>
+              </CastInfo>
             </CastCard>
           ))}
         </CastGrid>
@@ -756,6 +751,7 @@ const MoviePage = () => {
           </PosterGrid>
         </Section>
       )}
+
       <Footer />
     </Container>
   );
