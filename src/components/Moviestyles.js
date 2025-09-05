@@ -93,22 +93,6 @@ export const Card = styled.div`
   }
 
   @media only screen and (max-width: 768px) {
-    width: 150px !important;
-    margin: 0 10px;
-
-    .play-button {
-      width: 50px;
-      height: 50px;
-
-      &::after {
-        border-left: 16px solid #333;
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-      }
-    }
-  }
-
-  @media only screen and (max-width: 420px) {
     width: 130px !important;
     margin: 0 16px;
 
