@@ -632,7 +632,7 @@ const Navbar2 = () => {
   ];
 
   return (
-    <Container>
+    <Container style={{ zIndex: 150 }}>
       <Logo>
         <Link
           to="/"
