@@ -520,7 +520,7 @@ const Navbar2 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  // Dropdown states
+  // Dropdown statess
   const [dropdowns, setDropdowns] = useState({
     movies: true,
     celebs: true,
