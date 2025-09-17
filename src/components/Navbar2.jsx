@@ -522,11 +522,11 @@ const Navbar2 = () => {
 
   // Dropdown states
   const [dropdowns, setDropdowns] = useState({
-    movies: false,
-    celebs: false,
-    tvshows: false,
-    watch: false,
-    community: false,
+    movies: true,
+    celebs: true,
+    tvshows: true,
+    watch: true,
+    community: true,
   });
 
   const searchMovies = () => {
