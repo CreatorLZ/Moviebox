@@ -245,6 +245,8 @@ function SampleNextArrow({ className, style, onClick }) {
         zIndex: "10",
         right: "-24px",
         transition: "all 0.2s ease",
+        transform: "scale(1)",
+        transformOrigin: "center",
       }}
       onClick={onClick}
       onMouseEnter={(e) => {
@@ -276,6 +278,8 @@ function SamplePrevArrow({ className, style, onClick }) {
         zIndex: "10",
         left: "-24px",
         transition: "all 0.2s ease",
+        transform: "scale(1)",
+        transformOrigin: "center",
       }}
       onClick={onClick}
       onMouseEnter={(e) => {
