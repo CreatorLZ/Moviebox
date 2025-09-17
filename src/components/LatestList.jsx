@@ -8,7 +8,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Card, Card2, Div1, Dots, Options } from "./LatestListstyles";
 
-const API_KEY = "14526ed9b5bfe3871ae714ee0a0c7f07";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
 const LatestList = () => {

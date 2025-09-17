@@ -423,7 +423,7 @@ const Ul2 = styled.ul`
   }
 `;
 const Navbar = () => {
-  const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiUrl = "https://api.themoviedb.org/3/movie/popular";
   const imageBaseUrl = "https://image.tmdb.org/t/p/w1280";
 

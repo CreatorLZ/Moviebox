@@ -562,7 +562,7 @@ const MoviePage = () => {
   const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false); // State for "See more"
 
-  const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const baseUrl = "https://api.themoviedb.org/3";
 
   // ... (useEffect fetching logic remains the same) ...

@@ -512,7 +512,7 @@ export const Spinner = () => (
 );
 
 const Navbar2 = () => {
-  const apiKey = "14526ed9b5bfe3871ae714ee0a0c7f07";
+  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
